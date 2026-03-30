@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="tarea1avance" id="D36DEB8B-E68F-470F-3AA2-1CEA69A06BB7" version="3.5">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-18 13:38:55 UTC</createdTime>
+<ownerDesignName>Tarea 1 BDD</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>D36DEB8B-E68F-470F-3AA2-1CEA69A06BB7</designId>
+</OSDM_Design>
