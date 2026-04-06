@@ -1,0 +1,64 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="74D97359-6D43-EB77-5002-C396CED19D88" name="RESPONSABLE">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-18 14:16:28 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="Jefe de Carrera {ID}" id="902CA371-5B6D-98A6-AC9F-2B6BE84C8632">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-18 14:16:34 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Coordinador Proyectos Sede {ID}" id="B19FA2D7-2E28-60A6-1BB7-540C4588A6AD">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-18 14:16:55 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="6CA42EB5-41AC-B0FB-4DB2-E6043292CA46" name="RESPONSABLE PK">
+<createdBy>gabriel</createdBy>
+<createdTime>2026-03-31 00:57:12 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>B19FA2D7-2E28-60A6-1BB7-540C4588A6AD</attributeRef>
+<attributeRef>902CA371-5B6D-98A6-AC9F-2B6BE84C8632</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

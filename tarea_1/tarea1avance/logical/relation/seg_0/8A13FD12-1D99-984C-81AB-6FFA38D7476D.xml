@@ -1,0 +1,21 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="POSTULACION-REGION" directorySegmentName="seg_0" id="8A13FD12-1D99-984C-81AB-6FFA38D7476D">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-18 14:23:52 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<identifying>false</identifying>
+<nameOnSource>tiene</nameOnSource>
+<nameOnTarget>pertenece</nameOnTarget>
+<optionalSource>false</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>*</sourceCardinality>
+<sourceEntity>98A2EC90-521B-C778-D537-3D672BC20FC9</sourceEntity>
+<targetCardinalityString>1</targetCardinalityString>
+<targetEntity>BA450682-3D2D-B4EC-782D-50F8F7C73532</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

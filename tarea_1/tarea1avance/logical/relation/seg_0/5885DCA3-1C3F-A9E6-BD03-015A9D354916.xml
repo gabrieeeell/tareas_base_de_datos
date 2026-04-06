@@ -1,0 +1,21 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="EMPRESA-TAMAÑO EMPRESA" directorySegmentName="seg_0" id="5885DCA3-1C3F-A9E6-BD03-015A9D354916">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-18 14:23:25 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<sourcePk>45D017ED-F9EC-0097-01A9-AE7BEB6FCCAD</sourcePk>
+<targetPk>E04982EC-1445-3FD2-C06B-513FFCE28F96</targetPk>
+<identifying>false</identifying>
+<optionalSource>false</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>D68AA12B-C192-11EC-8854-ACB094A7E0FA</sourceEntity>
+<targetCardinalityString>1</targetCardinalityString>
+<targetEntity>56DA4F2B-DC5A-3666-9927-5E87473F61E9</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

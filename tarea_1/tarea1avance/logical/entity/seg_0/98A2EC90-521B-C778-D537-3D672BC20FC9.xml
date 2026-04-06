@@ -1,0 +1,225 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="98A2EC90-521B-C778-D537-3D672BC20FC9" name="POSTULACION">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-18 14:14:49 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="Código Postulación {ID}" id="46A193DA-D1E0-C5CD-9F7A-B38E1EF46C5B">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-18 14:14:58 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Iniciativa nueva o existente" id="A7898694-9025-A68D-AD51-A534ECB418CD">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-18 14:20:01 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>9</dataTypeSize>
+<ownDataTypeParameters>9,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="100" id="2E7A312A-2BA7-BC6F-A4D7-3033A93A75FB">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-18 14:30:28 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Problema iniciativa" id="8CF83C7E-1E7E-7B23-A6F6-8F4ACC6035DD">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-18 14:30:34 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Descripción iniciativa" id="FB7C8559-C223-6142-E9EE-5B64C1EC1EDD">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-18 14:30:43 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Resultados esperados iniciativa" id="B8B0064A-BAF2-28CE-B630-BA824D0B1E81">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-18 14:30:51 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>255</dataTypeSize>
+<ownDataTypeParameters>255,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Código Estado {ID}" id="1B086AA0-5310-9A70-F576-F906929DECC0">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-26 18:05:25 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="ID_region" id="B908184D-0352-86BE-7078-83AFDD3DD169">
+<createdBy>gabriel</createdBy>
+<createdTime>2026-03-31 00:06:03 UTC</createdTime>
+<generatorID>8A13FD12-1D99-984C-81AB-6FFA38D7476D</generatorID>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<referedAttribute>AD3BFD55-65B8-D065-09A1-C4C494EC9516</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Rut Empresa {ID}" id="A118BFDC-E2DF-C31E-7B9A-DC116FBA17CF">
+<createdBy>gabriel</createdBy>
+<createdTime>2026-03-31 00:47:30 UTC</createdTime>
+<generatorID>055AB1C9-8B09-CA99-90F0-102C62CA78B4</generatorID>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<referedAttribute>D432F8B4-F5EA-AF30-64CF-23B4AF65A027</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>12</dataTypeSize>
+<ownDataTypeParameters>12,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Código Sede {ID}" id="4742A8B7-7596-7042-3055-4D1141F197B9">
+<createdBy>gabriel</createdBy>
+<createdTime>2026-03-31 00:48:00 UTC</createdTime>
+<generatorID>FA610E15-68E1-0918-08C8-68D30E1AEFAB</generatorID>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<referedAttribute>E9D9676D-7B43-1564-9C8B-F5AF6AC7A320</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Código Estado {ID}_1" id="90D0CCF3-F55E-6166-78A2-2B4E9598C665">
+<createdBy>gabriel</createdBy>
+<createdTime>2026-03-31 00:54:17 UTC</createdTime>
+<generatorID>502261EC-14CA-2899-A4A4-0F70829599D7</generatorID>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<referedAttribute>D5952DE5-6896-E5F1-A6E7-5153FFA5574F</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Coordinador Proyectos Sede {ID}" id="E5ACB9E2-751F-49F6-D169-CE66C8A57D9D">
+<createdBy>gabriel</createdBy>
+<createdTime>2026-03-31 00:57:21 UTC</createdTime>
+<generatorID>DCE96224-F7DF-8AB7-1145-037CC6EB3375</generatorID>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<referedAttribute>B19FA2D7-2E28-60A6-1BB7-540C4588A6AD</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Jefe de Carrera {ID}" id="AA52EA96-4178-5195-76FE-8D9B8216DCE2">
+<createdBy>gabriel</createdBy>
+<createdTime>2026-03-31 00:57:21 UTC</createdTime>
+<generatorID>DCE96224-F7DF-8AB7-1145-037CC6EB3375</generatorID>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<referedAttribute>902CA371-5B6D-98A6-AC9F-2B6BE84C8632</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="09E92D02-5ECD-5CEF-92E5-FE61FA0BF372" name="POSTULACION PK">
+<createdBy>Martin</createdBy>
+<createdTime>2026-03-29 19:16:37 UTC</createdTime>
+<ownerDesignName>tarea1avance</ownerDesignName>
+<engineerTo>
+<item key="760F29AA-963F-68B9-0FB8-43F178A1716E" value="true"/>
+<item key="95CEC540-74D5-0E21-E75F-689658F5E18A" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>46A193DA-D1E0-C5CD-9F7A-B38E1EF46C5B</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>
