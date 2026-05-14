@@ -1,6 +1,38 @@
 // EASTER EGG cristopher shiny
 <?php
-require_once("BDT1.php");
+// Esto nos ayuda a saber en todo momento que persona está rellenando el formulario, para mas adelante hacer
+// un autocompletado de datos y asegurar integridad de datos en la BD
+session_start();
+
+// Aqui se guardan los datos de la sesion, para hacer el posterior autocompletado en el caso del rol 1
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['rut_ingreso']) && isset($_POST['rol_ingreso'])) {
+    $_SESSION['rut_usuario'] = $_POST['rut_ingreso'];
+    $_SESSION['rol_usuario'] = $_POST['rol_ingreso'];
+    // Al recargar la página y salir se ingresa con los datos de la sesion
+    header("Location: index.php");
+    exit();
+}
+
+// Si ya existe una sesion abierta en el navegador entonces se redirecciona automaticamente (Se puede eliminar, de momento si se ingresa rol 2 o 3 se queda atrapado en
+// un 404), para salir hay que meterse a /cerrar_sesion.php y ahi se destruye la sesion, supongo que cuando ya se tengan todos los casos cubiertos de datos que se puedan ingresar
+// va a funcionar bien
+if (isset($_SESSION['rol_usuario']) && isset($_SESSION['rut_usuario'])) {
+    $rol = $_SESSION['rol_usuario'];
+    if ($rol == '1') {
+        header("Location: Templates/T_rol1.php");
+        exit();
+    } elseif ($rol == '2') {
+        require("./Templates/vista_lista_postulaciones.php");
+        //header("Location: Templates/vista_lista_postulaciones.php");
+        exit();
+    } elseif ($rol == '3') {
+        header("Location: Templates/T_rol3.php");
+        exit();
+    }
+}
+
+// Para usar la conexion a la base de datos
+require("BDT1.php");
 ?>
 
 <!DOCTYPE html>
@@ -35,16 +67,28 @@ require_once("BDT1.php");
                         
                         <img src="Imagenes/logoU.jpg" alt="Logo USM" class="img-fluid mb-4" style="max-height: 130px;">
                         
-                        <form action="back/login_logica.php" method="POST">
+                        <form action="index.php" method="POST">
+                            
+                            <div class="mb-3 text-start">
+                                <label for="rut_ingreso" class="form-label text-secondary fw-semibold">RUT</label>
+                                <input 
+                                    type="text" 
+                                    name="rut_ingreso" 
+                                    id="rut_ingreso" 
+                                    class="form-control form-control-lg text-center border-secondary"
+                                    placeholder="Pruebaprueba"
+                                    required
+                                >
+                            </div>
+
                             <div class="mb-4 text-start">
                                 <label for="rol_ingreso" class="form-label text-secondary fw-semibold">Rol</label>
                                 <label class="form-label">
                                 </label>
 
-
                                 <input 
                                     type="text" 
-                                    /*name es el identificador que se usa del lado del server*/
+                                    /*valor*/
                                     name="rol_ingreso" 
                                     id="rol_ingreso" 
                                     class="form-control form-control-lg text-center border-secondary"

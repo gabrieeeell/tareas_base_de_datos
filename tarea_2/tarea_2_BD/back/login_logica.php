@@ -1,25 +1,26 @@
 <?php
+// 1. Iniciar el motor de sesiones (DEBE SER LO PRIMERO)
+session_start();
 
 require_once("../BDT1.php");
-//las siguientes 2 lineas son para mostrar errores durante desarrollo
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $rol = $_POST['rol_ingreso']; // aca se puede usar htmlspecialchars para evitar ataques XSS básicos
-    
+    // 2. Si viene el rol por POST (es el login inicial), lo guardamos en la sesión
+    if (isset($_POST['rol_ingreso'])) {
+        $_SESSION['rol'] = $_POST['rol_ingreso'];
+    }
+
+    // 3. Recuperamos el rol desde la sesión (esté recién llegando o ya guardado de antes)
+    $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : null;
 
     if (!empty($rol)) {
-        switch ($rol) {
-        case "2":
-            require("./vistas_segun_rol/vista_evaluador.php");
-            break;
-        } 
-        
+        // Al usar require, la vista hereda la variable $conexion y $rol
+        require("../Templates/vista_lista_postulaciones.php");
     } else {
-        echo "El campo rol está vacío.";
+        echo "Error: Sesión expirada o rol no identificado.";
     }
 } else {
-    // Si alguien intenta entrar al PHP directamente sin enviar el formulario
     echo "Acceso no permitido.";
 }
-
 ?>

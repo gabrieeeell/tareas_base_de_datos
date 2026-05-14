@@ -1,0 +1,142 @@
+<?php
+// Para asegurarse que sea rol 1
+session_start();
+if (!isset($_SESSION['rut_usuario']) || $_SESSION['rol_usuario'] != '1') {
+    header("Location: ../index.php");
+    exit();
+}
+
+require_once("../BDT1.php");
+$Rut_resp = $_SESSION['rut_usuario'];
+
+// Esto es para el "bienvenido, nombre" pero 
+$nombre_usuario = "Postulante";
+//Buscamos si existe una persona con ese rut en la BD para el autocompletado de los datos, guardamos una consutla SQL para encontrar los datos de ese rut, pero 
+// ponemos signo de "?" ya que de esta forma se espera un dato, que luego se rellena con execute(dato) y asi se envian por separado, lo que evita que se pueda hacer una
+// inyección SQL del tipo "rut_persona= 1" OR "1" = "1" " lo que haría que se mostraran todos los datos de todos los usuarios
+try {
+    $stmt_user = $conexion->prepare("SELECT Nombre FROM Persona WHERE Rut_persona = ?");
+    $stmt_user->execute([$Rut_resp]);
+    if ($row = $stmt_user->fetch(PDO::FETCH_ASSOC)) {
+        $nombre_usuario = $row['Nombre'];
+    }
+} catch(PDOException $e) {}
+
+// Aqui se estaria cumpliendo con el Read del CRUD, pero realmente es solo para buscar las postulaciones del usuario que ingresó a la sesion
+try {
+    // Usamos JOIN para conectar POSTULACION con ESTADO y con la tabla intermedia PERSONA_POSTULACION
+    $sql = "SELECT 
+                P.ID_Postulacion, 
+                P.Nombre_iniciativa, 
+                E.Nombre_estado AS Estado 
+            FROM POSTULACION P
+            JOIN ESTADO_POSTULACION E ON P.ID_estado = E.ID_estado
+            JOIN PERSONA_POSTULACION PP ON P.ID_Postulacion = PP.ID_postulacion
+            WHERE PP.Rut_persona = ? AND PP.Rol = 'Responsable'";
+            
+    $stmt_postulaciones = $conexion->prepare($sql);
+    $stmt_postulaciones->execute([$Rut_resp]);
+    $lista_postulaciones = $stmt_postulaciones->fetchAll(PDO::FETCH_ASSOC);
+
+} catch(PDOException $e) {
+    die("Error al cargar las postulaciones: " . $e->getMessage());
+}
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel - Mis Postulaciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f6f9; }
+        .navbar-custom { background-color: #003366; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark navbar-custom mb-4">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">Panel de Postulación</span>
+            <div class="d-flex align-items-center">
+                <span class="text-white me-3">RUT sesion: <?php echo htmlspecialchars($Rut_resp); ?></span>
+                <a href="../back/cerrar_sesion.php" class="btn btn-outline-light btn-sm">
+    Cerrar Sesión
+</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Bienvenido, <?php echo htmlspecialchars($nombre_usuario); ?></h2>
+            <a href="T_rol1_formulario_crear.php" class="btn btn-success btn-lg shadow-sm">
+                + Crear Nueva Postulación
+            </a>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title text-secondary mb-3">Mis Iniciativas</h5>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre de la Iniciativa</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (count($lista_postulaciones) > 0): ?>
+                                <?php foreach ($lista_postulaciones as $post): ?>
+                                    <tr>
+                                        <td class="fw-bold"><?php echo htmlspecialchars($post['ID_Postulacion']); ?></td>
+                                        <td><?php echo htmlspecialchars($post['Nombre_iniciativa']); ?></td>
+                                        <td>
+                                            <?php 
+                                                // Le ponemos un color distinto según el estado
+                                                $estado = strtolower($post['Estado']);
+                                                $badge_color = ($estado == 'borrador') ? 'bg-warning text-dark' : 'bg-primary';
+                                            ?>
+                                            <span class="badge <?php echo $badge_color; ?>">
+                                                <?php echo htmlspecialchars($post['Estado']); ?>
+                                            </span>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php if ($estado == 'borrador'): ?>
+                                                <a href="T_rol1_editar.php?id=<?php echo urlencode($post['ID_Postulacion']); ?>" class="btn btn-sm btn-outline-primary">Editar</a>
+                                                
+                                                <form action="../back/backrol1.php" method="POST" class="d-inline">
+                                                    <input type="hidden" name="accion" value="enviar">
+                                                    <input type="hidden" name="id_postulacion" value="<?php echo htmlspecialchars($post['ID_Postulacion']); ?>">
+                                                    <button type="submit" class="btn btn-sm btn-success">Enviar</button>
+                                                </form>
+                                            <?php else: ?>
+                                                <button class="btn btn-sm btn-outline-secondary" disabled>Solo Lectura</button>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">
+                                        No eres responsable de ninguna postulación
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
