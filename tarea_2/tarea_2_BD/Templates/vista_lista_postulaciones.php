@@ -1,4 +1,6 @@
 <?php
+//para poder acceder al rol del usuario
+session_start();
 // Iniciamos sesión para no perder el rol del usuario
 require_once("../BDT1.php");
 // Capturamos el término de búsqueda (soporta POST para el buscador y GET para limpiar)
@@ -13,13 +15,23 @@ $f_estado = $_POST['estado_postulacion'] ?? '';
 echo $f_reg_impacto;
 try {
     $sql = "SELECT 
-                P.Numero_postulacion, 
+                P.Numero_postulacion,
+                P.Fecha_postulacion,
+                P.Objetivo_iniciativa,
+                P.Descripcion_soluciones,
+                P.Resultados_esperados,
                 P.Nombre_iniciativa,
+                P.Rut_Empresa,
                 E.Nombre_empresa,
                 R_O.Nombre_region AS Region_origen,
                 R_I.Nombre_region AS Region_impacto,
                 P.Presupuesto,
-                EST.Nombre_estado
+                EST.Nombre_estado,
+                C.rut_coordinador,
+                S.Nombre_Sede,
+                T.Tipo_iniciativa,
+                J.Nombre_jefe,
+                C.Nombre_coordinador
             FROM POSTULACION P
             LEFT JOIN TIPO_INICIATIVA T ON P.ID_tipo_iniciativa = T.ID_tipo
             LEFT JOIN SEDE S ON P.ID_sede = S.ID_sede
@@ -27,11 +39,12 @@ try {
             LEFT JOIN REGION R_O ON P.ID_region_origen = R_O.ID_region
             LEFT JOIN EMPRESA E ON P.Rut_Empresa = E.Rut_Empresa
             LEFT JOIN TAMANO_EMPRESA T_E ON T_E.ID_tamano = E.ID_tamano
-            LEFT JOIN ESTADO_POSTULACION EST ON P.ID_estado = EST.ID_estado";
+            LEFT JOIN ESTADO_POSTULACION EST ON P.ID_estado = EST.ID_estado
+            LEFT JOIN COORDINADOR C ON P.ID_coordinador = C.ID_coordinador
+            LEFT JOIN JEFE_CARRERA J ON J.ID_jefe = P.ID_jefe";
 
     $condiciones = [];
     $params = [];
-
     // Búsqueda general (corregido con marcadores únicos)
     if ($busqueda !== '') {
         $condiciones[] = "(P.Nombre_iniciativa LIKE :b1 OR E.Nombre_empresa LIKE :b2 OR P.Numero_postulacion LIKE :b3)";
@@ -93,7 +106,7 @@ try {
     <title>Panel de Evaluador</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-light py-4">
+<body class="bg-light py-4 d-flex">
 
 <div class="container" style="max-width: 800px;">
     
@@ -116,7 +129,17 @@ try {
                     <a href="?" class="small text-muted">Limpiar filtros</a>
                 <?php endif; ?>
             </div>
-
+            <!-- Boton para crear postulacion y "Mis postulaciones si corresponde"-->
+                <div class="w-100 d-flex flex-row" style="height: 5rem;"> 
+                    <a href="T_rol1_formulario_crear.php" class="mx-2 my-3 btn btn-success px-4 py-2 rounded-4 fw-bold shadow-sm d-flex align-items-center">
+                        <i class="bi bi-plus-lg me-2"></i> Crear 
+                    </a>
+                    <?php if ($_SESSION['rol_usuario'] == '1'): ?>
+                    <a href="T_rol1.php" class="mx-2 my-3 btn btn-outline-primary px-4 py-2 rounded-4 fw-bold shadow-sm d-flex align-items-center">
+                        <i class="bi bi-person-lines-fill me-2"></i> Mis Postulaciones
+                    </a>
+                    <?php endif; ?>
+                </div>
             <!-- MODAL DE BÚSQUEDA AVANZADA -->
             <div class="modal fade" id="modalBusqueda" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -211,43 +234,136 @@ try {
     <!-- Listado de Resultados -->
         <?php if (count($postulaciones) > 0): ?>
             <?php foreach ($postulaciones as $fila): ?>
-                <div class="card shadow-sm border-0 rounded-4 mb-3">
-                    <div class="card-body p-4">
-                        <h4 class="card-title text-primary mb-3 fw-semibold">
-                            <?php echo htmlspecialchars($fila['Nombre_iniciativa']); ?>
-                        </h4>
-                        <div class="row row-cols-1 row-cols-md-2 g-3 small">
-                            <div class="col">
-                                <span class="text-muted fw-bold">Nº Postulación:</span> 
-                                <span class="text-dark"><?php echo htmlspecialchars($fila['Numero_postulacion']); ?></span>
+                <?php if ($fila["rut_coordinador"] === $_SESSION["rut_usuario"] && $_SESSION["rol_usuario"] === "2" || $_SESSION["rol_usuario"] !== "2"): ?> 
+                    
+                <?php if ($_SESSION["rol_usuario"] === "2"): ?> 
+                <!-- Modal para la Postulación Nº <?php echo $fila['Numero_postulacion']; ?> -->
+                <div class="modal fade" id="modalEditar<?php echo $fila['Numero_postulacion']; ?>" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content rounded-4 border-0 shadow-lg">
+                            
+                            <!-- Encabezado -->
+                            <div class="modal-header bg-light border-0 py-3 px-4">
+                                <h5 class="modal-title fw-bold text-primary">
+                                    <i class="bi bi-file-earmark-text me-2"></i> Detalle de Postulación
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="col">
-                                <span class="text-muted fw-bold">Empresa:</span> 
-                                <span class="text-dark"><?php echo htmlspecialchars($fila['Nombre_empresa']); ?></span>
+
+                            <div class="modal-body p-4">
+                                <!-- Información General (Fila 1) -->
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-4">
+                                        <label class="small text-muted fw-bold d-block">Número Postulación</label>
+                                        <span class="text-dark">#<?php echo htmlspecialchars($fila['Numero_postulacion']); ?></span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="small text-muted fw-bold d-block">Fecha Postulación</label>
+                                        <span class="text-dark"><?php echo htmlspecialchars($fila['Fecha_postulacion'] ?? 'No registrada'); ?></span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="small text-muted fw-bold d-block">Estado</label>
+                                        <span class="badge bg-info text-dark rounded-pill">
+                                            <?php echo htmlspecialchars($fila['Nombre_estado']); ?>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Título e Iniciativa -->
+                                <div class="mb-4">
+                                    <label class="small text-muted fw-bold d-block">Nombre de la Iniciativa</label>
+                                    <h4 class="text-primary fw-semibold"><?php echo htmlspecialchars($fila['Nombre_iniciativa']); ?></h4>
+                                </div>
+
+                                <!-- Textos Largos (Estilo Tarjeta Interna) -->
+                                <div class="bg-light rounded-3 p-3 mb-4">
+                                    <div class="mb-3">
+                                        <label class="small text-muted fw-bold d-block">Objetivo de la Iniciativa</label>
+                                        <p class="mb-0 text-dark"><?php echo nl2br(htmlspecialchars($fila['Objetivo_iniciativa'] ?? 'Sin objetivo definido')); ?></p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="small text-muted fw-bold d-block">Descripción de Soluciones</label>
+                                        <p class="mb-0 text-dark small"><?php echo nl2br(htmlspecialchars($fila['Descripcion_soluciones'] ?? 'Sin descripción')); ?></p>
+                                    </div>
+                                    <div>
+                                        <label class="small text-muted fw-bold d-block">Resultados Esperados</label>
+                                        <p class="mb-0 text-dark small italic">"<?php echo htmlspecialchars($fila['Resultados_esperados'] ?? 'No especificados'); ?>"</p>
+                                    </div>
+                                </div>
+
+                                <!-- Detalles Técnicos (Grilla) -->
+                                <div class="row g-3">
+                                    <div class="col-md-6 border-end">
+                                        <p class="mb-1 small"><span class="fw-bold text-muted">Rut Empresa:</span> <?php echo htmlspecialchars($fila['Rut_Empresa']); ?></p>
+                                        <p class="mb-1 small"><span class="fw-bold text-muted">Sede:</span> <?php echo htmlspecialchars($fila['Nombre_Sede']); ?></p>
+                                        <p class="mb-1 small"><span class="fw-bold text-muted">Tipo:</span> <?php echo htmlspecialchars($fila['Tipo_iniciativa']); ?></p>
+                                        <p class="mb-1 small"><span class="fw-bold text-muted">Presupuesto:</span> <span class="text-success fw-bold">$<?php echo number_format($fila['Presupuesto'], 0, ',', '.'); ?></span></p>
+                                    </div>
+                                    <div class="col-md-6 ps-md-4">
+                                        <p class="mb-1 small"><span class="fw-bold text-muted">Región Origen:</span> <?php echo htmlspecialchars($fila['Region_origen']); ?></p>
+                                        <p class="mb-1 small"><span class="fw-bold text-muted">Región Impacto:</span> <?php echo htmlspecialchars($fila['Region_impacto']); ?></p>
+                                        <hr class="my-2">
+                                        <p class="mb-1 small"><span class="fw-bold text-muted">Jefe Carrera:</span> <?php echo htmlspecialchars($fila['Nombre_jefe'] ?? 'No asignado'); ?></p>
+                                        <p class="mb-1 small"><span class="fw-bold text-muted">Coordinador:</span> <?php echo htmlspecialchars($fila['Nombre_coordinador'] ?? 'No asignado'); ?></p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col">
-                                <span class="text-muted fw-bold">Región Origen:</span> 
-                                <span class="text-dark"><?php echo htmlspecialchars($fila['Region_origen']); ?></span>
-                            </div>
-                            <div class="col">
-                                <span class="text-muted fw-bold">Región Impacto:</span> 
-                                <span class="text-dark"><?php echo htmlspecialchars($fila['Region_impacto']); ?></span>
-                            </div>
-                            <div class="col">
-                                <span class="text-muted fw-bold">Presupuesto:</span> 
-                                <span class="text-success fw-bold">
-                                    $<?php echo number_format($fila['Presupuesto'], 0, ',', '.'); ?>
-                                </span>
-                            </div>
-                            <div class="col d-flex align-items-center">
-                                <span class="text-muted fw-bold me-2">Estado:</span> 
-                                <span class="badge rounded-pill bg-info text-dark">
-                                    <?php echo htmlspecialchars($fila['Nombre_estado']); ?>
-                                </span>
+
+                            <div class="modal-footer border-0 bg-light py-3">
+                                <button type="button" class="btn btn-secondary rounded-3 px-4" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-primary rounded-3 px-4 fw-bold">Guardar Cambios</button>
                             </div>
                         </div>
                     </div>
                 </div>
+                <?php endif; ?>
+                    <!-- tengo que incluir el boton de editar si es que es rol 2 --> 
+                    <div class="card shadow-sm border-0 rounded-4 mb-3">
+                        <div class="card-body p-4">
+                            <div class="w-100 d-flex flex-row" style="height: 4rem;">
+                                <h4 class="w-75 card-title text-primary my-1 fw-semibold">
+                                    <?php echo htmlspecialchars($fila['Nombre_iniciativa']); ?>
+                                </h4>
+                                <?php if ($_SESSION["rol_usuario"] === "2"): ?>
+                                <a class="btn btn-warning h-75 px-3 my-1 rounded-4 fw-bold shadow-sm d-inline-flex align-items-center text-dark bg-light border-secondary" data-bs-toggle="modal" 
+        data-bs-target="#modalEditar<?php echo $fila['Numero_postulacion']; ?>">
+                                    <i class="bi bi-pencil-square me-2"></i> Editar
+                                </a>
+                                <?php endif; ?>
+                            </div>
+                            <div class="row row-cols-1 row-cols-md-2 g-3 small">
+                                <div class="col">
+                                    <span class="text-muted fw-bold">Nº Postulación:</span> 
+                                    <span class="text-dark"><?php echo htmlspecialchars($fila['Numero_postulacion']); ?></span>
+                                </div>
+                                <div class="col">
+                                    <span class="text-muted fw-bold">Empresa:</span> 
+                                    <span class="text-dark"><?php echo htmlspecialchars($fila['Nombre_empresa']); ?></span>
+                                </div>
+                                <div class="col">
+                                    <span class="text-muted fw-bold">Región Origen:</span> 
+                                    <span class="text-dark"><?php echo htmlspecialchars($fila['Region_origen']); ?></span>
+                                </div>
+                                <div class="col">
+                                    <span class="text-muted fw-bold">Región Impacto:</span> 
+                                    <span class="text-dark"><?php echo htmlspecialchars($fila['Region_impacto']); ?></span>
+                                </div>
+                                <div class="col">
+                                    <span class="text-muted fw-bold">Presupuesto:</span> 
+                                    <span class="text-success fw-bold">
+                                        $<?php echo number_format($fila['Presupuesto'], 0, ',', '.'); ?>
+                                    </span>
+                                </div>
+                                <div class="col d-flex align-items-center">
+                                    <span class="text-muted fw-bold me-2">Estado:</span> 
+                                    <span class="badge rounded-pill bg-info text-dark">
+                                        <?php echo htmlspecialchars($fila['Nombre_estado']); ?>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
             <?php endforeach; ?>
         <?php else: ?>
             <div class="alert alert-warning shadow-sm border-0 rounded-4" role="alert">
