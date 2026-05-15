@@ -72,14 +72,15 @@ try {
         
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Bienvenido, <?php echo htmlspecialchars($nombre_usuario); ?></h2>
-                <div class="h-100 d-flex flex-row justify-content-between" style="width: 30%;">
+                <!-- Al final el boton volver no tiene sentido por que al rol 1 lo manda directament a esta vista -->
+                <!--
                     <a href="vista_lista_postulaciones.php" class="text-center btn btn-light px-3 py-2 rounded-3 shadow-sm border fw-medium d-inline-flex align-items-center ">
                         Volver
                     </a>
+                -->
                     <a href="T_rol1_formulario_crear.php" class="btn btn-success btn-lg shadow-sm">
                         + Crear Nueva Postulación
                     </a>
-                </div>
         </div>
 
         <div class="card shadow-sm border-0">
@@ -114,7 +115,7 @@ try {
                                         </td>
                                         <td class="text-center">
                                             <?php if ($estado == 'borrador'): ?>
-                                                <a href="T_rol1_editar.php?id=<?php echo urlencode($post['ID_Postulacion']); ?>" class="btn btn-sm btn-outline-primary">Editar</a>
+                                                <a href="T_rol1_formulario_editar.php?id=<?php echo urlencode($post['ID_Postulacion']); ?>" class="btn btn-sm btn-outline-primary">Editar</a>
                                                 
                                                 <form action="../back/backrol1.php" method="POST" class="d-inline">
                                                     <input type="hidden" name="accion" value="enviar">

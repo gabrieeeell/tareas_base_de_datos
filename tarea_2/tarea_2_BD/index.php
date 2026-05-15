@@ -19,14 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['rut_ingreso']) && isse
 if (isset($_SESSION['rol_usuario']) && isset($_SESSION['rut_usuario'])) {
     $rol = $_SESSION['rol_usuario'];
     if ($rol == '1') {
-        header("Location: Templates/vista_lista_postulaciones.php");
+        header("Location: Templates/T_rol1.php");
         exit();
     } elseif ($rol == '2') {
         //require("./Templates/vista_lista_postulaciones.php");
         header("Location: Templates/vista_lista_postulaciones.php");
         exit();
     } elseif ($rol == '3') {
-        header("Location: Templates/T_rol3.php");
+        header("Location: Templates/vista_lista_postulaciones.php");
         exit();
     }
 }

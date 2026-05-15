@@ -50,7 +50,9 @@ INSERT INTO ESTADO_POSTULACION (ID_estado, Nombre_estado) VALUES
 (1, 'En Revisión'),
 (2, 'Aprobada'),
 (3, 'Rechazada'),
-(4, 'Cerrada');
+(4, 'Cerrada'),
+(5, 'Borrador');
+
 
 CREATE TABLE CARGO_PERSONA (
     ID_cargo INT NOT NULL,
@@ -100,6 +102,7 @@ CREATE TABLE JEFE_CARRERA (
 
 CREATE TABLE COORDINADOR (
     ID_coordinador INT NOT NULL AUTO_INCREMENT,
+    rut_coordinador VARCHAR(20) UNIQUE NOT NULL,
     Nombre_coordinador VARCHAR(50) NOT NULL,
     PRIMARY KEY (ID_coordinador)
 ) ENGINE=InnoDB;
@@ -311,17 +314,18 @@ INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('Marcelo Villena');
 INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('Agustín González');
 
 
-INSERT INTO COORDINADOR (Nombre_coordinador) VALUES ('Alejandro Fuentes');
-INSERT INTO COORDINADOR (Nombre_coordinador) VALUES ('María José Campos');
-INSERT INTO COORDINADOR (Nombre_coordinador) VALUES ('Ricardo Morales');
-INSERT INTO COORDINADOR (Nombre_coordinador) VALUES ('Carolina Pizarro');
-INSERT INTO COORDINADOR (Nombre_coordinador) VALUES ('Felipe Contreras');
-INSERT INTO COORDINADOR (Nombre_coordinador) VALUES ('Daniela Espinoza');
-INSERT INTO COORDINADOR (Nombre_coordinador) VALUES ('Jorge Valenzuela');
+INSERT INTO COORDINADOR (ID_coordinador, Nombre_coordinador, rut_coordinador) VALUES (0, 'Sin Coordinador', '22.222.222-0');
+INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('Alejandro Fuentes', '22.222.222-1');
+INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('María José Campos','22.222.222-2');
+INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('Ricardo Morales','22.222.222-3');
+INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('Carolina Pizarro','22.222.222-4');
+INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('Felipe Contreras','22.222.222-5');
+INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('Daniela Espinoza','22.222.222-6');
+INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('Jorge Valenzuela','22.222.222-7');
 
 
 INSERT INTO POSTULACION VALUES (
-'LKF1A9XQW8ZP3M2N5R7T', NULL, '2025-11-10',
+'MartinGabriel-1', NULL, '2025-11-10',
 'Sistema de reciclaje inteligente en campus',
 'Implementar estaciones inteligentes para mejorar el reciclaje en campus universitarios',
 'Desarrollo de contenedores con sensores IoT que separan residuos automáticamente',
@@ -330,7 +334,7 @@ INSERT INTO POSTULACION VALUES (
 );
 
 INSERT INTO POSTULACION VALUES (
-'QW9E3RTY6U1IOP4ASD8F', NULL, '2026-01-15',
+'MartinGabriel-2', NULL, '2026-01-15',
 'Plataforma de gestión de transporte estudiantil',
 'Optimizar los tiempos de traslado de estudiantes mediante rutas eficientes',
 'Desarrollo de una app que sugiere rutas en tiempo real usando datos de tráfico',
@@ -339,7 +343,7 @@ INSERT INTO POSTULACION VALUES (
 );
 
 INSERT INTO POSTULACION VALUES (
-'ZXCVB7N8M1Q2W3E4R5TY', NULL, '2025-08-03',
+'MartinGabriel-3', NULL, '2025-08-03',
 'Sistema de monitoreo energético en edificios',
 'Reducir el consumo energético en infraestructura universitaria',
 'Instalación de sensores para medir consumo y plataforma de análisis',
@@ -348,7 +352,7 @@ INSERT INTO POSTULACION VALUES (
 );
 
 INSERT INTO POSTULACION VALUES (
-'PLM9OK8IJ7UH6YG5T4RF', NULL, '2026-02-20',
+'MartinGabriel-4', NULL, '2026-02-20',
 'Mejora de sistema ERP existente',
 'Optimizar procesos administrativos mediante actualización de ERP',
 'Refactorización de módulos críticos y mejora de interfaz de usuario',
@@ -357,7 +361,7 @@ INSERT INTO POSTULACION VALUES (
 );
 
 INSERT INTO POSTULACION VALUES (
-'ASDFG1H2J3K4L5Q6W7ER', NULL, '2025-09-12',
+'MartinGabriel-5', NULL, '2025-09-12',
 'Aplicación de salud mental para estudiantes',
 'Apoyar el bienestar emocional mediante herramientas digitales',
 'Desarrollo de app con seguimiento emocional y contacto con profesionales',
@@ -366,7 +370,7 @@ INSERT INTO POSTULACION VALUES (
 );
 
 INSERT INTO POSTULACION VALUES (
-'MNBV2CX3ZAQ4WSX5EDC6', NULL, '2025-07-25',
+'MartinGabriel-6', NULL, '2025-07-25',
 'Sistema de riego automatizado agrícola',
 'Optimizar uso de agua en cultivos mediante automatización',
 'Sensores de humedad conectados a sistema de riego inteligente',
@@ -375,7 +379,7 @@ INSERT INTO POSTULACION VALUES (
 );
 
 INSERT INTO POSTULACION VALUES (
-'YHN7UJM8IK9OL0P1Q2AZ', NULL, '2026-03-05',
+'MartinGabriel-7', NULL, '2026-03-05',
 'Plataforma e-learning mejorada',
 'Mejorar la experiencia de aprendizaje virtual',
 'Incorporación de analíticas de aprendizaje y contenido interactivo',
@@ -384,7 +388,7 @@ INSERT INTO POSTULACION VALUES (
 );
 
 INSERT INTO POSTULACION VALUES (
-'WSX3EDC4RFV5TGB6YHN7', NULL, '2025-10-18',
+'MartinGabriel-8', NULL, '2025-10-18',
 'Sistema de gestión de residuos industriales',
 'Reducir impacto ambiental de residuos industriales',
 'Implementación de software de trazabilidad de residuos',
@@ -393,7 +397,7 @@ INSERT INTO POSTULACION VALUES (
 );
 
 INSERT INTO POSTULACION VALUES (
-'IK8OL9P0Q1AZ2SX3EDC4', NULL, '2026-02-01',
+'MartinGabriel-9', NULL, '2026-02-01',
 'App de seguridad en campus',
 'Mejorar la seguridad mediante reportes en tiempo real',
 'Aplicación móvil para reportar incidentes con geolocalización',
@@ -402,7 +406,7 @@ INSERT INTO POSTULACION VALUES (
 );
 
 INSERT INTO POSTULACION VALUES (
-'RFV5TGB6YHN7UJM8IK9O', NULL, '2025-12-05',
+'MartinGabriel-10', NULL, '2025-12-05',
 'Optimización de logística en bodegas',
 'Reducir tiempos de despacho en centros de distribución',
 'Implementación de sistema de picking automatizado',
@@ -411,7 +415,7 @@ INSERT INTO POSTULACION VALUES (
 );
 
 INSERT INTO POSTULACION VALUES (
-'ZXC1VBN2MAS3DFG4HJK5', NULL, '2025-11-20',
+'MartinGabriel-11', NULL, '2025-11-20',
 'Sistema inteligente de gestión de residuos urbanos',
 'Mejorar eficiencia en recolección de basura',
 'Implementación de sensores IoT en contenedores',
@@ -420,7 +424,7 @@ INSERT INTO POSTULACION VALUES (
 );
 
 INSERT INTO POSTULACION VALUES (
-'QAZ9WSX8EDC7RFV6TGB5', NULL, '2025-10-15',
+'MartinGabriel-12', NULL, '2025-10-15',
 'Plataforma de monitoreo energético en edificios',
 'Optimizar consumo energético en infraestructura institucional',
 'Desarrollo de dashboard de consumo en tiempo real',
@@ -430,7 +434,7 @@ INSERT INTO POSTULACION VALUES (
 
 
 INSERT INTO POSTULACION VALUES (
-'PLK4OIJ5UHY6TGB7RFV8', NULL, '2025-09-10',
+'MartinGabriel-13', NULL, '2025-09-10',
 'Sistema predictivo de fallas en maquinaria industrial',
 'Disminuir fallas inesperadas en equipos productivos',
 'Aplicación de machine learning para mantenimiento predictivo',
@@ -441,238 +445,238 @@ INSERT INTO POSTULACION VALUES (
 
 -- 1) Sistema de reciclaje inteligente
 INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
-('Diagnostico reciclaje', 6, 'Informe de puntos críticos y oportunidades', 'LKF1A9XQW8ZP3M2N5R7T'),
-('Desarrollo prototipo', 12, 'Prototipo funcional de contenedor inteligente', 'LKF1A9XQW8ZP3M2N5R7T'),
-('Implementacion piloto', 8, 'Sistema instalado en campus y reporte de resultados', 'LKF1A9XQW8ZP3M2N5R7T');
+('Diagnostico reciclaje', 6, 'Informe de puntos críticos y oportunidades', 'MartinGabriel-1'),
+('Desarrollo prototipo', 12, 'Prototipo funcional de contenedor inteligente', 'MartinGabriel-1'),
+('Implementacion piloto', 8, 'Sistema instalado en campus y reporte de resultados', 'MartinGabriel-1');
 
 -- 2) Transporte estudiantil
 INSERT INTO CRONOGRAMA VALUES
-(NULL, 'Analisis de rutas', 5, 'Mapa de rutas optimizadas', 'QW9E3RTY6U1IOP4ASD8F'),
-(NULL, 'Desarrollo aplicacion', 10, 'App funcional con geolocalización', 'QW9E3RTY6U1IOP4ASD8F'),
-(NULL, 'Pruebas y ajustes', 6, 'Reporte de rendimiento y mejoras', 'QW9E3RTY6U1IOP4ASD8F');
+(NULL, 'Analisis de rutas', 5, 'Mapa de rutas optimizadas', 'MartinGabriel-2'),
+(NULL, 'Desarrollo aplicacion', 10, 'App funcional con geolocalización', 'MartinGabriel-2'),
+(NULL, 'Pruebas y ajustes', 6, 'Reporte de rendimiento y mejoras', 'MartinGabriel-2');
 
 -- 3) Monitoreo energético
 INSERT INTO CRONOGRAMA VALUES
-(NULL, 'Levantamiento datos', 14, 'Registro inicial de consumo energético', 'ZXCVB7N8M1Q2W3E4R5TY'),
-(NULL, 'Instalacion sensores', 11, 'Sensores instalados y operativos', 'ZXCVB7N8M1Q2W3E4R5TY'),
-(NULL, 'Analisis consumo', 12, 'Informe de optimización energética', 'ZXCVB7N8M1Q2W3E4R5TY');
+(NULL, 'Levantamiento datos', 14, 'Registro inicial de consumo energético', 'MartinGabriel-3'),
+(NULL, 'Instalacion sensores', 11, 'Sensores instalados y operativos', 'MartinGabriel-3'),
+(NULL, 'Analisis consumo', 12, 'Informe de optimización energética', 'MartinGabriel-3');
 
 -- 4) ERP existente
 INSERT INTO CRONOGRAMA VALUES
-(NULL, 'Revision sistema actual', 4, 'Diagnóstico de fallas y mejoras', 'PLM9OK8IJ7UH6YG5T4RF'),
-(NULL, 'Refactorizacion modulos', 9, 'Módulos optimizados', 'PLM9OK8IJ7UH6YG5T4RF'),
-(NULL, 'Implementacion mejoras', 6, 'Sistema actualizado en producción', 'PLM9OK8IJ7UH6YG5T4RF');
+(NULL, 'Revision sistema actual', 4, 'Diagnóstico de fallas y mejoras', 'MartinGabriel-4'),
+(NULL, 'Refactorizacion modulos', 9, 'Módulos optimizados', 'MartinGabriel-4'),
+(NULL, 'Implementacion mejoras', 6, 'Sistema actualizado en producción', 'MartinGabriel-4');
 
 -- 5) Salud mental
 INSERT INTO CRONOGRAMA VALUES
-(NULL, 'Investigacion usuarios', 5, 'Perfil de necesidades estudiantiles', 'ASDFG1H2J3K4L5Q6W7ER'),
-(NULL, 'Desarrollo app', 11, 'Aplicación funcional', 'ASDFG1H2J3K4L5Q6W7ER'),
-(NULL, 'Validacion clinica', 7, 'Informe de efectividad y uso', 'ASDFG1H2J3K4L5Q6W7ER');
+(NULL, 'Investigacion usuarios', 5, 'Perfil de necesidades estudiantiles', 'MartinGabriel-5'),
+(NULL, 'Desarrollo app', 11, 'Aplicación funcional', 'MartinGabriel-5'),
+(NULL, 'Validacion clinica', 7, 'Informe de efectividad y uso', 'MartinGabriel-5');
 
 -- 6) Riego automatizado
 INSERT INTO CRONOGRAMA VALUES
-(NULL, 'Estudio terreno', 12, 'Análisis de condiciones agrícolas', 'MNBV2CX3ZAQ4WSX5EDC6'),
-(NULL, 'Implementacion sensores', 10, 'Sistema de sensores activo', 'MNBV2CX3ZAQ4WSX5EDC6'),
-(NULL, 'Optimización riego', 16, 'Reporte de ahorro hídrico', 'MNBV2CX3ZAQ4WSX5EDC6');
+(NULL, 'Estudio terreno', 12, 'Análisis de condiciones agrícolas', 'MartinGabriel-6'),
+(NULL, 'Implementacion sensores', 10, 'Sistema de sensores activo', 'MartinGabriel-6'),
+(NULL, 'Optimización riego', 16, 'Reporte de ahorro hídrico', 'MartinGabriel-6');
 
 -- 7) E-learning
 INSERT INTO CRONOGRAMA VALUES
-(NULL, 'Analisis plataforma', 4, 'Informe de mejoras necesarias', 'YHN7UJM8IK9OL0P1Q2AZ'),
-(NULL, 'Desarrollo funcionalidades', 9, 'Nuevas herramientas implementadas', 'YHN7UJM8IK9OL0P1Q2AZ'),
-(NULL, 'Evaluacion usuarios', 6, 'Resultados de experiencia de usuario', 'YHN7UJM8IK9OL0P1Q2AZ');
+(NULL, 'Analisis plataforma', 4, 'Informe de mejoras necesarias', 'MartinGabriel-7'),
+(NULL, 'Desarrollo funcionalidades', 9, 'Nuevas herramientas implementadas', 'MartinGabriel-7'),
+(NULL, 'Evaluacion usuarios', 6, 'Resultados de experiencia de usuario', 'MartinGabriel-7');
 
 -- 8) Residuos industriales
 INSERT INTO CRONOGRAMA VALUES
-(NULL, 'Levantamiento procesos', 6, 'Mapa de generación de residuos', 'WSX3EDC4RFV5TGB6YHN7'),
-(NULL, 'Desarrollo sistema', 11, 'Software de trazabilidad operativo', 'WSX3EDC4RFV5TGB6YHN7'),
-(NULL, 'Implementacion empresa', 9, 'Sistema en funcionamiento', 'WSX3EDC4RFV5TGB6YHN7');
+(NULL, 'Levantamiento procesos', 6, 'Mapa de generación de residuos', 'MartinGabriel-8'),
+(NULL, 'Desarrollo sistema', 11, 'Software de trazabilidad operativo', 'MartinGabriel-8'),
+(NULL, 'Implementacion empresa', 9, 'Sistema en funcionamiento', 'MartinGabriel-8');
 
 -- 9) Seguridad campus
 INSERT INTO CRONOGRAMA VALUES
-(NULL, 'Analisis riesgos', 4, 'Informe de zonas críticas', 'IK8OL9P0Q1AZ2SX3EDC4'),
-(NULL, 'Desarrollo app seguridad', 9, 'Aplicación con sistema de alertas', 'IK8OL9P0Q1AZ2SX3EDC4'),
-(NULL, 'Pruebas en terreno', 6, 'Reporte de incidentes gestionados', 'IK8OL9P0Q1AZ2SX3EDC4');
+(NULL, 'Analisis riesgos', 4, 'Informe de zonas críticas', 'MartinGabriel-9'),
+(NULL, 'Desarrollo app seguridad', 9, 'Aplicación con sistema de alertas', 'MartinGabriel-9'),
+(NULL, 'Pruebas en terreno', 6, 'Reporte de incidentes gestionados', 'MartinGabriel-9');
 
 -- 10) Logística bodegas
 INSERT INTO CRONOGRAMA VALUES
-(NULL, 'Diagnostico logístico', 5, 'Análisis de procesos actuales', 'RFV5TGB6YHN7UJM8IK9O'),
-(NULL, 'Implementacion sistema picking', 10, 'Sistema automatizado activo', 'RFV5TGB6YHN7UJM8IK9O'),
-(NULL, 'Optimización operativa', 8, 'Informe de reducción de tiempos', 'RFV5TGB6YHN7UJM8IK9O');
+(NULL, 'Diagnostico logístico', 5, 'Análisis de procesos actuales', 'MartinGabriel-10'),
+(NULL, 'Implementacion sistema picking', 10, 'Sistema automatizado activo', 'MartinGabriel-10'),
+(NULL, 'Optimización operativa', 8, 'Informe de reducción de tiempos', 'MartinGabriel-10');
 
 
 INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
-('analisis de sistema actual de recoleccion', 4, 'informe de diagnostico operacional', 'ZXC1VBN2MAS3DFG4HJK5');
+('analisis de sistema actual de recoleccion', 4, 'informe de diagnostico operacional', 'MartinGabriel-11');
 
 INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
-('desarrollo e integracion de sensores IoT', 12, 'prototipo funcional de sensores en contenedores', 'ZXC1VBN2MAS3DFG4HJK5');
+('desarrollo e integracion de sensores IoT', 12, 'prototipo funcional de sensores en contenedores', 'MartinGabriel-11');
 
 INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
-('implementacion piloto y evaluacion', 8, 'reporte de eficiencia y optimizacion lograda', 'ZXC1VBN2MAS3DFG4HJK5');
-
-
-INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
-('levantamiento de requerimientos energeticos', 5, 'documento de variables y puntos de medicion', 'QAZ9WSX8EDC7RFV6TGB5');
-
-INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
-('desarrollo de plataforma de monitoreo', 10, 'dashboard funcional con datos en tiempo real', 'QAZ9WSX8EDC7RFV6TGB5');
-
-INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
-('analisis de consumo y optimizacion', 7, 'informe con recomendaciones de ahorro', 'QAZ9WSX8EDC7RFV6TGB5');
+('implementacion piloto y evaluacion', 8, 'reporte de eficiencia y optimizacion lograda', 'MartinGabriel-11');
 
 
 INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
-('recoleccion y preparacion de datos de maquinaria', 6, 'dataset estructurado para analisis', 'PLK4OIJ5UHY6TGB7RFV8');
+('levantamiento de requerimientos energeticos', 5, 'documento de variables y puntos de medicion', 'MartinGabriel-12');
 
 INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
-('entrenamiento de modelos predictivos', 12, 'modelo de machine learning entrenado', 'PLK4OIJ5UHY6TGB7RFV8');
+('desarrollo de plataforma de monitoreo', 10, 'dashboard funcional con datos en tiempo real', 'MartinGabriel-12');
 
 INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
-('validacion e implementacion en entorno real', 9, 'reporte de reduccion de fallas', 'PLK4OIJ5UHY6TGB7RFV8');
+('analisis de consumo y optimizacion', 7, 'informe con recomendaciones de ahorro', 'MartinGabriel-12');
+
+
+INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
+('recoleccion y preparacion de datos de maquinaria', 6, 'dataset estructurado para analisis', 'MartinGabriel-13');
+
+INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
+('entrenamiento de modelos predictivos', 12, 'modelo de machine learning entrenado', 'MartinGabriel-13');
+
+INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
+('validacion e implementacion en entorno real', 9, 'reporte de reduccion de fallas', 'MartinGabriel-13');
 -- ===================== 1) RECICLAJE =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.234.567-2','LKF1A9XQW8ZP3M2N5R7T','desarrollo backend sistema IoT'),
-('22.456.789-4','LKF1A9XQW8ZP3M2N5R7T','analisis impacto ambiental residuos'),
-('21.345.678-3','LKF1A9XQW8ZP3M2N5R7T','diseño estructura contenedores'),
-('20.789.012-7','LKF1A9XQW8ZP3M2N5R7T','integracion sensores mecanicos'),
-('19.678.901-6','LKF1A9XQW8ZP3M2N5R7T','analisis fisico separacion residuos'),
-('7.234.567-8','LKF1A9XQW8ZP3M2N5R7T','supervision tecnica del sistema'),
-('9.456.789-0','LKF1A9XQW8ZP3M2N5R7T','asesoria procesos quimicos reciclaje'),
-('11.678.901-2','LKF1A9XQW8ZP3M2N5R7T','evaluacion sensores y medicion');
+('20.234.567-2','MartinGabriel-1','desarrollo backend sistema IoT'),
+('22.456.789-4','MartinGabriel-1','analisis impacto ambiental residuos'),
+('21.345.678-3','MartinGabriel-1','diseño estructura contenedores'),
+('20.789.012-7','MartinGabriel-1','integracion sensores mecanicos'),
+('19.678.901-6','MartinGabriel-1','analisis fisico separacion residuos'),
+('7.234.567-8','MartinGabriel-1','supervision tecnica del sistema'),
+('9.456.789-0','MartinGabriel-1','asesoria procesos quimicos reciclaje'),
+('11.678.901-2','MartinGabriel-1','evaluacion sensores y medicion');
 
 -- ===================== 2) TRANSPORTE =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.303.404-2','QW9E3RTY6U1IOP4ASD8F','modelado rutas transporte'),
-('20.808.909-7','QW9E3RTY6U1IOP4ASD8F','optimizacion algoritmos rutas'),
-('21.890.123-8','QW9E3RTY6U1IOP4ASD8F','analisis matematico trafico'),
-('22.901.234-9','QW9E3RTY6U1IOP4ASD8F','levantamiento datos viales'),
-('21.333.444-3','QW9E3RTY6U1IOP4ASD8F','analisis materiales transporte'),
-('8.345.678-9','QW9E3RTY6U1IOP4ASD8F','direccion desarrollo software'),
-('14.901.234-5','QW9E3RTY6U1IOP4ASD8F','asesoria infraestructura vial');
+('20.303.404-2','MartinGabriel-2','modelado rutas transporte'),
+('20.808.909-7','MartinGabriel-2','optimizacion algoritmos rutas'),
+('21.890.123-8','MartinGabriel-2','analisis matematico trafico'),
+('22.901.234-9','MartinGabriel-2','levantamiento datos viales'),
+('21.333.444-3','MartinGabriel-2','analisis materiales transporte'),
+('8.345.678-9','MartinGabriel-2','direccion desarrollo software'),
+('14.901.234-5','MartinGabriel-2','asesoria infraestructura vial');
 
 -- ===================== 3) ENERGIA =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('21.404.505-3','ZXCVB7N8M1Q2W3E4R5TY','analisis consumo energetico'),
-('21.909.010-8','ZXCVB7N8M1Q2W3E4R5TY','modelos fisicos consumo'),
-('20.818.919-7','ZXCVB7N8M1Q2W3E4R5TY','integracion sensores energeticos'),
-('13.890.123-4','ZXCVB7N8M1Q2W3E4R5TY','modelos matematicos de optimizacion'),
-('22.444.555-4','ZXCVB7N8M1Q2W3E4R5TY','dashboard monitoreo energia'),
-('18.555.666-5','ZXCVB7N8M1Q2W3E4R5TY','evaluacion impacto ambiental'),
-('11.678.901-2','ZXCVB7N8M1Q2W3E4R5TY','supervision medicion energia'),
-('16.123.456-7','ZXCVB7N8M1Q2W3E4R5TY','asesoria mecanica sensores'),
-('8.901.234-5','ZXCVB7N8M1Q2W3E4R5TY','validacion procesos energeticos');
+('21.404.505-3','MartinGabriel-3','analisis consumo energetico'),
+('21.909.010-8','MartinGabriel-3','modelos fisicos consumo'),
+('20.818.919-7','MartinGabriel-3','integracion sensores energeticos'),
+('13.890.123-4','MartinGabriel-3','modelos matematicos de optimizacion'),
+('22.444.555-4','MartinGabriel-3','dashboard monitoreo energia'),
+('18.555.666-5','MartinGabriel-3','evaluacion impacto ambiental'),
+('11.678.901-2','MartinGabriel-3','supervision medicion energia'),
+('16.123.456-7','MartinGabriel-3','asesoria mecanica sensores'),
+('8.901.234-5','MartinGabriel-3','validacion procesos energeticos');
 
 -- ===================== 4) ERP =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.313.414-2','PLM9OK8IJ7UH6YG5T4RF','refactorizacion backend'),
-('18.616.717-5','PLM9OK8IJ7UH6YG5T4RF','desarrollo modulos sistema'),
-('22.444.555-4','PLM9OK8IJ7UH6YG5T4RF','interfaz usuario ERP'),
-('19.111.222-1','PLM9OK8IJ7UH6YG5T4RF','optimizacion procesos internos'),
-('21.505.606-4','PLM9OK8IJ7UH6YG5T4RF','analisis sistemas existentes'),
-('8.345.678-9','PLM9OK8IJ7UH6YG5T4RF','direccion tecnica software'),
-('17.234.567-8','PLM9OK8IJ7UH6YG5T4RF','asesoria procesos organizacionales'),
-('7.890.123-4','PLM9OK8IJ7UH6YG5T4RF','evaluacion arquitectura sistema');
+('20.313.414-2','MartinGabriel-4','refactorizacion backend'),
+('18.616.717-5','MartinGabriel-4','desarrollo modulos sistema'),
+('22.444.555-4','MartinGabriel-4','interfaz usuario ERP'),
+('19.111.222-1','MartinGabriel-4','optimizacion procesos internos'),
+('21.505.606-4','MartinGabriel-4','analisis sistemas existentes'),
+('8.345.678-9','MartinGabriel-4','direccion tecnica software'),
+('17.234.567-8','MartinGabriel-4','asesoria procesos organizacionales'),
+('7.890.123-4','MartinGabriel-4','evaluacion arquitectura sistema');
 
 -- ===================== 5) SALUD MENTAL =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.222.333-2','ASDFG1H2J3K4L5Q6W7ER','analisis experiencia usuario'),
-('21.890.123-8','ASDFG1H2J3K4L5Q6W7ER','modelos estadisticos bienestar'),
-('22.010.111-9','ASDFG1H2J3K4L5Q6W7ER','interfaz app emocional'),
-('19.666.777-6','ASDFG1H2J3K4L5Q6W7ER','diseño espacios digitales'),
-('21.404.505-3','ASDFG1H2J3K4L5Q6W7ER','analisis social usuarios'),
-('17.234.567-8','ASDFG1H2J3K4L5Q6W7ER','guia metodologica proyecto'),
-('13.890.123-4','ASDFG1H2J3K4L5Q6W7ER','analisis datos bienestar'),
-('10.567.890-1','ASDFG1H2J3K4L5Q6W7ER','asesoria diseño experiencia');
+('20.222.333-2','MartinGabriel-5','analisis experiencia usuario'),
+('21.890.123-8','MartinGabriel-5','modelos estadisticos bienestar'),
+('22.010.111-9','MartinGabriel-5','interfaz app emocional'),
+('19.666.777-6','MartinGabriel-5','diseño espacios digitales'),
+('21.404.505-3','MartinGabriel-5','analisis social usuarios'),
+('17.234.567-8','MartinGabriel-5','guia metodologica proyecto'),
+('13.890.123-4','MartinGabriel-5','analisis datos bienestar'),
+('10.567.890-1','MartinGabriel-5','asesoria diseño experiencia');
 
 -- ===================== 6) RIEGO =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('18.567.890-5','MNBV2CX3ZAQ4WSX5EDC6','analisis sistemas aeronauticos sensores'),
-('20.789.012-7','MNBV2CX3ZAQ4WSX5EDC6','diseño sistema riego mecanico'),
-('18.555.666-5','MNBV2CX3ZAQ4WSX5EDC6','analisis quimico suelo'),
-('22.901.234-9','MNBV2CX3ZAQ4WSX5EDC6','levantamiento terreno'),
-('19.707.808-6','MNBV2CX3ZAQ4WSX5EDC6','analisis materiales sensores'),
-('12.789.012-3','MNBV2CX3ZAQ4WSX5EDC6','supervision sistema mecanico'),
-('9.456.789-0','MNBV2CX3ZAQ4WSX5EDC6','asesoria quimica riego'),
-('18.345.678-9','MNBV2CX3ZAQ4WSX5EDC6','validacion sistema sensores');
+('18.567.890-5','MartinGabriel-6','analisis sistemas aeronauticos sensores'),
+('20.789.012-7','MartinGabriel-6','diseño sistema riego mecanico'),
+('18.555.666-5','MartinGabriel-6','analisis quimico suelo'),
+('22.901.234-9','MartinGabriel-6','levantamiento terreno'),
+('19.707.808-6','MartinGabriel-6','analisis materiales sensores'),
+('12.789.012-3','MartinGabriel-6','supervision sistema mecanico'),
+('9.456.789-0','MartinGabriel-6','asesoria quimica riego'),
+('18.345.678-9','MartinGabriel-6','validacion sistema sensores');
 
 -- ===================== 7) E-LEARNING =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.234.567-2','YHN7UJM8IK9OL0P1Q2AZ','backend plataforma educativa'),
-('20.222.333-2','YHN7UJM8IK9OL0P1Q2AZ','contenido humanistico digital'),
-('21.345.678-3','YHN7UJM8IK9OL0P1Q2AZ','diseño interfaz educativa'),
-('21.909.010-8','YHN7UJM8IK9OL0P1Q2AZ','analisis fisico interaccion'),
-('8.345.678-9','YHN7UJM8IK9OL0P1Q2AZ','direccion desarrollo plataforma'),
-('17.234.567-8','YHN7UJM8IK9OL0P1Q2AZ','asesoria pedagogica'),
-('13.890.123-4','YHN7UJM8IK9OL0P1Q2AZ','analisis estadistico aprendizaje');
+('20.234.567-2','MartinGabriel-7','backend plataforma educativa'),
+('20.222.333-2','MartinGabriel-7','contenido humanistico digital'),
+('21.345.678-3','MartinGabriel-7','diseño interfaz educativa'),
+('21.909.010-8','MartinGabriel-7','analisis fisico interaccion'),
+('8.345.678-9','MartinGabriel-7','direccion desarrollo plataforma'),
+('17.234.567-8','MartinGabriel-7','asesoria pedagogica'),
+('13.890.123-4','MartinGabriel-7','analisis estadistico aprendizaje');
 
 -- ===================== 8) RESIDUOS INDUSTRIALES =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('18.555.666-5','WSX3EDC4RFV5TGB6YHN7','analisis quimico residuos'),
-('19.707.808-6','WSX3EDC4RFV5TGB6YHN7','propiedades materiales residuos'),
-('18.616.717-5','WSX3EDC4RFV5TGB6YHN7','desarrollo software trazabilidad'),
-('22.901.234-9','WSX3EDC4RFV5TGB6YHN7','levantamiento procesos industriales'),
-('21.890.123-8','WSX3EDC4RFV5TGB6YHN7','modelos matematicos de simulación'),
-('21.333.444-3','WSX3EDC4RFV5TGB6YHN7','analisis metalurgico residuos'),
-('9.456.789-0','WSX3EDC4RFV5TGB6YHN7','supervision procesos quimicos'),
-('6.789.012-3','WSX3EDC4RFV5TGB6YHN7','asesoria materiales'),
-('8.901.234-5','WSX3EDC4RFV5TGB6YHN7','validacion quimica sistema');
+('18.555.666-5','MartinGabriel-8','analisis quimico residuos'),
+('19.707.808-6','MartinGabriel-8','propiedades materiales residuos'),
+('18.616.717-5','MartinGabriel-8','desarrollo software trazabilidad'),
+('22.901.234-9','MartinGabriel-8','levantamiento procesos industriales'),
+('21.890.123-8','MartinGabriel-8','modelos matematicos de simulación'),
+('21.333.444-3','MartinGabriel-8','analisis metalurgico residuos'),
+('9.456.789-0','MartinGabriel-8','supervision procesos quimicos'),
+('6.789.012-3','MartinGabriel-8','asesoria materiales'),
+('8.901.234-5','MartinGabriel-8','validacion quimica sistema');
 
 -- ===================== 9) SEGURIDAD =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.234.567-2','IK8OL9P0Q1AZ2SX3EDC4','backend sistema seguridad'),
-('22.444.555-4','IK8OL9P0Q1AZ2SX3EDC4','interfaz reportes'),
-('21.890.123-8','IK8OL9P0Q1AZ2SX3EDC4','modelos matematicos riesgo'),
-('22.901.234-9','IK8OL9P0Q1AZ2SX3EDC4','analisis infraestructura'),
-('21.909.010-8','IK8OL9P0Q1AZ2SX3EDC4','analisis sensores fisicos'),
-('8.345.678-9','IK8OL9P0Q1AZ2SX3EDC4','direccion software'),
-('14.901.234-5','IK8OL9P0Q1AZ2SX3EDC4','asesoria seguridad infraestructura'),
-('11.678.901-2','IK8OL9P0Q1AZ2SX3EDC4','validacion sensores');
+('20.234.567-2','MartinGabriel-9','backend sistema seguridad'),
+('22.444.555-4','MartinGabriel-9','interfaz reportes'),
+('21.890.123-8','MartinGabriel-9','modelos matematicos riesgo'),
+('22.901.234-9','MartinGabriel-9','analisis infraestructura'),
+('21.909.010-8','MartinGabriel-9','analisis sensores fisicos'),
+('8.345.678-9','MartinGabriel-9','direccion software'),
+('14.901.234-5','MartinGabriel-9','asesoria seguridad infraestructura'),
+('11.678.901-2','MartinGabriel-9','validacion sensores');
 
 -- ===================== 10) LOGISTICA =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.789.012-7','RFV5TGB6YHN7UJM8IK9O','optimizacion mecanica picking'),
-('21.890.123-8','RFV5TGB6YHN7UJM8IK9O','modelos matematicos logistica'),
-('22.901.234-9','RFV5TGB6YHN7UJM8IK9O','analisis obras civiles bodega'),
-('20.303.404-2','RFV5TGB6YHN7UJM8IK9O','procesos mecanicos'),
-('21.333.444-3','RFV5TGB6YHN7UJM8IK9O','analisis materiales'),
-('12.789.012-3','RFV5TGB6YHN7UJM8IK9O','supervision mecanica'),
-('14.901.234-5','RFV5TGB6YHN7UJM8IK9O','asesoria infraestructura'),
-('13.890.123-4','RFV5TGB6YHN7UJM8IK9O','analisis optimizacion');
+('20.789.012-7','MartinGabriel-10','optimizacion mecanica picking'),
+('21.890.123-8','MartinGabriel-10','modelos matematicos logistica'),
+('22.901.234-9','MartinGabriel-10','analisis obras civiles bodega'),
+('20.303.404-2','MartinGabriel-10','procesos mecanicos'),
+('21.333.444-3','MartinGabriel-10','analisis materiales'),
+('12.789.012-3','MartinGabriel-10','supervision mecanica'),
+('14.901.234-5','MartinGabriel-10','asesoria infraestructura'),
+('13.890.123-4','MartinGabriel-10','analisis optimizacion');
 
 -- 11
 
-INSERT INTO PERSONA_POSTULACION VALUES ('20.234.567-2','ZXC1VBN2MAS3DFG4HJK5','desarrollo de dashboard de monitoreo de contenedores');
-INSERT INTO PERSONA_POSTULACION VALUES ('21.345.678-3','ZXC1VBN2MAS3DFG4HJK5','diseño de infraestructura urbana para ubicacion de sensores');
-INSERT INTO PERSONA_POSTULACION VALUES ('22.456.789-4','ZXC1VBN2MAS3DFG4HJK5','analisis de impacto ambiental del sistema');
-INSERT INTO PERSONA_POSTULACION VALUES ('20.789.012-7','ZXC1VBN2MAS3DFG4HJK5','integracion de hardware y sensores IoT');
-INSERT INTO PERSONA_POSTULACION VALUES ('21.890.123-8','ZXC1VBN2MAS3DFG4HJK5','modelamiento matematico de optimizacion de rutas');
+INSERT INTO PERSONA_POSTULACION VALUES ('20.234.567-2','MartinGabriel-11','desarrollo de dashboard de monitoreo de contenedores');
+INSERT INTO PERSONA_POSTULACION VALUES ('21.345.678-3','MartinGabriel-11','diseño de infraestructura urbana para ubicacion de sensores');
+INSERT INTO PERSONA_POSTULACION VALUES ('22.456.789-4','MartinGabriel-11','analisis de impacto ambiental del sistema');
+INSERT INTO PERSONA_POSTULACION VALUES ('20.789.012-7','MartinGabriel-11','integracion de hardware y sensores IoT');
+INSERT INTO PERSONA_POSTULACION VALUES ('21.890.123-8','MartinGabriel-11','modelamiento matematico de optimizacion de rutas');
 
-INSERT INTO PERSONA_POSTULACION VALUES ('7.234.567-8','ZXC1VBN2MAS3DFG4HJK5','supervision tecnica de sensores y materiales');
-INSERT INTO PERSONA_POSTULACION VALUES ('8.345.678-9','ZXC1VBN2MAS3DFG4HJK5','asesoria en desarrollo de plataforma informatica');
-INSERT INTO PERSONA_POSTULACION VALUES ('9.456.789-0','ZXC1VBN2MAS3DFG4HJK5','guia en evaluacion ambiental del proyecto');
+INSERT INTO PERSONA_POSTULACION VALUES ('7.234.567-8','MartinGabriel-11','supervision tecnica de sensores y materiales');
+INSERT INTO PERSONA_POSTULACION VALUES ('8.345.678-9','MartinGabriel-11','asesoria en desarrollo de plataforma informatica');
+INSERT INTO PERSONA_POSTULACION VALUES ('9.456.789-0','MartinGabriel-11','guia en evaluacion ambiental del proyecto');
 
 -- 12 
 
-INSERT INTO PERSONA_POSTULACION VALUES ('22.444.555-4','QAZ9WSX8EDC7RFV6TGB5','desarrollo de interfaz de usuario para monitoreo energetico');
-INSERT INTO PERSONA_POSTULACION VALUES ('18.555.666-5','QAZ9WSX8EDC7RFV6TGB5','analisis de eficiencia energetica en sistemas quimicos');
-INSERT INTO PERSONA_POSTULACION VALUES ('20.777.888-7','QAZ9WSX8EDC7RFV6TGB5','procesamiento de datos de consumo energetico');
-INSERT INTO PERSONA_POSTULACION VALUES ('21.888.999-8','QAZ9WSX8EDC7RFV6TGB5','simulacion de comportamiento energetico');
-INSERT INTO PERSONA_POSTULACION VALUES ('20.808.909-7','QAZ9WSX8EDC7RFV6TGB5','desarrollo de backend para almacenamiento de datos');
+INSERT INTO PERSONA_POSTULACION VALUES ('22.444.555-4','MartinGabriel-12','desarrollo de interfaz de usuario para monitoreo energetico');
+INSERT INTO PERSONA_POSTULACION VALUES ('18.555.666-5','MartinGabriel-12','analisis de eficiencia energetica en sistemas quimicos');
+INSERT INTO PERSONA_POSTULACION VALUES ('20.777.888-7','MartinGabriel-12','procesamiento de datos de consumo energetico');
+INSERT INTO PERSONA_POSTULACION VALUES ('21.888.999-8','MartinGabriel-12','simulacion de comportamiento energetico');
+INSERT INTO PERSONA_POSTULACION VALUES ('20.808.909-7','MartinGabriel-12','desarrollo de backend para almacenamiento de datos');
 
-INSERT INTO PERSONA_POSTULACION VALUES ('13.890.123-4','QAZ9WSX8EDC7RFV6TGB5','orientacion en modelamiento matematico');
-INSERT INTO PERSONA_POSTULACION VALUES ('12.789.012-3','QAZ9WSX8EDC7RFV6TGB5','supervision en sistemas mecanicos y consumo');
-INSERT INTO PERSONA_POSTULACION VALUES ('8.901.234-5','QAZ9WSX8EDC7RFV6TGB5','asesoria en eficiencia energetica aplicada');
+INSERT INTO PERSONA_POSTULACION VALUES ('13.890.123-4','MartinGabriel-12','orientacion en modelamiento matematico');
+INSERT INTO PERSONA_POSTULACION VALUES ('12.789.012-3','MartinGabriel-12','supervision en sistemas mecanicos y consumo');
+INSERT INTO PERSONA_POSTULACION VALUES ('8.901.234-5','MartinGabriel-12','asesoria en eficiencia energetica aplicada');
 
 -- 13
 
-INSERT INTO PERSONA_POSTULACION VALUES ('19.123.456-1','PLK4OIJ5UHY6TGB7RFV8','analisis de datos historicos de fallas');
-INSERT INTO PERSONA_POSTULACION VALUES ('19.678.901-6','PLK4OIJ5UHY6TGB7RFV8','procesamiento de señales de sensores');
-INSERT INTO PERSONA_POSTULACION VALUES ('20.303.404-2','PLK4OIJ5UHY6TGB7RFV8','modelamiento de sistemas mecanicos');
-INSERT INTO PERSONA_POSTULACION VALUES ('21.909.010-8','PLK4OIJ5UHY6TGB7RFV8','analisis fisico de comportamiento de maquinaria');
-INSERT INTO PERSONA_POSTULACION VALUES ('22.010.111-9','PLK4OIJ5UHY6TGB7RFV8','simulacion de escenarios de falla');
+INSERT INTO PERSONA_POSTULACION VALUES ('19.123.456-1','MartinGabriel-13','analisis de datos historicos de fallas');
+INSERT INTO PERSONA_POSTULACION VALUES ('19.678.901-6','MartinGabriel-13','procesamiento de señales de sensores');
+INSERT INTO PERSONA_POSTULACION VALUES ('20.303.404-2','MartinGabriel-13','modelamiento de sistemas mecanicos');
+INSERT INTO PERSONA_POSTULACION VALUES ('21.909.010-8','MartinGabriel-13','analisis fisico de comportamiento de maquinaria');
+INSERT INTO PERSONA_POSTULACION VALUES ('22.010.111-9','MartinGabriel-13','simulacion de escenarios de falla');
 
-INSERT INTO PERSONA_POSTULACION VALUES ('16.123.456-7','PLK4OIJ5UHY6TGB7RFV8','supervision de sistemas mecanicos');
-INSERT INTO PERSONA_POSTULACION VALUES ('11.678.901-2','PLK4OIJ5UHY6TGB7RFV8','asesoria en analisis fisico de fallas');
-INSERT INTO PERSONA_POSTULACION VALUES ('6.789.012-3','PLK4OIJ5UHY6TGB7RFV8','guia en comportamiento de materiales');
+INSERT INTO PERSONA_POSTULACION VALUES ('16.123.456-7','MartinGabriel-13','supervision de sistemas mecanicos');
+INSERT INTO PERSONA_POSTULACION VALUES ('11.678.901-2','MartinGabriel-13','asesoria en analisis fisico de fallas');
+INSERT INTO PERSONA_POSTULACION VALUES ('6.789.012-3','MartinGabriel-13','guia en comportamiento de materiales');
 
 -- Querys
 
@@ -743,7 +747,7 @@ INNER JOIN PERSONA P ON P.RUT_Persona = PP.RUT_Persona
 INNER JOIN CARGO_PERSONA C ON C.ID_cargo = P.ID_cargo 
 INNER JOIN SEDE S ON S.ID_sede = P.ID_sede
 INNER JOIN POSTULACION PO ON PO.ID_postulacion = PP.ID_postulacion
-WHERE PP.ID_postulacion = 'ASDFG1H2J3K4L5Q6W7ER' OR PO.Numero_postulacion = 5;
+WHERE PP.ID_postulacion = 'MartinGabriel-5' OR PO.Numero_postulacion = 5;
 
 
 -- Query 5
