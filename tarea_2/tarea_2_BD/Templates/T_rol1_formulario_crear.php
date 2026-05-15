@@ -15,32 +15,26 @@ require_once("../BDT1.php");
 
 // --- PRE-CARGA DE CATÁLOGOS (VERSIÓN PDO) ---
 
-// 1. Cargar Sedes
-$query_sedes = $conexion->query("SELECT ID_sede, Nombre_Sede FROM SEDE");
+// Modificamos agregando "WHERE ID > 0" a todas las consultas de catálogos
+$query_sedes = $conexion->query("SELECT ID_sede, Nombre_Sede FROM SEDE WHERE ID_sede > 0");
 $sedes = $query_sedes->fetchAll(PDO::FETCH_ASSOC);
 
-// 2. Cargar Regiones
-$query_regiones = $conexion->query("SELECT ID_region, Nombre_region FROM REGION");
+$query_regiones = $conexion->query("SELECT ID_region, Nombre_region FROM REGION WHERE ID_region > 0");
 $regiones = $query_regiones->fetchAll(PDO::FETCH_ASSOC);
 
-// 3. Cargar Tipos de Iniciativa
-$query_tipos = $conexion->query("SELECT ID_tipo, Tipo_iniciativa FROM TIPO_INICIATIVA");
+$query_tipos = $conexion->query("SELECT ID_tipo, Tipo_iniciativa FROM TIPO_INICIATIVA WHERE ID_tipo > 0");
 $tipos_iniciativa = $query_tipos->fetchAll(PDO::FETCH_ASSOC);
 
-// 4. Cargar Jefes de Carrera
-$query_jefes = $conexion->query("SELECT ID_Jefe, Nombre_jefe FROM JEFE_CARRERA");
+$query_jefes = $conexion->query("SELECT ID_Jefe, Nombre_jefe FROM JEFE_CARRERA WHERE ID_Jefe > 0");
 $jefes = $query_jefes->fetchAll(PDO::FETCH_ASSOC);
 
-// 5. Cargar Coordinadores (Aquí traemos el RUT también)
-$query_coord = $conexion->query("SELECT ID_coordinador, Nombre_coordinador, rut_coordinador FROM COORDINADOR");
+$query_coord = $conexion->query("SELECT ID_coordinador, Nombre_coordinador, rut_coordinador FROM COORDINADOR WHERE ID_coordinador > 0");
 $coordinadores = $query_coord->fetchAll(PDO::FETCH_ASSOC);
 
-// 6. Cargar Tamaños de Empresa
-$query_tamanos = $conexion->query("SELECT ID_tamano, Nombre_tamano FROM TAMANO_EMPRESA");
+$query_tamanos = $conexion->query("SELECT ID_tamano, Nombre_tamano FROM TAMANO_EMPRESA WHERE ID_tamano > 0");
 $tamanos = $query_tamanos->fetchAll(PDO::FETCH_ASSOC);
 
-// 7. Cargar Departamentos (Para el equipo de trabajo)
-$query_deptos = $conexion->query("SELECT ID_departamento, Nombre_departamento FROM DEPARTAMENTO");
+$query_deptos = $conexion->query("SELECT ID_departamento, Nombre_departamento FROM DEPARTAMENTO WHERE ID_departamento > 0");
 $departamentos = $query_deptos->fetchAll(PDO::FETCH_ASSOC);
 
 

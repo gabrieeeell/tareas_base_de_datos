@@ -117,11 +117,7 @@ try {
                                             <?php if ($estado == 'borrador'): ?>
                                                 <a href="T_rol1_formulario_editar.php?id=<?php echo urlencode($post['ID_Postulacion']); ?>" class="btn btn-sm btn-outline-primary">Editar</a>
                                                 
-                                                <form action="../back/backrol1.php" method="POST" class="d-inline">
-                                                    <input type="hidden" name="accion" value="enviar">
-                                                    <input type="hidden" name="id_postulacion" value="<?php echo htmlspecialchars($post['ID_Postulacion']); ?>">
-                                                    <button type="submit" class="btn btn-sm btn-success">Enviar</button>
-                                                </form>
+                                                
                                             <?php else: ?>
                                                 <button class="btn btn-sm btn-outline-secondary" disabled>Solo Lectura</button>
                                             <?php endif; ?>

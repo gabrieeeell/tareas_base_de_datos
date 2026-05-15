@@ -10,6 +10,7 @@ CREATE TABLE REGION (
 ) ENGINE=InnoDB;
 
 INSERT INTO REGION (ID_region, Nombre_region) VALUES
+(0, 'Vacío'),
 (1, 'Arica y Parinacota'),
 (2, 'Tarapacá'),
 (3, 'Antofagasta'),
@@ -34,6 +35,7 @@ CREATE TABLE SEDE (
 ) ENGINE=InnoDB;
 
 INSERT INTO SEDE (ID_sede, Nombre_Sede) VALUES
+(0, 'Vacío'),
 (1, 'Campus Casa Central Valparaíso'),
 (2, 'Campus San Joaquín'),
 (3, 'Campus Vitacura'),
@@ -47,6 +49,7 @@ CREATE TABLE ESTADO_POSTULACION (
 ) ENGINE=InnoDB;
 
 INSERT INTO ESTADO_POSTULACION (ID_estado, Nombre_estado) VALUES
+(0, 'Vacío'),
 (1, 'En Revisión'),
 (2, 'Aprobada'),
 (3, 'Rechazada'),
@@ -61,28 +64,30 @@ CREATE TABLE CARGO_PERSONA (
 ) ENGINE=InnoDB;
 
 INSERT INTO CARGO_PERSONA (ID_cargo, Nombre_cargo) VALUES
+(0, 'Vacío'),
 (1, 'Estudiante'),
 (2, 'Profesor');
 
 CREATE TABLE DEPARTAMENTO (
-	ID_departamento INT NOT NULL AUTO_INCREMENT,
+	ID_departamento INT NOT NULL,
     Nombre_departamento VARCHAR(100) NOT NULL,
     PRIMARY KEY (ID_departamento)
 ) ENGINE=InnoDB;
 
-INSERT INTO DEPARTAMENTO (Nombre_departamento) VALUES
-('Aeronáutica'),
-('Arquitectura'),
-('Ciencia de los Materiales / Metalurgia'),
-('Física'),
-('Informática'),
-('Ingeniería Mecánica'),
-('Ingeniería Química y Ambiental'),
-('Matemática'),
-('Obras Civiles'),
-('Construcción y Prevención de Riesgos'),
-('Mecánica'),
-('Estudios Humanísticos');
+INSERT INTO DEPARTAMENTO (ID_departamento, Nombre_departamento) VALUES
+(0, 'Vacío'),
+(1, 'Aeronáutica'),
+(2, 'Arquitectura'),
+(3, 'Ciencia de los Materiales / Metalurgia'),
+(4, 'Física'),
+(5, 'Informática'),
+(6, 'Ingeniería Mecánica'),
+(7, 'Ingeniería Química y Ambiental'),
+(8, 'Matemática'),
+(9, 'Obras Civiles'),
+(10, 'Construcción y Prevención de Riesgos'),
+(11, 'Mecánica'),
+(12, 'Estudios Humanísticos');
 
 CREATE TABLE TIPO_INICIATIVA (
     ID_tipo INT NOT NULL,
@@ -91,23 +96,25 @@ CREATE TABLE TIPO_INICIATIVA (
 ) ENGINE=InnoDB;
 
 INSERT INTO  TIPO_INICIATIVA(ID_tipo, Tipo_iniciativa) VALUES
+(0, 'Vacío'),
 (1, 'Nueva'),
 (2, 'Existente');
 
 CREATE TABLE JEFE_CARRERA (
-    ID_jefe INT NOT NULL AUTO_INCREMENT,
+    ID_jefe INT NOT NULL,
     Nombre_jefe VARCHAR(50) NOT NULL,
     PRIMARY KEY (ID_jefe)
 ) ENGINE=InnoDB;
-INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('Lionel Valenzuela');
-INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('Andrea Urrutia');
-INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('Claudio Acuña');
-INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('José Luis Martí');
-INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('Marcelo Villena');
-INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('Agustín González');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe) VALUES (0, 'Vacío');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe) VALUES (1, 'Lionel Valenzuela');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe)VALUES (2, 'Andrea Urrutia');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe) VALUES (3, 'Claudio Acuña');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe) VALUES (4, 'José Luis Martí');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe) VALUES (5, 'Marcelo Villena');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe) VALUES (6, 'Agustín González');
 
 CREATE TABLE COORDINADOR (
-    ID_coordinador INT NOT NULL AUTO_INCREMENT,
+    ID_coordinador INT NOT NULL,
     rut_coordinador VARCHAR(20) UNIQUE NOT NULL,
     Nombre_coordinador VARCHAR(50) NOT NULL,
     PRIMARY KEY (ID_coordinador)
@@ -115,13 +122,13 @@ CREATE TABLE COORDINADOR (
 
 
 INSERT INTO COORDINADOR (ID_coordinador, Nombre_coordinador, rut_coordinador) VALUES (0, 'Sin Coordinador', '22.222.222-0');
-INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('Alejandro Fuentes', '22.222.222-1');
-INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('María José Campos','22.222.222-2');
-INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('Ricardo Morales','22.222.222-3');
-INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('Carolina Pizarro','22.222.222-4');
-INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('Felipe Contreras','22.222.222-5');
-INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('Daniela Espinoza','22.222.222-6');
-INSERT INTO COORDINADOR (Nombre_coordinador, rut_coordinador) VALUES ('Jorge Valenzuela','22.222.222-7');
+INSERT INTO COORDINADOR (ID_coordinador, Nombre_coordinador, rut_coordinador) VALUES (1, 'Alejandro Fuentes', '22.222.222-1');
+INSERT INTO COORDINADOR (ID_coordinador, Nombre_coordinador, rut_coordinador) VALUES (2, 'María José Campos','22.222.222-2');
+INSERT INTO COORDINADOR (ID_coordinador, Nombre_coordinador, rut_coordinador) VALUES (3, 'Ricardo Morales','22.222.222-3');
+INSERT INTO COORDINADOR (ID_coordinador, Nombre_coordinador, rut_coordinador) VALUES (4, 'Carolina Pizarro','22.222.222-4');
+INSERT INTO COORDINADOR (ID_coordinador, Nombre_coordinador, rut_coordinador) VALUES (5, 'Felipe Contreras','22.222.222-5');
+INSERT INTO COORDINADOR (ID_coordinador, Nombre_coordinador, rut_coordinador) VALUES (6, 'Daniela Espinoza','22.222.222-6');
+INSERT INTO COORDINADOR (ID_coordinador, Nombre_coordinador, rut_coordinador) VALUES (7, 'Jorge Valenzuela','22.222.222-7');
 
 CREATE TABLE TAMANO_EMPRESA (
     ID_tamano INT NOT NULL,
@@ -130,6 +137,7 @@ CREATE TABLE TAMANO_EMPRESA (
 ) ENGINE=InnoDB;
 
 INSERT INTO  TAMANO_EMPRESA (ID_tamano, Nombre_tamano) VALUES
+(0, 'Vacío'),
 (1, 'Microempresa'),
 (2, 'Mediana'),
 (3, 'Grande');
@@ -137,8 +145,8 @@ INSERT INTO  TAMANO_EMPRESA (ID_tamano, Nombre_tamano) VALUES
 CREATE TABLE REPRESENTANTE_EMPRESA (
     ID_representante INT NOT NULL AUTO_INCREMENT,
     Nombre VARCHAR(100) NOT NULL,
-    Mail_representante VARCHAR(255) NOT NULL UNIQUE, 
-    Telefono_representante VARCHAR(12) NOT NULL UNIQUE, 
+    Mail_representante VARCHAR(255) NOT NULL, 
+    Telefono_representante VARCHAR(12) NOT NULL, 
     PRIMARY KEY (ID_representante)
 ) ENGINE=InnoDB;
 
@@ -159,8 +167,8 @@ CREATE TABLE PERSONA (
     Nombre VARCHAR(100) NOT NULL,
     ID_departamento INT NOT NULL,
     ID_sede INT NOT NULL,
-    eMail VARCHAR(255) NOT NULL UNIQUE,
-    Telefono VARCHAR(12) UNIQUE,
+    eMail VARCHAR(255) NOT NULL,
+    Telefono VARCHAR(12),
     ID_cargo INT NOT NULL,
     PRIMARY KEY (RUT_Persona),
     FOREIGN KEY (ID_sede) REFERENCES SEDE(ID_sede),

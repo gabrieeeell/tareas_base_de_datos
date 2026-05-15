@@ -11,5 +11,6 @@ Consideraciones:
 - Si se sobreescriben los datos de algún integrante, entonces se cambian sus valores para todas las otras postulaciones
 - Asumimos que el rol 2 (evaluador/coordinador) no tiene la función de crear postulaciones.
 - Asumimos que uno puede ingresar a la página asumiendo 1 solo rol simultaneamente.
+- Asumimos que no se puede repetir el correo y el teléfono entre 2 personas.
 
 Instrucciones ejecución:
