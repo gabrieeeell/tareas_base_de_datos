@@ -449,13 +449,13 @@ try {
                                 </div>
                                 <div class="col">
                                     <span class="text-muted fw-bold">Sede:</span> 
-                                    <span class="text-dark"><?php echo htmlspecialchars($fila['Region_impacto']); ?></span>
+                                    <span class="text-dark"><?php echo htmlspecialchars($fila['Nombre_Sede']); ?></span>
                                 </div>
                             </div>
                             <?php if ($_SESSION["rol_usuario"] == "3"): ?>
                             <div class="mt-3 pt-3 border-top">
                                 <form action="" method="POST" class="row g-2 align-items-center">
-                                    <input type="hidden" name="post_id_nuevo_coordinador" value="<?php echo $fila['Nombre_Sede']; ?>">
+                                    <input type="hidden" name="post_id_nuevo_coordinador" value="<?php echo $fila['Numero_postulacion']; ?>">
                                     
                                     <div class="col-auto">
                                         <label class="small fw-bold text-muted"><i class="bi bi-person-badge me-1"></i> Coordinador:</label>
