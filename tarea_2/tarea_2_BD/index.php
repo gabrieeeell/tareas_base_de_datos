@@ -1,14 +1,8 @@
-// EASTER EGG cristopher shiny
 <?php
-// Esto nos ayuda a saber en todo momento que persona está rellenando el formulario, para mas adelante hacer
-// un autocompletado de datos y asegurar integridad de datos en la BD
 session_start();
-
-// Aqui se guardan los datos de la sesion, para hacer el posterior autocompletado en el caso del rol 1
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['rut_ingreso']) && isset($_POST['rol_ingreso'])) {
     $_SESSION['rut_usuario'] = $_POST['rut_ingreso'];
     $_SESSION['rol_usuario'] = $_POST['rol_ingreso'];
-    // Al recargar la página y salir se ingresa con los datos de la sesion
     header("Location: index.php");
     exit();
 }
@@ -22,7 +16,6 @@ if (isset($_SESSION['rol_usuario']) && isset($_SESSION['rut_usuario'])) {
         header("Location: Templates/T_rol1.php");
         exit();
     } elseif ($rol == '2') {
-        //require("./Templates/vista_lista_postulaciones.php");
         header("Location: Templates/vista_lista_postulaciones.php");
         exit();
     } elseif ($rol == '3') {
@@ -31,7 +24,6 @@ if (isset($_SESSION['rol_usuario']) && isset($_SESSION['rut_usuario'])) {
     }
 }
 
-// Para usar la conexion a la base de datos
 require("BDT1.php");
 ?>
 

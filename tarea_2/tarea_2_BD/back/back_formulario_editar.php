@@ -9,6 +9,9 @@ function filtrar_texto($valor) {
 function filtrar_id($valor) {
     return (isset($valor) && trim($valor) !== "") ? trim($valor) : 0;
 }
+function filtrar_fecha($valor) {
+    return (isset($valor) && trim($valor) !== "") ? trim($valor) : '0000-00-00';
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
@@ -16,54 +19,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Capturar el ID de la postulación que estamos editando y la acción
         $id_postulacion = $_POST['ID_postulacion'] ?? '';
-        $accion = $_POST['accion'] ?? 'borrador';
+
+        // Capturamos la acción que viene del botón presionado
+        if (isset($_POST['accion']) && $_POST['accion'] === 'enviar') {
+            $accion = 'enviar';
+        } elseif (isset($_POST['accion']) && $_POST['accion'] === 'eliminar') {
+            $accion = 'eliminar';
+        } elseif (isset($_POST['accion']) && $_POST['accion'] === 'borrador') {
+            $accion = 'borrador';
+        } else {
+            $accion = 'borrador'; // Fallback seguro
+        }
 
         if (empty($id_postulacion)) {
             throw new Exception("No se especificó el código de la postulación a editar.");
         }
 
         // =========================================================
-        // 2. RECIBIR DATOS GENERALES DEL FORMULARIO
+        // INTERCEPCIÓN DE ELIMINACIÓN (DELETE)
         // =========================================================
-        // Datos de la Iniciativa
-        $nombre_in              = filtrar_texto($_POST['Nombre_iniciativa'] ?? '');
-        $objetivo               = filtrar_texto($_POST['Objetivo_iniciativa'] ?? '');
-        $descripcion_soluciones = filtrar_texto($_POST['Descripcion_soluciones'] ?? ''); 
-        $resultados             = filtrar_texto($_POST['Resultados_esperados'] ?? '');
-        $presupuesto            = filtrar_id($_POST['Presupuesto'] ?? '');
-        
-        // Antecedentes (Selects)
-        $tipo_iniciativa = filtrar_id($_POST['ID_tipo_iniciativa'] ?? '');
-        $id_sede         = filtrar_id($_POST['ID_sede'] ?? '');
-        $id_jefe         = filtrar_id($_POST['ID_Jefe'] ?? $_POST['ID_jefe'] ?? '');
-        $id_coordinador  = filtrar_id($_POST['ID_coordinador'] ?? '');
-        $region_origen   = filtrar_id($_POST['ID_region_origen'] ?? '');
-        $region_impacto  = filtrar_id($_POST['ID_region_impacto'] ?? '');
+        if ($accion === 'eliminar') {
+            $sql_delete = "DELETE FROM POSTULACION WHERE ID_postulacion = ?";
+            $conexion->prepare($sql_delete)->execute([$id_postulacion]);
+            
+            // Confirmamos la eliminación en la BD (Aquí actúa tu Trigger o el Cascade)
+            $conexion->commit(); 
+            
+            // Redirección silenciosa y limpia directo a tu plantilla
+            header("Location: ../Templates/T_rol1.php");
+            exit(); // Frenamos el script por completo aquí
+        }
 
-        // Entidad Externa y Representante
-        $nombre_empresa = filtrar_texto($_POST['Nombre_empresa'] ?? '');
-        $rut_empresa    = filtrar_texto($_POST['Rut_empresa'] ?? $_POST['Rut_Empresa'] ?? '');
-        $id_tamano      = filtrar_id($_POST['ID_tamano'] ?? '');
-        $convenio_usm   = filtrar_id($_POST['Convenio_USM'] ?? '');
-        
-        $nombre_rep     = filtrar_texto($_POST['Nombre_representante'] ?? '');
-        $email_rep      = filtrar_texto($_POST['Mail_representante'] ?? '');
-        $telefono_rep   = filtrar_texto($_POST['Telefono_representante'] ?? '');
-
-        // Validación Estricta solo si presionan "Enviar Postulación Definitiva"
+        // =========================================================
+        // ASIGNACIÓN DE ESTADO (Para la actualización posterior)
+        // =========================================================
         if ($accion === 'enviar') {
-            if ($nombre_in === "" || $objetivo === "" || $id_sede === 0 || $tipo_iniciativa === 0) {
-                throw new Exception("Para enviar la postulación definitiva, debes completar todos los campos obligatorios.");
-            }
             $id_estado = 1; // En Revisión
         } else {
             $id_estado = 5; // Mantiene o cambia a Borrador
         }
 
         // =========================================================
+        // 2. RECIBIR DATOS GENERALES DEL FORMULARIO
+        // =========================================================
+        $fecha_postulacion     = filtrar_fecha($_POST['Fecha_postulacion'] ?? '');
+        $nombre_in              = filtrar_texto($_POST['Nombre_iniciativa'] ?? '');
+        $objetivo               = filtrar_texto($_POST['Objetivo_iniciativa'] ?? '');
+        $descripcion_soluciones = filtrar_texto($_POST['Descripcion_soluciones'] ?? ''); 
+        $resultados             = filtrar_texto($_POST['Resultados_esperados'] ?? '');
+        $presupuesto            = filtrar_id($_POST['Presupuesto'] ?? '');
+        $tipo_iniciativa        = filtrar_id($_POST['ID_tipo_iniciativa'] ?? '');
+        $id_sede                = filtrar_id($_POST['ID_sede'] ?? '');
+        $id_jefe                = filtrar_id($_POST['ID_Jefe'] ?? $_POST['ID_jefe'] ?? '');
+        $id_coordinador         = filtrar_id($_POST['ID_coordinador'] ?? '');
+        $region_origen          = filtrar_id($_POST['ID_region_origen'] ?? '');
+        $region_impacto         = filtrar_id($_POST['ID_region_impacto'] ?? '');
+        $nombre_empresa         = filtrar_texto($_POST['Nombre_empresa'] ?? '');
+        $rut_empresa            = filtrar_texto($_POST['Rut_empresa'] ?? $_POST['Rut_Empresa'] ?? '');
+        $id_tamano              = filtrar_id($_POST['ID_tamano'] ?? '');
+        $convenio_usm           = filtrar_id($_POST['Convenio_USM'] ?? '');
+        $nombre_rep             = filtrar_texto($_POST['Nombre_representante'] ?? '');
+        $email_rep              = filtrar_texto($_POST['Mail_representante'] ?? '');
+        $telefono_rep           = filtrar_texto($_POST['Telefono_representante'] ?? '');
+
+        // =========================================================
         // 3. ACTUALIZAR O INSERTAR REPRESENTANTE Y EMPRESA (Upsert)
         // =========================================================
-        // Buscamos o actualizamos al representante por su correo
         $sql_buscar_rep = "SELECT ID_Representante FROM REPRESENTANTE_EMPRESA WHERE Mail_representante = ?";
         $stmt_buscar = $conexion->prepare($sql_buscar_rep);
         $stmt_buscar->execute([$email_rep]);
@@ -97,22 +118,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 Nombre_iniciativa = ?, Objetivo_iniciativa = ?, Descripcion_soluciones = ?, 
                                 Resultados_esperados = ?, Presupuesto = ?, ID_tipo_iniciativa = ?, 
                                 ID_sede = ?, ID_Jefe = ?, ID_coordinador = ?, ID_region_origen = ?, 
-                                ID_region_impacto = ?, ID_estado = ?, Rut_empresa = ?
+                                ID_region_impacto = ?, ID_estado = ?, Rut_empresa = ?, Fecha_postulacion = ?
                             WHERE ID_postulacion = ?";
         
         $conexion->prepare($sql_update_post)->execute([
             $nombre_in, $objetivo, $descripcion_soluciones, $resultados, $presupuesto, $tipo_iniciativa, 
             $id_sede, $id_jefe, $id_coordinador, $region_origen, $region_impacto, $id_estado, $rut_empresa, 
-            $id_postulacion
+            $fecha_postulacion, 
+            $id_postulacion     
         ]);
 
         // =========================================================
         // 5. SINCRONIZAR EQUIPO DE TRABAJO (Borrar y Re-insertar)
         // =========================================================
-        // Paso A: Eliminamos los vínculos actuales de esta postulación en la tabla intermedia
         $conexion->prepare("DELETE FROM Persona_postulacion WHERE ID_postulacion = ?")->execute([$id_postulacion]);
 
-        // Paso B: Capturamos los arreglos del formulario
         $rut_personas   = $_POST['Rut_Persona'] ?? [];
         $nombres        = $_POST['Nombre_persona'] ?? [];
         $deptos         = $_POST['ID_departamento'] ?? [];
@@ -139,9 +159,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         for ($i = 0; $i < count($rut_personas); $i++) {
             $rut_actual = filtrar_texto($rut_personas[$i] ?? '');
             
-            if ($rut_actual === "") continue; // Ignora filas completamente vacías
+            if ($rut_actual === "") continue; 
 
-            // Filtros seguros contra índices vacíos en modo borrador
             $nombre_actual = filtrar_texto($nombres[$i] ?? '');
             $email_actual  = filtrar_texto($emails[$i] ?? '');
             $fono_actual   = filtrar_texto($telefonos[$i] ?? '');
@@ -150,13 +169,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $cargo_actual  = filtrar_id($cargos[$i] ?? '');
             $rol_actual    = filtrar_texto($roles[$i] ?? '');
 
-            // Actualizar directorio general de personas
             $stmt_persona->execute([
                 $rut_actual, $nombre_actual, $email_actual, $fono_actual,
                 $depto_actual, $sede_actual, $cargo_actual
             ]);
 
-            // Re-vincular en la tabla intermedia
             $stmt_puente->execute([
                 $rut_actual, $id_postulacion, $rol_actual
             ]);
@@ -188,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // =========================================================
-        // 7. CONFIRMAR TRANSACCIÓN
+        // 7. CONFIRMAR TRANSACCIÓN DE ACTUALIZACIÓN
         // =========================================================
         $conexion->commit();
         
@@ -200,7 +217,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } catch (Exception $e) {
         $conexion->rollBack();
         echo "<script>
-                alert('Error al actualizar: " . addslashes($e->getMessage()) . "');
+                alert('Error en el sistema: " . addslashes($e->getMessage()) . "');
                 window.history.back();
               </script>";
     }

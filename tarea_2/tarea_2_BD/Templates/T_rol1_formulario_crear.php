@@ -99,8 +99,11 @@ try {
         <div class="card shadow-sm border-0 mb-5">
             <div class="card-body p-4">
                 <h5 class="text-primary border-bottom pb-2 mb-4">Información General</h5>
-            
 
+                        <div class="mb-3">
+                            <label for="Fecha_postulacion" class="form-label fw-bold">Fecha de Postulación</label>
+                            <input type="date" class="form-control" id="Fecha_postulacion" name="Fecha_postulacion" requiered>
+                        </div>
                         <div class="mb-3">
                             <label for="Nombre_iniciativa" class="form-label fw-bold">Nombre_iniciativa (100)*</label>
                             <input type="text" class="form-control" id="Nombre_iniciativa" name="Nombre_iniciativa" required maxlength="100">
@@ -122,7 +125,7 @@ try {
                         </div>
 
                         <div class="mb-3">
-                            <label for="Presupuesto" class="form-label fw-bold">Presupuesto (Entero)*</label>
+                            <label for="Presupuesto" class="form-label fw-bold">Presupuesto (entero)*</label>
                             <input type="text" inputmode="numeric" pattern="[0-9]+" class="form-control" id="Presupuesto" name="Presupuesto" required>
                         </div>
                         <div class="card shadow-sm border-0 mb-5">
@@ -133,7 +136,7 @@ try {
                             <div class="mb-3">
                                 <label for="ID_sede" class="form-label fw-bold">ID_sede (31)*</label>
                                 <select class="form-select" id="ID_sede" name="ID_sede" required>
-    <option value="" selected disabled>Seleccione Sede...</option>
+    <option value="" selected disabled>Seleccione una sede</option>
     <?php foreach ($sedes as $sede) { ?>
         <option value="<?php echo $sede['ID_sede']; ?>">
             <?php echo htmlspecialchars($sede['Nombre_Sede']); ?>
@@ -145,7 +148,7 @@ try {
                             <div class="mb-3">
                                 <label for="ID_tipo_iniciativa" class="form-label fw-bold">ID_tipo_iniciativa (9)*</label>
                                 <select class="form-select" id="ID_tipo_iniciativa" name="ID_tipo_iniciativa" required>
-                                <option value="" selected disabled>Seleccione Tipo...</option>
+                                <option value="" selected disabled>Seleccione un tipo</option>
                                 <?php foreach ($tipos_iniciativa as $tipo) { ?>
                                     <option value="<?php echo $tipo['ID_tipo']; ?>">
                                         <?php echo htmlspecialchars($tipo['Tipo_iniciativa']); ?>
@@ -157,7 +160,7 @@ try {
                             <div class="mb-3">
                                 <label for="ID_region_origen" class="form-label fw-bold">ID_region_origen (36)*</label>
                                <select class="form-select" id="ID_region_origen" name="ID_region_origen" required>
-    <option value="" selected disabled>Seleccione Región...</option>
+    <option value="" selected disabled>Seleccione una región de origen</option>
     <?php foreach ($regiones as $region) { ?>
         <option value="<?php echo $region['ID_region']; ?>">
             <?php echo htmlspecialchars($region['Nombre_region']); ?>
@@ -169,7 +172,7 @@ try {
                             <div class="mb-3">
                                 <label for="ID_region_Impacto" class="form-label fw-bold">ID_region_Impacto (36)*</label>
 <select class="form-select" id="ID_region_impacto" name="ID_region_impacto" required>
-    <option value="" selected disabled>Seleccione Región de Impacto...</option>
+    <option value="" selected disabled>Seleccione una región de impacto</option>
     <?php foreach ($regiones as $region) { ?>
         <option value="<?php echo $region['ID_region']; ?>">
             <?php echo htmlspecialchars($region['Nombre_region']); ?>
@@ -181,7 +184,7 @@ try {
                             <div class="mb-3">
                                 <label for="ID_Jefe" class="form-label fw-bold">ID_Jefe (50)*</label>
                                 <select class="form-select" id="ID_Jefe" name="ID_Jefe" required>
-    <option value="" selected disabled>Seleccione Jefe de Carrera...</option>
+    <option value="" selected disabled>Seleccione un jefe de carrera</option>
     <?php foreach ($jefes as $jefe) { ?>
         <option value="<?php echo $jefe['ID_Jefe']; ?>">
             <?php echo htmlspecialchars($jefe['Nombre_jefe']); ?>
@@ -193,7 +196,7 @@ try {
                             <div class="mb-3">
                                 <label for="ID_coordinador" class="form-label fw-bold">ID_coordinador (50)*</label>
                                <select class="form-select" id="ID_coordinador" name="ID_coordinador" required>
-    <option value="" selected disabled>Seleccione Coordinador...</option>
+    <option value="" selected disabled>Seleccione un coordinador</option>
     <?php foreach ($coordinadores as $coord) { ?>
         <option value="<?php echo $coord['ID_coordinador']; ?>">
             <?php echo htmlspecialchars($coord['Nombre_coordinador'] . ' - ' . $coord['rut_coordinador']); ?>
@@ -224,7 +227,7 @@ try {
        <div class="mb-3">
     <label for="ID_tamano" class="form-label fw-bold">ID_tamano (15)*</label>
     <select class="form-select" id="ID_tamano" name="ID_tamano" required>
-        <option value="" selected disabled>Seleccione tamano...</option>
+        <option value="" selected disabled>Seleccione un tamaño</option>
         
         <?php foreach ($tamanos as $tamano) { ?>
             <option value="<?php echo $tamano['ID_tamano']; ?>">
@@ -238,7 +241,7 @@ try {
         <div class="mb-3">
             <label for="Convenio_USM" class="form-label fw-bold">Convenio-USM (Booleano)*</label>
             <select class="form-select" id="Convenio_USM" name="Convenio_USM" required>
-                <option value="" selected disabled>¿Posee convenio vigente?</option>
+                <option value="" selected disabled>Seleccione si posee convenio USM</option>
                 <option value="1">Sí</option>
                 <option value="0">No</option>
             </select>
@@ -272,7 +275,7 @@ try {
 
 
            <div class="integrante-item border border-primary rounded p-3 mb-4 bg-light">
-    <h6 class="fw-bold text-primary mb-3">Integrante 1 (Responsable)</h6>
+    <h6 class="fw-bold text-primary mb-3">Integrante (Responsable)</h6>
     
     <div class="mb-3">
         <label class="form-label fw-bold">Rut_Persona (12)*</label>
@@ -281,13 +284,13 @@ try {
     
    <div class="mb-3">
         <label class="form-label fw-bold">Nombre (100)*</label>
-        <input type="text" class="form-control" name="Nombre_persona[]" required maxlength="100" placeholder="Ingrese su nombre completo">
+        <input type="text" class="form-control" name="Nombre_persona[]" required maxlength="100">
     </div>
 
     <div class="mb-3">
         <label class="form-label fw-bold">ID_departamento*</label>
         <select class="form-select" name="ID_departamento[]" required>
-    <option value="" selected disabled>Seleccione Departamento...</option>
+    <option value="" selected disabled>Seleccione un departamento</option>
     <?php foreach ($departamentos as $depto) { ?>
         <option value="<?php echo $depto['ID_departamento']; ?>">
             <?php echo htmlspecialchars($depto['Nombre_departamento']); ?>
@@ -299,7 +302,7 @@ try {
     <div class="mb-3">
         <label class="form-label fw-bold">ID_Sede*</label>
         <select class="form-select" name="ID_sede_persona[]" required>
-    <option value="" selected disabled>Seleccione Sede...</option>
+    <option value="" selected disabled>Seleccione una sede</option>
     <?php foreach ($sedes as $sede) { ?>
         <option value="<?php echo $sede['ID_sede']; ?>">
             <?php echo htmlspecialchars($sede['Nombre_Sede']); ?>
@@ -310,18 +313,18 @@ try {
 
     <div class="mb-3">
         <label class="form-label fw-bold">eMail (255)*</label>
-        <input type="email" class="form-control" name="eMail[]" required maxlength="255" placeholder="Ej: correo@usm.cl">
+        <input type="email" class="form-control" name="eMail[]" required maxlength="255" >
     </div>
 
     <div class="mb-3">
         <label class="form-label fw-bold">Telefono (12)</label>
-        <input type="text" class="form-control" name="Telefono[]" maxlength="12" placeholder="Ej: +56912345678">
+        <input type="text" class="form-control" name="Telefono[]" maxlength="12">
     </div>
 
     <div class="mb-3">
     <label class="form-label fw-bold">Cargo*</label>
     <select class="form-select" name="ID_cargo[]" required>
-        <option value="" selected disabled>Seleccione Cargo...</option>
+        <option value="" selected disabled>Seleccione un cargo</option>
         <option value="1">Estudiante</option>
         <option value="2">Profesor</option>
     </select>
@@ -350,7 +353,7 @@ try {
         
         <div class="mb-3">
             <label class="form-label fw-bold">Rut_Persona (12)*</label>
-            <input type="text" class="form-control" name="Rut_Persona[]" required maxlength="12" placeholder="Ej: 12.345.678-9">
+            <input type="text" class="form-control" name="Rut_Persona[]" required maxlength="12">
         </div>
         
         <div class="mb-3">
@@ -361,7 +364,7 @@ try {
         <div class="mb-3">
             <label class="form-label fw-bold">ID_departamento*</label>
             <select class="form-select" name="ID_departamento[]" required>
-    <option value="" selected disabled>Seleccione Departamento...</option>
+    <option value="" selected disabled>Seleccione un departamento</option>
     <?php foreach ($departamentos as $depto) { ?>
         <option value="<?php echo $depto['ID_departamento']; ?>">
             <?php echo htmlspecialchars($depto['Nombre_departamento']); ?>
@@ -373,7 +376,7 @@ try {
         <div class="mb-3">
             <label class="form-label fw-bold">ID_Sede*</label>
             <select class="form-select" name="ID_sede_persona[]" required>
-    <option value="" selected disabled>Seleccione Sede...</option>
+    <option value="" selected disabled>Seleccione una sede</option>
     <?php foreach ($sedes as $sede) { ?>
         <option value="<?php echo $sede['ID_sede']; ?>">
             <?php echo htmlspecialchars($sede['Nombre_Sede']); ?>
@@ -389,13 +392,13 @@ try {
 
        <div class="mb-3">
         <label class="form-label fw-bold">Telefono (12)</label>
-        <input type="text" class="form-control" name="Telefono[]" maxlength="12" placeholder="Ej: +56912345678">
+        <input type="text" class="form-control" name="Telefono[]" maxlength="12">
     </div>
 
         <div class="mb-3">
     <label class="form-label fw-bold">Cargo*</label>
     <select class="form-select" name="ID_cargo[]" required>
-        <option value="" selected disabled>Seleccione Cargo...</option>
+        <option value="" selected disabled>Seleccione un cargo</option>
         <option value="1">Estudiante</option>
         <option value="2">Profesor</option>
     </select>
@@ -418,21 +421,21 @@ try {
 
         <div id="contenedor_cronograma">
             <div class="etapa-item border border-info rounded p-3 mb-4 bg-light">
-                <h6 class="fw-bold text-info mb-3">Etapa 1</h6>
+                <h6 class="fw-bold text-info mb-3">Etapa</h6>
                 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Etapa (100)*</label>
-                    <input type="text" class="form-control" name="Etapa[]" required maxlength="100" placeholder="Ej: Levantamiento de requerimientos">
+                    <input type="text" class="form-control" name="Etapa[]" required maxlength="100">
                 </div>
                 
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Plazos_semanas (Entero)*</label>
-                    <input type="number" class="form-control" name="Plazos_semanas[]" required min="1" placeholder="Ej: 4">
-                </div>
+    <label class="form-label fw-bold">Plazos_semanas (Entero)*</label>
+    <input type="text" inputmode="numeric" pattern="[0-9]+" class="form-control" name="Plazos_semanas[]" value="<?php echo htmlspecialchars($e['Plazos_semanas'] ?? $e['Plazos_Semanas'] ?? $e['plazos_semanas'] ?? ''); ?>" required>
+</div>
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Entregable (100)*</label>
-                    <input type="text" class="form-control" name="Entregable[]" required maxlength="100" placeholder="Ej: Documento de diseño inicial">
+                    <input type="text" class="form-control" name="Entregable[]" required maxlength="100">
                 </div>
             </div>
         </div> <button type="button" id="btn_agregar_etapa" class="btn btn-outline-info w-100 fw-bold shadow-sm">
@@ -445,7 +448,7 @@ try {
     <div class="etapa-item border rounded p-3 mb-4 position-relative bg-white">
         <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 btn-eliminar-etapa">X</button>
         
-        <h6 class="fw-bold mb-3 titulo-etapa">Nueva Etapa</h6>
+        <h6 class="fw-bold mb-3 titulo-etapa">Etapa</h6>
         
         <div class="mb-3">
             <label class="form-label fw-bold">Etapa (100)*</label>
@@ -454,7 +457,7 @@ try {
         
         <div class="mb-3">
             <label class="form-label fw-bold">Plazos_semanas (Entero)*</label>
-            <input type="number" class="form-control" name="Plazos_semanas[]" required min="1">
+            <input type="text" inputmode="numeric" pattern="[0-9]+" class="form-control" name="Plazos_semanas[]" value="<?php echo htmlspecialchars($e['Plazos_semanas'] ?? $e['Plazos_Semanas'] ?? $e['plazos_semanas'] ?? ''); ?>" required>
         </div>
 
         <div class="mb-3">
@@ -463,17 +466,6 @@ try {
         </div>
     </div>
 </template>
-
-
-
-
-
-
-
-
-
-
-
 
     </div>
     </div>

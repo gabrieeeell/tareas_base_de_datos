@@ -22,17 +22,10 @@ try {
     }
 } catch(PDOException $e) {}
 
-// Aqui se estaria cumpliendo con el Read del CRUD, pero realmente es solo para buscar las postulaciones del usuario que ingresó a la sesion
 try {
-    // Usamos JOIN para conectar POSTULACION con ESTADO y con la tabla intermedia PERSONA_POSTULACION
-    $sql = "SELECT 
-                P.ID_Postulacion, 
-                P.Nombre_iniciativa, 
-                E.Nombre_estado AS Estado 
-            FROM POSTULACION P
-            JOIN ESTADO_POSTULACION E ON P.ID_estado = E.ID_estado
-            JOIN PERSONA_POSTULACION PP ON P.ID_Postulacion = PP.ID_postulacion
-            WHERE PP.Rut_persona = ? AND PP.Rol = 'Responsable'";
+    $sql = "SELECT ID_Postulacion, Nombre_iniciativa, Estado 
+            FROM vista_postulaciones_responsables 
+            WHERE Rut_persona = ? AND Rol = 'Responsable'";
             
     $stmt_postulaciones = $conexion->prepare($sql);
     $stmt_postulaciones->execute([$Rut_resp]);
@@ -58,9 +51,8 @@ try {
 
     <nav class="navbar navbar-dark navbar-custom mb-4">
         <div class="container">
-            <span class="navbar-brand mb-0 h1">Panel de Postulación</span>
             <div class="d-flex align-items-center">
-                <span class="text-white me-3">RUT sesion: <?php echo htmlspecialchars($Rut_resp); ?></span>
+                <span class="text-white me-3">RUT: <?php echo htmlspecialchars($Rut_resp); ?></span>
                 <a href="../back/cerrar_sesion.php" class="btn btn-outline-light btn-sm">
     Cerrar Sesión
 </a>
@@ -71,13 +63,7 @@ try {
     <div class="container">
         
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Bienvenido, <?php echo htmlspecialchars($nombre_usuario); ?></h2>
-                <!-- Al final el boton volver no tiene sentido por que al rol 1 lo manda directament a esta vista -->
-                <!--
-                    <a href="vista_lista_postulaciones.php" class="text-center btn btn-light px-3 py-2 rounded-3 shadow-sm border fw-medium d-inline-flex align-items-center ">
-                        Volver
-                    </a>
-                -->
+            <h2>Bienvenido</h2>
                     <a href="T_rol1_formulario_crear.php" class="btn btn-success btn-lg shadow-sm">
                         + Crear Nueva Postulación
                     </a>

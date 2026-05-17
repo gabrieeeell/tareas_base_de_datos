@@ -3,39 +3,46 @@ session_start();
 require_once("../BDT1.php");
 
 function filtrar_texto($valor) {
-    return (isset($valor) && trim($valor) !== "") ? trim($valor) : "";
+    if (isset($valor) && trim($valor) !== "") {
+        return trim($valor);
+    } 
+    elseif (!isset($valor) || trim($valor) === "") {
+        return "";
+    }
 }
+
 function filtrar_id($valor) {
-    return (isset($valor) && trim($valor) !== "") ? trim($valor) : 0;
+    if (isset($valor) && trim($valor) !== "") {
+        return trim($valor);
+    } 
+    elseif (!isset($valor) || trim($valor) === "") {
+        return 0;
+    }
+}
+
+function filtrar_fecha($valor) {
+    if (isset($valor) && trim($valor) !== "") {
+        return trim($valor);
+    } 
+    elseif (!isset($valor) || trim($valor) === "") {
+        return '0000-00-00';
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $conexion->beginTransaction();
-
-        // =========================================================
-        // 1. GENERAR LA ID PERSONALIZADA (Ej: MartinGabriel-1)
-        // =========================================================
-        $sql_ultima = "SELECT MAX(CAST(SUBSTRING_INDEX(ID_postulacion, '-', -1) AS UNSIGNED)) AS ultimo_num 
-                       FROM POSTULACION 
-                       WHERE ID_postulacion LIKE 'MartinGabriel-%'";
-
-        $query_id = $conexion->query($sql_ultima);
-        $ultima_fila = $query_id->fetch(PDO::FETCH_ASSOC);
-
-        if ($ultima_fila && $ultima_fila['ultimo_num'] !== null) {
-            $nuevo_numero = $ultima_fila['ultimo_num'] + 1;
+        $q_estado = $conexion->query("SHOW TABLE STATUS LIKE 'POSTULACION'");
+        $t_estado = $q_estado->fetch(PDO::FETCH_ASSOC);
+        if ($t_estado && isset($t_estado['Auto_increment'])) {
+            $nuevo_numero = $t_estado['Auto_increment'];
         } else {
-            $nuevo_numero = 1;
+            $nuevo_numero = 1; 
         }
-
-        // Nuestra variable PHP oficial para usar en todo este archivo
         $id_postulacion = "MartinGabriel-" . $nuevo_numero;
 
-
-        // 2. RECIBIR DATOS GENERALES DEL FORMULARIO
-        // =========================================================
         // Datos de la Iniciativa
+        $fecha_postulacion = filtrar_fecha($_POST['Fecha_postulacion'] ?? '');
         $nombre_in              = filtrar_texto($_POST['Nombre_iniciativa'] ?? '');
         $objetivo               = filtrar_texto($_POST['Objetivo_iniciativa'] ?? '');
         $descripcion_soluciones = filtrar_texto($_POST['Descripcion_soluciones'] ?? ''); 
@@ -64,33 +71,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $accion = $_POST['accion'] ?? 'borrador';
         
         if ($accion === 'enviar') {
-            if ($nombre_in === "" || $objetivo === "" || $id_sede === 0 || $tipo_iniciativa === 0) {
-                throw new Exception("Para enviar la postulación definitiva, debes completar todos los campos obligatorios.");
-            }
             $id_estado = 1; // En Revisión
         } else {
             $id_estado = 5; // Borrador
         }
 
+        // Buscamos al representante mediante su correo
+        $b_rep = "SELECT ID_Representante FROM REPRESENTANTE_EMPRESA WHERE Mail_representante = ?";
+        $s_buscar = $conexion->prepare($b_rep);
+        $s_buscar->execute([$email_rep]);
+        $rep_existe = $s_buscar->fetch(PDO::FETCH_ASSOC);
 
-        // =========================================================
-        // 2.4 GUARDAR O BUSCAR AL REPRESENTANTE
-        // =========================================================
-        $sql_buscar_rep = "SELECT ID_Representante FROM REPRESENTANTE_EMPRESA WHERE Mail_representante = ?";
-        $stmt_buscar = $conexion->prepare($sql_buscar_rep);
-        $stmt_buscar->execute([$email_rep]);
-        $rep_existente = $stmt_buscar->fetch(PDO::FETCH_ASSOC);
-
-        if ($rep_existente) {
-            $id_representante = $rep_existente['ID_Representante'];
+        if ($rep_existe) {
+            $id_representante = $rep_existe['ID_Representante'];
             
-            $sql_update_rep = "UPDATE REPRESENTANTE_EMPRESA SET Nombre = ?, Telefono_representante = ? WHERE ID_Representante = ?";
-            $stmt_update_rep = $conexion->prepare($sql_update_rep);
-            $stmt_update_rep->execute([$nombre_rep, $telefono_rep, $id_representante]);
+            $Nuevo_rep = "UPDATE REPRESENTANTE_EMPRESA SET Nombre = ?, Telefono_representante = ? WHERE ID_Representante = ?";
+            $S_Nuevo_rep = $conexion->prepare($Nuevo_rep);
+            $S_Nuevo_rep->execute([$nombre_rep, $telefono_rep, $id_representante]);
         } else {
-            $sql_insert_rep = "INSERT INTO REPRESENTANTE_EMPRESA (Nombre, Mail_representante, Telefono_representante) VALUES (?, ?, ?)";
-            $stmt_insert_rep = $conexion->prepare($sql_insert_rep);
-            $stmt_insert_rep->execute([$nombre_rep, $email_rep, $telefono_rep]);
+            $Insertar_representante = "INSERT INTO REPRESENTANTE_EMPRESA (Nombre, Mail_representante, Telefono_representante) VALUES (?, ?, ?)";
+            $S_insertar_representante = $conexion->prepare($Insertar_representante);
+            $S_insertar_representante->execute([$nombre_rep, $email_rep, $telefono_rep]);
             
             $id_representante = $conexion->lastInsertId();
         }
@@ -115,15 +116,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 3. INSERTAR LA POSTULACIÓN PRINCIPAL
         // =========================================================
         $sql_postulacion = "INSERT INTO POSTULACION 
-        (ID_postulacion, Nombre_iniciativa, Objetivo_iniciativa, Descripcion_soluciones, Resultados_esperados, Presupuesto, ID_tipo_iniciativa, ID_sede, ID_Jefe, ID_coordinador, ID_region_origen, ID_region_impacto, ID_estado, Rut_empresa, Comentario_coordinador) 
+        (ID_postulacion, Fecha_postulacion ,Nombre_iniciativa, Objetivo_iniciativa, Descripcion_soluciones, Resultados_esperados, Presupuesto, ID_tipo_iniciativa, ID_sede, ID_Jefe, ID_coordinador, ID_region_origen, ID_region_impacto, ID_estado, Rut_empresa, Comentario_coordinador) 
         VALUES 
-        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt_post = $conexion->prepare($sql_postulacion);
         
         $stmt_post->execute([
-            $id_postulacion, $nombre_in, $objetivo, $descripcion_soluciones, $resultados, $presupuesto, 
-            $tipo_iniciativa, $id_sede, $id_jefe, $id_coordinador, $region_origen, $region_impacto, 
+            $id_postulacion, $fecha_postulacion ,$nombre_in , $objetivo , $descripcion_soluciones , $resultados,  
+            $presupuesto, 
+            $tipo_iniciativa, $id_sede, $id_jefe,  $id_coordinador,  $region_origen,  $region_impacto, 
             $id_estado, $rut_empresa, null
         ]);
 

@@ -12,5 +12,7 @@ Consideraciones:
 - Asumimos que el rol 2 (evaluador/coordinador) no tiene la función de crear postulaciones.
 - Asumimos que uno puede ingresar a la página asumiendo 1 solo rol simultaneamente.
 - Asumimos que no se puede repetir el correo y el teléfono entre 2 personas.
+- Asumimos que se respetará que rut tiene acceso a que rol, siendo esté único por rut.
+- No se le puede poner rol Responsable a otra persona
 
 Instrucciones ejecución:

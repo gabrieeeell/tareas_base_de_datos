@@ -213,7 +213,7 @@ CREATE TABLE CRONOGRAMA (
     Entregable VARCHAR(100) NOT NULL,
     ID_postulacion VARCHAR(20) NOT NULL,
     PRIMARY KEY (ID_cronograma),
-    FOREIGN KEY (ID_postulacion) REFERENCES POSTULACION(ID_postulacion) ON DELETE CASCADE,
+    FOREIGN KEY (ID_postulacion) REFERENCES POSTULACION(ID_postulacion),
     CHECK (Plazos_Semanas <= 36)
 ) ENGINE=InnoDB;
 
@@ -232,6 +232,38 @@ CREATE TABLE PERSONA_POSTULACION (
     Rol VARCHAR(60) NOT NULL,
     PRIMARY KEY (RUT_Persona, ID_postulacion),
     FOREIGN KEY (RUT_Persona) REFERENCES PERSONA(RUT_Persona),
-    FOREIGN KEY (ID_postulacion) REFERENCES POSTULACION(ID_postulacion) ON DELETE CASCADE
+    FOREIGN KEY (ID_postulacion) REFERENCES POSTULACION(ID_postulacion) 
 ) ENGINE=InnoDB;
 
+
+
+
+
+
+
+
+
+
+
+DELIMITER //
+
+CREATE TRIGGER trg_eliminar_cascada_postulacion
+BEFORE DELETE ON POSTULACION
+FOR EACH ROW
+BEGIN
+    DELETE FROM CRONOGRAMA WHERE ID_postulacion = OLD.ID_postulacion;
+    DELETE FROM PERSONA_POSTULACION WHERE ID_postulacion = OLD.ID_postulacion;
+END //
+
+DELIMITER ;
+
+CREATE OR REPLACE VIEW vista_postulaciones_responsables AS
+SELECT 
+    P.ID_Postulacion, 
+    P.Nombre_iniciativa, 
+    E.Nombre_estado AS Estado,
+    PP.Rut_persona,
+    PP.Rol
+FROM POSTULACION P
+JOIN ESTADO_POSTULACION E ON P.ID_estado = E.ID_estado
+JOIN PERSONA_POSTULACION PP ON P.ID_Postulacion = PP.ID_postulacion;
