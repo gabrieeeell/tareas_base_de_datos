@@ -91,7 +91,7 @@ try {
                                         <td><?php echo htmlspecialchars($post['Nombre_iniciativa']); ?></td>
                                         <td>
                                             <?php 
-                                                // Le ponemos un color distinto según el estado
+                                           
                                                 $estado = strtolower($post['Estado']);
                                                 $badge_color = ($estado == 'borrador') ? 'bg-warning text-dark' : 'bg-primary';
                                             ?>
@@ -105,8 +105,11 @@ try {
                                                 
                                                 
                                             <?php else: ?>
-                                                <button class="btn btn-sm btn-outline-secondary" disabled>Solo Lectura</button>
+                                                <a href="T_rol1_vista.php?id=<?php echo urlencode($post['ID_Postulacion']); ?>" class="btn btn-sm btn-outline-secondary">
+                                                    Ver
+                                                </a>
                                             <?php endif; ?>
+
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
