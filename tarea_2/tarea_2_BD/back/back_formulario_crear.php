@@ -41,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $id_postulacion = "MartinGabriel-" . $nuevo_numero;
 
-        // Datos de la Iniciativa
         $fecha_postulacion = filtrar_fecha($_POST['Fecha_postulacion'] ?? '');
         $nombre_in              = filtrar_texto($_POST['Nombre_iniciativa'] ?? '');
         $objetivo               = filtrar_texto($_POST['Objetivo_iniciativa'] ?? '');
@@ -56,27 +55,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_coordinador  = filtrar_id($_POST['ID_coordinador'] ?? '');
         $region_origen   = filtrar_id($_POST['ID_region_origen'] ?? '');
         $region_impacto  = filtrar_id($_POST['ID_region_impacto'] ?? '');
-
-        // Entidad Externa y Representante
         $nombre_empresa = filtrar_texto($_POST['Nombre_empresa'] ?? '');
         $rut_empresa    = filtrar_texto($_POST['Rut_empresa'] ?? $_POST['Rut_Empresa'] ?? '');
         $id_tamano      = filtrar_id($_POST['ID_tamano'] ?? '');
         $convenio_usm   = filtrar_id($_POST['Convenio_USM'] ?? '');
-        
         $nombre_rep     = filtrar_texto($_POST['Nombre_representante'] ?? '');
         $email_rep      = filtrar_texto($_POST['Mail_representante'] ?? '');
         $telefono_rep   = filtrar_texto($_POST['Telefono_representante'] ?? '');
-
-        // Lógica de Estados y Validación Estricta
         $accion = $_POST['accion'] ?? 'borrador';
         
         if ($accion === 'enviar') {
-            $id_estado = 1; // En Revisión
+            $id_estado = 1; 
         } else {
-            $id_estado = 5; // Borrador
+            $id_estado = 5; 
         }
 
-        // Buscamos al representante mediante su correo
         $b_rep = "SELECT ID_Representante FROM REPRESENTANTE_EMPRESA WHERE Mail_representante = ?";
         $s_buscar = $conexion->prepare($b_rep);
         $s_buscar->execute([$email_rep]);
@@ -96,9 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_representante = $conexion->lastInsertId();
         }
 
-        // =========================================================
-        // 2.5 GUARDAR O ACTUALIZAR LA EMPRESA
-        // =========================================================
+
         $sql_empresa = "INSERT INTO EMPRESA (Rut_empresa, Nombre_empresa, Convenio_USM, ID_tamano, ID_representante) 
                         VALUES (?, ?, ?, ?, ?)
                         ON DUPLICATE KEY UPDATE 
@@ -112,9 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $rut_empresa, $nombre_empresa, $convenio_usm, $id_tamano, $id_representante
         ]);
 
-        // =========================================================
-        // 3. INSERTAR LA POSTULACIÓN PRINCIPAL
-        // =========================================================
+
         $sql_postulacion = "INSERT INTO POSTULACION 
         (ID_postulacion, Fecha_postulacion ,Nombre_iniciativa, Objetivo_iniciativa, Descripcion_soluciones, Resultados_esperados, Presupuesto, ID_tipo_iniciativa, ID_sede, ID_Jefe, ID_coordinador, ID_region_origen, ID_region_impacto, ID_estado, Rut_empresa, Comentario_coordinador) 
         VALUES 
@@ -130,9 +119,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
 
 
-        // =========================================================
-        // 4. PROCESAR EQUIPO DE TRABAJO (SEGURO PARA ELEMENTOS VACÍOS)
-        // =========================================================
         $rut_personas   = $_POST['Rut_Persona'] ?? [];
         $nombres        = $_POST['Nombre_persona'] ?? [];
         $deptos         = $_POST['ID_departamento'] ?? [];
@@ -158,35 +144,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         for ($i = 0; $i < count($rut_personas); $i++) {
             $rut_actual = filtrar_texto($rut_personas[$i] ?? '');
-            
-            // Saltamos la fila completa si el RUT viene vacío
             if ($rut_actual === "") continue; 
-
-            // Aplicamos los filtros correspondientes usando protección de índices
             $nombre_actual = filtrar_texto($nombres[$i] ?? '');
             $email_actual  = filtrar_texto($emails[$i] ?? '');
             $fono_actual   = filtrar_texto($telefonos[$i] ?? '');
-            $depto_actual  = filtrar_id($deptos[$i] ?? '');          // Retorna 0 si falta
-            $sede_actual   = filtrar_id($sedes_personas[$i] ?? '');   // Retorna 0 si falta
-            $cargo_actual  = filtrar_id($cargos[$i] ?? '');          // Retorna 0 si falta
+            $depto_actual  = filtrar_id($deptos[$i] ?? '');         
+            $sede_actual   = filtrar_id($sedes_personas[$i] ?? '');   
+            $cargo_actual  = filtrar_id($cargos[$i] ?? '');          
             $rol_actual    = filtrar_texto($roles[$i] ?? '');
-
-            // A. Guardar o actualizar datos básicos del integrante
             $stmt_persona->execute([
                 $rut_actual, $nombre_actual, $email_actual, $fono_actual,
                 $depto_actual, $sede_actual, $cargo_actual
             ]);
 
-            // B. Crear el vínculo entre esta persona y la postulación actual
             $stmt_puente->execute([
                 $rut_actual, $id_postulacion, $rol_actual
             ]);
         }
 
-
-        // =========================================================
-        // 5. PROCESAR CRONOGRAMA (SEGURO PARA ELEMENTOS VACÍOS)
-        // =========================================================
         $etapas      = $_POST['Etapa'] ?? [];
         $plazos      = $_POST['Plazos_semanas'] ?? [];
         $entregables = $_POST['Entregable'] ?? [];
@@ -196,12 +171,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         for ($j = 0; $j < count($etapas); $j++) {
             $etapa_actual = filtrar_texto($etapas[$j] ?? '');
-            
-            // Saltamos la fila completa si la descripción de la etapa viene vacía
             if ($etapa_actual === "") continue;
-
-            // Procesamos plazos y entregables con resguardo de índices
-            $plazo_actual      = filtrar_id($plazos[$j] ?? '');      // Retorna 0 si falta
+            $plazo_actual      = filtrar_id($plazos[$j] ?? '');     
             $entregable_actual = filtrar_texto($entregables[$j] ?? '');
 
             $stmt_crono->execute([
@@ -209,11 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
         }
 
-        // =========================================================
-        // 6. CONFIRMAR TODO Y REDIRIGIR
-        // =========================================================
         $conexion->commit();
-        
         echo "<script>
                 alert('¡Éxito! Postulación guardada con el ID: $id_postulacion');
                 window.location.href = '../Templates/T_rol1.php'; 
@@ -224,6 +191,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Error al guardar la postulación: " . $e->getMessage();
     }
 } else {
-    echo "Acceso no autorizado. Debe ingresar mediante el formulario.";
+    echo "";
 }
 ?>

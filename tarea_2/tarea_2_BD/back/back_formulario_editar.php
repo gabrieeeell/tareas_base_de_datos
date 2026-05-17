@@ -1,8 +1,6 @@
 <?php
 session_start();
 require_once("../BDT1.php");
-
-// 1. Funciones de limpieza de datos de PHP (Mismo idioma que la creación)
 function filtrar_texto($valor) {
     return (isset($valor) && trim($valor) !== "") ? trim($valor) : "";
 }
@@ -16,11 +14,8 @@ function filtrar_fecha($valor) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $conexion->beginTransaction();
-
-        // Capturar el ID de la postulación que estamos editando y la acción
         $id_postulacion = $_POST['ID_postulacion'] ?? '';
 
-        // Capturamos la acción que viene del botón presionado
         if (isset($_POST['accion']) && $_POST['accion'] === 'enviar') {
             $accion = 'enviar';
         } elseif (isset($_POST['accion']) && $_POST['accion'] === 'eliminar') {
@@ -28,40 +23,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif (isset($_POST['accion']) && $_POST['accion'] === 'borrador') {
             $accion = 'borrador';
         } else {
-            $accion = 'borrador'; // Fallback seguro
+            $accion = 'borrador'; 
         }
-
         if (empty($id_postulacion)) {
             throw new Exception("No se especificó el código de la postulación a editar.");
         }
 
-        // =========================================================
-        // INTERCEPCIÓN DE ELIMINACIÓN (DELETE)
-        // =========================================================
+
+
+
+
+
+        // TRIGGER
         if ($accion === 'eliminar') {
             $sql_delete = "DELETE FROM POSTULACION WHERE ID_postulacion = ?";
             $conexion->prepare($sql_delete)->execute([$id_postulacion]);
-            
-            // Confirmamos la eliminación en la BD (Aquí actúa tu Trigger o el Cascade)
+        
             $conexion->commit(); 
             
-            // Redirección silenciosa y limpia directo a tu plantilla
             header("Location: ../Templates/T_rol1.php");
-            exit(); // Frenamos el script por completo aquí
+            exit(); 
         }
 
-        // =========================================================
-        // ASIGNACIÓN DE ESTADO (Para la actualización posterior)
-        // =========================================================
+
+
+
+
+
         if ($accion === 'enviar') {
-            $id_estado = 1; // En Revisión
+            $id_estado = 1; 
         } else {
-            $id_estado = 5; // Mantiene o cambia a Borrador
+            $id_estado = 5; 
         }
 
-        // =========================================================
-        // 2. RECIBIR DATOS GENERALES DEL FORMULARIO
-        // =========================================================
+
         $fecha_postulacion     = filtrar_fecha($_POST['Fecha_postulacion'] ?? '');
         $nombre_in              = filtrar_texto($_POST['Nombre_iniciativa'] ?? '');
         $objetivo               = filtrar_texto($_POST['Objetivo_iniciativa'] ?? '');
@@ -82,9 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email_rep              = filtrar_texto($_POST['Mail_representante'] ?? '');
         $telefono_rep           = filtrar_texto($_POST['Telefono_representante'] ?? '');
 
-        // =========================================================
-        // 3. ACTUALIZAR O INSERTAR REPRESENTANTE Y EMPRESA (Upsert)
-        // =========================================================
+
         $sql_buscar_rep = "SELECT ID_Representante FROM REPRESENTANTE_EMPRESA WHERE Mail_representante = ?";
         $stmt_buscar = $conexion->prepare($sql_buscar_rep);
         $stmt_buscar->execute([$email_rep]);
@@ -101,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_representante = $conexion->lastInsertId();
         }
 
-        // Upsert de la Empresa
+
         $sql_empresa = "INSERT INTO EMPRESA (Rut_empresa, Nombre_empresa, Convenio_USM, ID_tamano, ID_representante) 
                         VALUES (?, ?, ?, ?, ?)
                         ON DUPLICATE KEY UPDATE 
@@ -111,9 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         ID_representante = VALUES(ID_representante)";
         $conexion->prepare($sql_empresa)->execute([$rut_empresa, $nombre_empresa, $convenio_usm, $id_tamano, $id_representante]);
 
-        // =========================================================
-        // 4. ACTUALIZAR LA POSTULACIÓN PRINCIPAL
-        // =========================================================
         $sql_update_post = "UPDATE POSTULACION SET 
                                 Nombre_iniciativa = ?, Objetivo_iniciativa = ?, Descripcion_soluciones = ?, 
                                 Resultados_esperados = ?, Presupuesto = ?, ID_tipo_iniciativa = ?, 
@@ -128,9 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_postulacion     
         ]);
 
-        // =========================================================
-        // 5. SINCRONIZAR EQUIPO DE TRABAJO (Borrar y Re-insertar)
-        // =========================================================
+
         $conexion->prepare("DELETE FROM PERSONA_POSTULACION WHERE ID_postulacion = ?")->execute([$id_postulacion]);
 
         $rut_personas   = $_POST['Rut_Persona'] ?? [];
@@ -179,9 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
         }
 
-        // =========================================================
-        // 6. SINCRONIZAR CRONOGRAMA (Borrar y Re-insertar)
-        // =========================================================
+
         $conexion->prepare("DELETE FROM CRONOGRAMA WHERE ID_postulacion = ?")->execute([$id_postulacion]);
 
         $etapas      = $_POST['Etapa'] ?? [];
@@ -204,9 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
         }
 
-        // =========================================================
-        // 7. CONFIRMAR TRANSACCIÓN DE ACTUALIZACIÓN
-        // =========================================================
+
         $conexion->commit();
         
         echo "<script>
