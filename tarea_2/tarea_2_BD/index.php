@@ -65,7 +65,6 @@ require("BDT1.php");
                                     name="rut_ingreso" 
                                     id="rut_ingreso" 
                                     class="form-control form-control-lg text-center border-secondary"
-                                    placeholder="Pruebaprueba"
                                     required
                                 >
                             </div>
