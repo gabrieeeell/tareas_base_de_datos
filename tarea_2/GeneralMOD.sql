@@ -10,6 +10,7 @@ CREATE TABLE REGION (
 ) ENGINE=InnoDB;
 
 INSERT INTO REGION (ID_region, Nombre_region) VALUES
+(0, 'Vacío'),
 (1, 'Arica y Parinacota'),
 (2, 'Tarapacá'),
 (3, 'Antofagasta'),
@@ -34,6 +35,7 @@ CREATE TABLE SEDE (
 ) ENGINE=InnoDB;
 
 INSERT INTO SEDE (ID_sede, Nombre_Sede) VALUES
+(0, 'Vacío'),
 (1, 'Campus Casa Central Valparaíso'),
 (2, 'Campus San Joaquín'),
 (3, 'Campus Vitacura'),
@@ -47,12 +49,12 @@ CREATE TABLE ESTADO_POSTULACION (
 ) ENGINE=InnoDB;
 
 INSERT INTO ESTADO_POSTULACION (ID_estado, Nombre_estado) VALUES
+(0, 'Vacío'),
 (1, 'En Revisión'),
 (2, 'Aprobada'),
 (3, 'Rechazada'),
 (4, 'Cerrada'),
 (5, 'Borrador');
-
 
 CREATE TABLE CARGO_PERSONA (
     ID_cargo INT NOT NULL,
@@ -61,6 +63,7 @@ CREATE TABLE CARGO_PERSONA (
 ) ENGINE=InnoDB;
 
 INSERT INTO CARGO_PERSONA (ID_cargo, Nombre_cargo) VALUES
+(0, 'Vacío'),
 (1, 'Estudiante'),
 (2, 'Profesor');
 
@@ -70,19 +73,20 @@ CREATE TABLE DEPARTAMENTO (
     PRIMARY KEY (ID_departamento)
 ) ENGINE=InnoDB;
 
-INSERT INTO DEPARTAMENTO (Nombre_departamento) VALUES
-('Aeronáutica'),
-('Arquitectura'),
-('Ciencia de los Materiales / Metalurgia'),
-('Física'),
-('Informática'),
-('Ingeniería Mecánica'),
-('Ingeniería Química y Ambiental'),
-('Matemática'),
-('Obras Civiles'),
-('Construcción y Prevención de Riesgos'),
-('Mecánica'),
-('Estudios Humanísticos');
+INSERT INTO DEPARTAMENTO (ID_departamento, Nombre_departamento) VALUES
+(0, 'Vacío'),
+(1, 'Aeronáutica'),
+(2, 'Arquitectura'),
+(3, 'Ciencia de los Materiales / Metalurgia'),
+(4, 'Física'),
+(5, 'Informática'),
+(6, 'Ingeniería Mecánica'),
+(7, 'Ingeniería Química y Ambiental'),
+(8, 'Matemática'),
+(9, 'Obras Civiles'),
+(10, 'Construcción y Prevención de Riesgos'),
+(11, 'Mecánica'),
+(12, 'Estudios Humanísticos');
 
 CREATE TABLE TIPO_INICIATIVA (
     ID_tipo INT NOT NULL,
@@ -91,6 +95,7 @@ CREATE TABLE TIPO_INICIATIVA (
 ) ENGINE=InnoDB;
 
 INSERT INTO  TIPO_INICIATIVA(ID_tipo, Tipo_iniciativa) VALUES
+(0, 'Vacío'),
 (1, 'Nueva'),
 (2, 'Existente');
 
@@ -114,6 +119,7 @@ CREATE TABLE TAMANO_EMPRESA (
 ) ENGINE=InnoDB;
 
 INSERT INTO  TAMANO_EMPRESA (ID_tamano, Nombre_tamano) VALUES
+(0, 'Vacío'),
 (1, 'Microempresa'),
 (2, 'Mediana'),
 (3, 'Grande');
@@ -143,8 +149,8 @@ CREATE TABLE PERSONA (
     Nombre VARCHAR(100) NOT NULL,
     ID_departamento INT NOT NULL,
     ID_sede INT NOT NULL,
-    eMail VARCHAR(255) NOT NULL UNIQUE,
-    Telefono VARCHAR(12) UNIQUE,
+    eMail VARCHAR(255) NOT NULL,
+    Telefono VARCHAR(12),
     ID_cargo INT NOT NULL,
     PRIMARY KEY (RUT_Persona),
     FOREIGN KEY (ID_sede) REFERENCES SEDE(ID_sede),
@@ -170,6 +176,7 @@ CREATE TABLE POSTULACION (
     ID_tipo_iniciativa INT NOT NULL,
     ID_jefe INT NOT NULL,
     ID_coordinador INT NOT NULL,
+    Comentario_coordinador VARCHAR(255) NULL,
     PRIMARY KEY (ID_postulacion),
     FOREIGN KEY (Rut_Empresa) REFERENCES EMPRESA(Rut_Empresa),
     FOREIGN KEY (ID_sede) REFERENCES SEDE(ID_sede),
@@ -306,12 +313,13 @@ INSERT INTO PERSONA VALUES ('6.789.012-3','Sergio Quintana',3,3,'sergio.quintana
 INSERT INTO PERSONA VALUES ('7.890.123-4','Gloria Venegas',5,4,'gloria.venegas@usm.cl','+56991230054',2);
 INSERT INTO PERSONA VALUES ('8.901.234-5','Hugo Becerra',7,5,'hugo.becerra@usm.cl','+56991230055',2);
 
-INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('Lionel Valenzuela');
-INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('Andrea Urrutia');
-INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('Claudio Acuña');
-INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('José Luis Martí');
-INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('Marcelo Villena');
-INSERT INTO JEFE_CARRERA (Nombre_jefe) VALUES ('Agustín González');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe) VALUES (0, 'Vacío');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe) VALUES (1, 'Lionel Valenzuela');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe)VALUES (2, 'Andrea Urrutia');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe) VALUES (3, 'Claudio Acuña');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe) VALUES (4, 'José Luis Martí');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe) VALUES (5, 'Marcelo Villena');
+INSERT INTO JEFE_CARRERA (ID_jefe, Nombre_jefe) VALUES (6, 'Agustín González');
 
 
 INSERT INTO COORDINADOR (ID_coordinador, Nombre_coordinador, rut_coordinador) VALUES (0, 'Sin Coordinador', '22.222.222-0');
@@ -330,7 +338,7 @@ INSERT INTO POSTULACION VALUES (
 'Implementar estaciones inteligentes para mejorar el reciclaje en campus universitarios',
 'Desarrollo de contenedores con sensores IoT que separan residuos automáticamente',
 'Reducción del 30% de residuos mal clasificados en el campus',
-25000000, '76.123.456-7', 1, 1, 5, 5, 1, 2, 3
+25000000, '76.123.456-7', 1, 1, 5, 5, 1, 2, 3,NULL
 );
 
 INSERT INTO POSTULACION VALUES (
@@ -339,7 +347,7 @@ INSERT INTO POSTULACION VALUES (
 'Optimizar los tiempos de traslado de estudiantes mediante rutas eficientes',
 'Desarrollo de una app que sugiere rutas en tiempo real usando datos de tráfico',
 'Disminución de un 20% en tiempos de traslado promedio',
-18000000, '77.234.567-8', 2, 2, 13, 13, 1, 1, 4
+18000000, '77.234.567-8', 2, 2, 13, 13, 1, 1, 4,NULL
 );
 
 INSERT INTO POSTULACION VALUES (
@@ -348,7 +356,7 @@ INSERT INTO POSTULACION VALUES (
 'Reducir el consumo energético en infraestructura universitaria',
 'Instalación de sensores para medir consumo y plataforma de análisis',
 'Ahorro energético del 15% en edificios monitoreados',
-32000000, '78.345.678-9', 3, 1, 7, 7, 1, 3, 2
+32000000, '78.345.678-9', 3, 1, 7, 7, 1, 3, 2,NULL
 );
 
 INSERT INTO POSTULACION VALUES (
@@ -357,7 +365,7 @@ INSERT INTO POSTULACION VALUES (
 'Optimizar procesos administrativos mediante actualización de ERP',
 'Refactorización de módulos críticos y mejora de interfaz de usuario',
 'Reducción de tiempos de gestión en un 25%',
-12000000, '79.456.789-K', 4, 3, 6, 6, 2, 4, 1
+12000000, '79.456.789-K', 4, 3, 6, 6, 2, 4, 1,NULL
 );
 
 INSERT INTO POSTULACION VALUES (
@@ -366,7 +374,7 @@ INSERT INTO POSTULACION VALUES (
 'Apoyar el bienestar emocional mediante herramientas digitales',
 'Desarrollo de app con seguimiento emocional y contacto con profesionales',
 'Aumento en acceso a apoyo psicológico en un 40%',
-22000000, '75.567.890-1', 5, 1, 13, 13, 1, 5, 2
+22000000, '75.567.890-1', 5, 1, 13, 13, 1, 5, 2,NULL
 );
 
 INSERT INTO POSTULACION VALUES (
@@ -375,7 +383,7 @@ INSERT INTO POSTULACION VALUES (
 'Optimizar uso de agua en cultivos mediante automatización',
 'Sensores de humedad conectados a sistema de riego inteligente',
 'Reducción del consumo de agua en un 35%',
-27000000, '74.678.901-2', 1, 2, 8, 8, 1, 6, 5
+27000000, '74.678.901-2', 1, 2, 8, 8, 1, 6, 5,NULL
 );
 
 INSERT INTO POSTULACION VALUES (
@@ -384,7 +392,7 @@ INSERT INTO POSTULACION VALUES (
 'Mejorar la experiencia de aprendizaje virtual',
 'Incorporación de analíticas de aprendizaje y contenido interactivo',
 'Aumento del rendimiento académico en cursos online',
-15000000, '76.123.456-7', 2, 1, 9, 9, 2, 2, 6
+15000000, '76.123.456-7', 2, 1, 9, 9, 2, 2, 6,NULL
 );
 
 INSERT INTO POSTULACION VALUES (
@@ -393,7 +401,7 @@ INSERT INTO POSTULACION VALUES (
 'Reducir impacto ambiental de residuos industriales',
 'Implementación de software de trazabilidad de residuos',
 'Disminución de residuos peligrosos no tratados',
-35000000, '77.234.567-8', 3, 4, 2, 2, 1, 3, 4
+35000000, '77.234.567-8', 3, 4, 2, 2, 1, 3, 4,NULL
 );
 
 INSERT INTO POSTULACION VALUES (
@@ -402,7 +410,7 @@ INSERT INTO POSTULACION VALUES (
 'Mejorar la seguridad mediante reportes en tiempo real',
 'Aplicación móvil para reportar incidentes con geolocalización',
 'Reducción de incidentes no reportados en un 50%',
-14000000, '78.345.678-9', 4, 2, 5, 5, 1, 1, 3
+14000000, '78.345.678-9', 4, 2, 5, 5, 1, 1, 3,NULL
 );
 
 INSERT INTO POSTULACION VALUES (
@@ -411,7 +419,7 @@ INSERT INTO POSTULACION VALUES (
 'Reducir tiempos de despacho en centros de distribución',
 'Implementación de sistema de picking automatizado',
 'Disminución del tiempo de despacho en un 30%',
-28000000, '79.456.789-K', 5, 1, 13, 13, 1, 4, 2
+28000000, '79.456.789-K', 5, 1, 13, 13, 1, 4, 2,NULL
 );
 
 INSERT INTO POSTULACION VALUES (
@@ -420,7 +428,7 @@ INSERT INTO POSTULACION VALUES (
 'Mejorar eficiencia en recolección de basura',
 'Implementación de sensores IoT en contenedores',
 'Reducción de costos operativos en un 25%',
-28000000, '78.345.678-9', 1, 2, 6, 6, 1, 3, 4
+28000000, '78.345.678-9', 1, 2, 6, 6, 1, 3, 4,NULL
 );
 
 INSERT INTO POSTULACION VALUES (
@@ -429,7 +437,7 @@ INSERT INTO POSTULACION VALUES (
 'Optimizar consumo energético en infraestructura institucional',
 'Desarrollo de dashboard de consumo en tiempo real',
 'Ahorro energético del 20% anual',
-30000000, '77.234.567-8', 2, 2, 8, 2, 1, 2, 5
+30000000, '77.234.567-8', 2, 2, 8, 2, 1, 2, 5,NULL
 );
 
 
@@ -439,7 +447,7 @@ INSERT INTO POSTULACION VALUES (
 'Disminuir fallas inesperadas en equipos productivos',
 'Aplicación de machine learning para mantenimiento predictivo',
 'Reducción de fallas en un 35%',
-32000000, '76.123.456-7', 3, 1, 1, 1, 2, 1, 2
+32000000, '76.123.456-7', 3, 1, 1, 1, 2, 1, 2,NULL
 );
 
 
@@ -513,7 +521,6 @@ INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUE
 INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
 ('implementacion piloto y evaluacion', 8, 'reporte de eficiencia y optimizacion lograda', 'MartinGabriel-11');
 
-
 INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
 ('levantamiento de requerimientos energeticos', 5, 'documento de variables y puntos de medicion', 'MartinGabriel-12');
 
@@ -523,7 +530,6 @@ INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUE
 INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
 ('analisis de consumo y optimizacion', 7, 'informe con recomendaciones de ahorro', 'MartinGabriel-12');
 
-
 INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
 ('recoleccion y preparacion de datos de maquinaria', 6, 'dataset estructurado para analisis', 'MartinGabriel-13');
 
@@ -532,9 +538,10 @@ INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUE
 
 INSERT INTO CRONOGRAMA (Etapa, Plazos_Semanas, Entregable, ID_postulacion) VALUES
 ('validacion e implementacion en entorno real', 9, 'reporte de reduccion de fallas', 'MartinGabriel-13');
+
 -- ===================== 1) RECICLAJE =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.234.567-2','MartinGabriel-1','desarrollo backend sistema IoT'),
+('20.234.567-2','MartinGabriel-1','Responsable'),
 ('22.456.789-4','MartinGabriel-1','analisis impacto ambiental residuos'),
 ('21.345.678-3','MartinGabriel-1','diseño estructura contenedores'),
 ('20.789.012-7','MartinGabriel-1','integracion sensores mecanicos'),
@@ -545,7 +552,7 @@ INSERT INTO PERSONA_POSTULACION VALUES
 
 -- ===================== 2) TRANSPORTE =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.303.404-2','MartinGabriel-2','modelado rutas transporte'),
+('20.303.404-2','MartinGabriel-2','Responsable'),
 ('20.808.909-7','MartinGabriel-2','optimizacion algoritmos rutas'),
 ('21.890.123-8','MartinGabriel-2','analisis matematico trafico'),
 ('22.901.234-9','MartinGabriel-2','levantamiento datos viales'),
@@ -555,7 +562,7 @@ INSERT INTO PERSONA_POSTULACION VALUES
 
 -- ===================== 3) ENERGIA =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('21.404.505-3','MartinGabriel-3','analisis consumo energetico'),
+('21.404.505-3','MartinGabriel-3','Responsable'),
 ('21.909.010-8','MartinGabriel-3','modelos fisicos consumo'),
 ('20.818.919-7','MartinGabriel-3','integracion sensores energeticos'),
 ('13.890.123-4','MartinGabriel-3','modelos matematicos de optimizacion'),
@@ -567,7 +574,7 @@ INSERT INTO PERSONA_POSTULACION VALUES
 
 -- ===================== 4) ERP =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.313.414-2','MartinGabriel-4','refactorizacion backend'),
+('20.313.414-2','MartinGabriel-4','Responsable'),
 ('18.616.717-5','MartinGabriel-4','desarrollo modulos sistema'),
 ('22.444.555-4','MartinGabriel-4','interfaz usuario ERP'),
 ('19.111.222-1','MartinGabriel-4','optimizacion procesos internos'),
@@ -578,7 +585,7 @@ INSERT INTO PERSONA_POSTULACION VALUES
 
 -- ===================== 5) SALUD MENTAL =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.222.333-2','MartinGabriel-5','analisis experiencia usuario'),
+('20.222.333-2','MartinGabriel-5','Responsable'),
 ('21.890.123-8','MartinGabriel-5','modelos estadisticos bienestar'),
 ('22.010.111-9','MartinGabriel-5','interfaz app emocional'),
 ('19.666.777-6','MartinGabriel-5','diseño espacios digitales'),
@@ -589,7 +596,7 @@ INSERT INTO PERSONA_POSTULACION VALUES
 
 -- ===================== 6) RIEGO =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('18.567.890-5','MartinGabriel-6','analisis sistemas aeronauticos sensores'),
+('18.567.890-5','MartinGabriel-6','Responsable'),
 ('20.789.012-7','MartinGabriel-6','diseño sistema riego mecanico'),
 ('18.555.666-5','MartinGabriel-6','analisis quimico suelo'),
 ('22.901.234-9','MartinGabriel-6','levantamiento terreno'),
@@ -600,7 +607,7 @@ INSERT INTO PERSONA_POSTULACION VALUES
 
 -- ===================== 7) E-LEARNING =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.234.567-2','MartinGabriel-7','backend plataforma educativa'),
+('20.234.567-2','MartinGabriel-7','Responsable'),
 ('20.222.333-2','MartinGabriel-7','contenido humanistico digital'),
 ('21.345.678-3','MartinGabriel-7','diseño interfaz educativa'),
 ('21.909.010-8','MartinGabriel-7','analisis fisico interaccion'),
@@ -610,7 +617,7 @@ INSERT INTO PERSONA_POSTULACION VALUES
 
 -- ===================== 8) RESIDUOS INDUSTRIALES =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('18.555.666-5','MartinGabriel-8','analisis quimico residuos'),
+('18.555.666-5','MartinGabriel-8','Responsable'),
 ('19.707.808-6','MartinGabriel-8','propiedades materiales residuos'),
 ('18.616.717-5','MartinGabriel-8','desarrollo software trazabilidad'),
 ('22.901.234-9','MartinGabriel-8','levantamiento procesos industriales'),
@@ -622,7 +629,7 @@ INSERT INTO PERSONA_POSTULACION VALUES
 
 -- ===================== 9) SEGURIDAD =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.234.567-2','MartinGabriel-9','backend sistema seguridad'),
+('20.234.567-2','MartinGabriel-9','Responsable'),
 ('22.444.555-4','MartinGabriel-9','interfaz reportes'),
 ('21.890.123-8','MartinGabriel-9','modelos matematicos riesgo'),
 ('22.901.234-9','MartinGabriel-9','analisis infraestructura'),
@@ -633,7 +640,7 @@ INSERT INTO PERSONA_POSTULACION VALUES
 
 -- ===================== 10) LOGISTICA =====================
 INSERT INTO PERSONA_POSTULACION VALUES
-('20.789.012-7','MartinGabriel-10','optimizacion mecanica picking'),
+('20.789.012-7','MartinGabriel-10','Responsable'),
 ('21.890.123-8','MartinGabriel-10','modelos matematicos logistica'),
 ('22.901.234-9','MartinGabriel-10','analisis obras civiles bodega'),
 ('20.303.404-2','MartinGabriel-10','procesos mecanicos'),
@@ -644,210 +651,60 @@ INSERT INTO PERSONA_POSTULACION VALUES
 
 -- 11
 
-INSERT INTO PERSONA_POSTULACION VALUES ('20.234.567-2','MartinGabriel-11','desarrollo de dashboard de monitoreo de contenedores');
+INSERT INTO PERSONA_POSTULACION VALUES ('20.234.567-2','MartinGabriel-11','Responsable');
 INSERT INTO PERSONA_POSTULACION VALUES ('21.345.678-3','MartinGabriel-11','diseño de infraestructura urbana para ubicacion de sensores');
 INSERT INTO PERSONA_POSTULACION VALUES ('22.456.789-4','MartinGabriel-11','analisis de impacto ambiental del sistema');
 INSERT INTO PERSONA_POSTULACION VALUES ('20.789.012-7','MartinGabriel-11','integracion de hardware y sensores IoT');
 INSERT INTO PERSONA_POSTULACION VALUES ('21.890.123-8','MartinGabriel-11','modelamiento matematico de optimizacion de rutas');
-
 INSERT INTO PERSONA_POSTULACION VALUES ('7.234.567-8','MartinGabriel-11','supervision tecnica de sensores y materiales');
 INSERT INTO PERSONA_POSTULACION VALUES ('8.345.678-9','MartinGabriel-11','asesoria en desarrollo de plataforma informatica');
 INSERT INTO PERSONA_POSTULACION VALUES ('9.456.789-0','MartinGabriel-11','guia en evaluacion ambiental del proyecto');
 
 -- 12 
 
-INSERT INTO PERSONA_POSTULACION VALUES ('22.444.555-4','MartinGabriel-12','desarrollo de interfaz de usuario para monitoreo energetico');
+INSERT INTO PERSONA_POSTULACION VALUES ('22.444.555-4','MartinGabriel-12','Responsable');
 INSERT INTO PERSONA_POSTULACION VALUES ('18.555.666-5','MartinGabriel-12','analisis de eficiencia energetica en sistemas quimicos');
 INSERT INTO PERSONA_POSTULACION VALUES ('20.777.888-7','MartinGabriel-12','procesamiento de datos de consumo energetico');
 INSERT INTO PERSONA_POSTULACION VALUES ('21.888.999-8','MartinGabriel-12','simulacion de comportamiento energetico');
 INSERT INTO PERSONA_POSTULACION VALUES ('20.808.909-7','MartinGabriel-12','desarrollo de backend para almacenamiento de datos');
-
 INSERT INTO PERSONA_POSTULACION VALUES ('13.890.123-4','MartinGabriel-12','orientacion en modelamiento matematico');
 INSERT INTO PERSONA_POSTULACION VALUES ('12.789.012-3','MartinGabriel-12','supervision en sistemas mecanicos y consumo');
 INSERT INTO PERSONA_POSTULACION VALUES ('8.901.234-5','MartinGabriel-12','asesoria en eficiencia energetica aplicada');
 
 -- 13
 
-INSERT INTO PERSONA_POSTULACION VALUES ('19.123.456-1','MartinGabriel-13','analisis de datos historicos de fallas');
+INSERT INTO PERSONA_POSTULACION VALUES ('19.123.456-1','MartinGabriel-13','Responsable');
 INSERT INTO PERSONA_POSTULACION VALUES ('19.678.901-6','MartinGabriel-13','procesamiento de señales de sensores');
 INSERT INTO PERSONA_POSTULACION VALUES ('20.303.404-2','MartinGabriel-13','modelamiento de sistemas mecanicos');
 INSERT INTO PERSONA_POSTULACION VALUES ('21.909.010-8','MartinGabriel-13','analisis fisico de comportamiento de maquinaria');
 INSERT INTO PERSONA_POSTULACION VALUES ('22.010.111-9','MartinGabriel-13','simulacion de escenarios de falla');
-
 INSERT INTO PERSONA_POSTULACION VALUES ('16.123.456-7','MartinGabriel-13','supervision de sistemas mecanicos');
 INSERT INTO PERSONA_POSTULACION VALUES ('11.678.901-2','MartinGabriel-13','asesoria en analisis fisico de fallas');
 INSERT INTO PERSONA_POSTULACION VALUES ('6.789.012-3','MartinGabriel-13','guia en comportamiento de materiales');
 
--- Querys
 
--- Query 1
-/* Entrega un listado general de las postulaciones incluyendo su número, fecha, tipo de iniciativa, 
-sede, regiones (de impacto y origen), empresa y presupuesto. Esto se logra vinculando la tabla 
-de postulaciones con todas las tablas que contienen informacion relevante de esta mediante inner 
-joins para obtener los nombres descriptivos asociados a cada ID. */
+DELIMITER //
+
+CREATE TRIGGER trg_eliminar_cascada_postulacion
+BEFORE DELETE ON POSTULACION
+FOR EACH ROW
+BEGIN
+    DELETE FROM CRONOGRAMA WHERE ID_postulacion = OLD.ID_postulacion;
+    DELETE FROM PERSONA_POSTULACION WHERE ID_postulacion = OLD.ID_postulacion;
+END //
+
+DELIMITER ;
+
+CREATE OR REPLACE VIEW vista_postulaciones_responsables AS
 SELECT 
-    P.Numero_postulacion, 
-    P.Fecha_postulacion, 
-    T.Tipo_iniciativa,
-    S.Nombre_Sede,
-    R_I.Nombre_region,
-    R_O.Nombre_region,
-    E.Nombre_empresa,
-    P.Presupuesto
-FROM POSTULACION P
-INNER JOIN TIPO_INICIATIVA T ON P.ID_tipo_iniciativa = T.ID_tipo
-INNER JOIN SEDE S ON P.ID_sede = S.ID_sede
-INNER JOIN REGION R_I ON P.ID_region_impacto = R_I.ID_region
-INNER JOIN REGION R_O ON P.ID_region_origen = R_O.ID_region
-INNER JOIN EMPRESA E ON P.Rut_Empresa = E.Rut_Empresa;
-
-
--- Query 2
-/* Lista las postulaciones que se ejecutan específicamente en la región de Valparaíso (o la región 
-especificada), mostrando la empresa, la sede y el presupuesto. Se logra vinculando las tablas que 
-contienen la información necesaria sobre las empresas (como region impacto y origen) y aplicando 
-un filtro where sobre el nombre de la región de impacto para limitar los resultados. 
-*/
-SELECT 
-    E.Nombre_empresa,
-    S.Nombre_Sede,
-    P.Presupuesto
-FROM POSTULACION P
-INNER JOIN SEDE S ON P.ID_sede = S.ID_sede
-INNER JOIN REGION R_I ON P.ID_region_impacto = R_I.ID_region
-INNER JOIN EMPRESA E ON P.Rut_Empresa = E.Rut_Empresa
-WHERE R_I.Nombre_region = 'Valparaíso';
-
-
--- Query 3
-/* Cuenta cuántas postulaciones existen para cada tipo de iniciativa (Nueva o Existente). 
-Esto se logra mediante un inner join con la tabla de tipos y el uso de contadores 
-condicionales (count con case) para clasificar cada registro según su tipo. */
-
-SELECT
-    COUNT(CASE WHEN T.Tipo_iniciativa = 'Nueva' THEN 1 END) AS total_nuevas,
-    COUNT(CASE WHEN T.Tipo_iniciativa = 'Existente' THEN 1 END) AS existentes
-FROM POSTULACION P
-INNER JOIN TIPO_INICIATIVA T ON P.ID_tipo_iniciativa = T.ID_tipo;
-
-
--- Query 4
-/* Entrega la información detallada del equipo de trabajo (rut, nombre, cargo, sede, email y rol) 
-que se especifique según la ID_postulación o Numero de postulación. Esto se consigue vinculando el campo 
-Rut_Persona de la tabla intermedia de integrantes el mismo campo de la tabla PERSONA */
-SELECT
-    PP.RUT_Persona,
-    P.Nombre,
-    C.Nombre_cargo,
-    S.Nombre_sede,
-    P.eMail,
+    P.ID_Postulacion, 
+    P.Nombre_iniciativa, 
+    E.Nombre_estado AS Estado,
+    PP.Rut_persona,
     PP.Rol
-FROM PERSONA_POSTULACION PP
-INNER JOIN PERSONA P ON P.RUT_Persona = PP.RUT_Persona
-INNER JOIN CARGO_PERSONA C ON C.ID_cargo = P.ID_cargo 
-INNER JOIN SEDE S ON S.ID_sede = P.ID_sede
-INNER JOIN POSTULACION PO ON PO.ID_postulacion = PP.ID_postulacion
-WHERE PP.ID_postulacion = 'MartinGabriel-5' OR PO.Numero_postulacion = 5;
-
-
--- Query 5
-/* Muestra el tamaño de las empresas, su estado de convenio y la cantidad total de postulaciones 
-asociadas, ordenadas de mayor a menor actividad. Se utiliza un left join para no excluir a 
-las empresas sin postulaciones y un group by para totalizar los registros por empresa.
-En el pdf no especificaba listar el nombre asi que no se incluye
- */
-SELECT
-    T.Nombre_tamano,
-    E.Convenio_USM,
-    COUNT(P.ID_postulacion) AS Total_Postulaciones
-FROM EMPRESA E
-INNER JOIN TAMANO_EMPRESA T ON E.ID_tamano = T.ID_tamano
-LEFT JOIN POSTULACION P ON E.Rut_Empresa = P.Rut_Empresa
-GROUP BY 
-    T.Nombre_tamano, 
-    E.Convenio_USM
-ORDER BY Total_Postulaciones DESC;
-
-
--- Query 6
-/* Lista las postulaciones cuyo presupuesto es mayor al promedio general de todas las registradas. 
-Para ello se usa una subconsulta select dentro el filtro where, la cual calcula el 
-promedio global antes de comparar cada fila individualmente. */
-SELECT
-    P.Numero_postulacion,
-    E.Nombre_empresa,
-    P.Presupuesto
 FROM POSTULACION P
-INNER JOIN EMPRESA E ON E.Rut_Empresa = P.Rut_Empresa
-WHERE P.Presupuesto > (SELECT AVG(Presupuesto) FROM POSTULACION);
-
-
--- Query 7
-/* Entrega la cantidad de profesores y estudiantes por cada postulación, generando una fila 
-distinta para cada cargo. Esto se hace utilizando grpup by con el número de postulación 
-y el nombre del cargo, lo que permite realizar el conteo separado por cada tipo de integrante. */
-SELECT
-    P.Numero_postulacion,
-    C.Nombre_cargo,
-    COUNT(PP.Rut_Persona) AS Cantidad_integrantes
-FROM POSTULACION P
-INNER JOIN PERSONA_POSTULACION PP ON PP.ID_postulacion = P.ID_postulacion
-INNER JOIN PERSONA PE ON PP.RUT_Persona = PE.RUT_Persona
-INNER JOIN CARGO_PERSONA C ON C.ID_cargo = PE.ID_cargo
-GROUP BY 
-    P.Numero_postulacion, 
-    C.Nombre_cargo
-ORDER BY P.Numero_postulacion;
-
-
--- Query 8
-/* Identifica las postulaciones que no cumplen con el equipo mínimo de 5 estudiantes o 3 profesores. 
-Para ello se agrupa por postulación y usando contadores condicionales para obtener los 
-totales de cada cargo en una misma fila, filtrando el resultado final con having. */
-SELECT 
-    P.Numero_postulacion,
-    COUNT(CASE WHEN C.Nombre_cargo = 'Estudiante' THEN 1 END) AS num_estudiantes,
-    COUNT(CASE WHEN C.Nombre_cargo = 'Profesor' THEN 1 END) AS num_profesores
-FROM POSTULACION P
-INNER JOIN PERSONA_POSTULACION PP ON P.ID_postulacion = PP.ID_postulacion
-INNER JOIN PERSONA PE ON PP.Rut_Persona = PE.Rut_Persona
-INNER JOIN CARGO_PERSONA C ON PE.ID_cargo = C.ID_cargo
-GROUP BY P.Numero_postulacion
-HAVING num_estudiantes < 5 OR num_profesores < 3;
-
-
--- Query 9
-/* Lista las empresas registradas que actualmente no tienen ninguna postulación asociada. 
-Se logra mediante un left join (naturalmente ya que se quieren considerar las sin coincidencias) 
-hacia la tabla de postulaciones y un filtro where que selecciona únicamente los registros donde 
-no existe una coincidencia (valores nulos). */
-SELECT
-    E.Nombre_empresa,
-    E.Rut_Empresa,
-    T.Nombre_tamano
-FROM EMPRESA E
-INNER JOIN TAMANO_EMPRESA T ON E.ID_tamano = T.ID_tamano
-LEFT JOIN POSTULACION P ON E.Rut_Empresa = P.Rut_Empresa
-WHERE P.Rut_Empresa IS NULL;
-
-
--- Query 10
-/* Entrega el numero de postulación, ID de postulación, la suma de cronogramas asociados a esta 
-postulación (numero de etapas) y la sumatoria de las semanas totales. Esto se logra vinculando 
-las tablas mediante un inner join y usando group by para agrupar en un mismo registro los 
-cronogramas de cada postulación, aplicando después el filtro having para las que superan 36 semanas. */
-SELECT
-    P.Numero_postulacion,
-    P.ID_postulacion,
-    COUNT(C.ID_postulacion) AS Total_Etapas,
-    SUM(C.Plazos_Semanas) AS Total_Semanas
-FROM POSTULACION P
-INNER JOIN CRONOGRAMA C ON C.ID_postulacion = P.ID_postulacion
-GROUP BY 
-    P.Numero_postulacion, 
-    P.ID_postulacion
-HAVING SUM(C.Plazos_Semanas) > 36;
-
+JOIN ESTADO_POSTULACION E ON P.ID_estado = E.ID_estado
+JOIN PERSONA_POSTULACION PP ON P.ID_Postulacion = PP.ID_postulacion;
 
 DELIMITER //
 

@@ -15,7 +15,7 @@ $nombre_usuario = "Postulante";
 // ponemos signo de "?" ya que de esta forma se espera un dato, que luego se rellena con execute(dato) y asi se envian por separado, lo que evita que se pueda hacer una
 // inyección SQL del tipo "rut_persona= 1" OR "1" = "1" " lo que haría que se mostraran todos los datos de todos los usuarios
 try {
-    $stmt_user = $conexion->prepare("SELECT Nombre FROM Persona WHERE Rut_persona = ?");
+    $stmt_user = $conexion->prepare("SELECT Nombre FROM PERSONA WHERE RUT_Persona = ?");
     $stmt_user->execute([$Rut_resp]);
     if ($row = $stmt_user->fetch(PDO::FETCH_ASSOC)) {
         $nombre_usuario = $row['Nombre'];
@@ -25,7 +25,7 @@ try {
 try {
     $sql = "SELECT ID_Postulacion, Nombre_iniciativa, Estado 
             FROM vista_postulaciones_responsables 
-            WHERE Rut_persona = ? AND Rol = 'Responsable'";
+            WHERE RUT_Persona = ? AND Rol = 'Responsable'";
             
     $stmt_postulaciones = $conexion->prepare($sql);
     $stmt_postulaciones->execute([$Rut_resp]);
