@@ -5,8 +5,8 @@ session_start();
 require_once("../BDT1.php");
 // Capturamos el término de búsqueda (soporta POST para el buscador y GET para limpiar)
 $busqueda = $_POST['buscar'] ?? ($_GET['buscar'] ?? '');
-$f_reg_origen = $_POST['reg_origen'] ?? '';
-$f_reg_impacto = $_POST['reg_impacto'] ?? '';
+$f_reg_origen = $_POST['id_reg_origen'] ?? '';
+$f_reg_impacto = $_POST['id_reg_impacto'] ?? '';
 $f_sede = $_POST['sede'] ?? '';
 $f_tipo = $_POST['tipo_iniciativa'] ?? '';
 $f_tamano = $_POST['tamano_empresa'] ?? '';
@@ -17,6 +17,11 @@ $f_id_coordinador = $_POST['id_coordinador'] ?? '';
 // Obtener la lista de coordinadores para el select
 $stmt_c = $conexion->query("SELECT Nombre_coordinador, ID_coordinador FROM COORDINADOR");
 $coordinadores_lista = $stmt_c->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt_regiones = $conexion->prepare("SELECT ID_region, Nombre_region FROM REGION");
+$stmt_regiones->execute();
+
+$regiones = $stmt_regiones->fetchAll(PDO::FETCH_ASSOC);
 
 // Procesar ELIMINAR Coordinador
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_eliminar_coordinador'])) {
@@ -60,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_actualizar_coordin
     $id_coord_nuevo = $_POST['nuevo_coordinador_id'];
 
     try {
-        $upd_coord = $conexion->prepare("UPDATE POSTULACION SET ID_coordinador = :coord WHERE Numero_postulacion = :id");
+        $upd_coord = $conexion->prepare("CALL sp_actualizar_coordinador_postulacion(:coord, :id)");
         $upd_coord->execute([
             ':coord' => $id_coord_nuevo,
             ':id'    => $id_postulacion
@@ -93,7 +98,9 @@ try {
                 S.Nombre_Sede,
                 T.Tipo_iniciativa,
                 J.Nombre_jefe,
-                C.Nombre_coordinador
+                C.Nombre_coordinador,
+                P.ID_region_impacto,
+                P.ID_region_origen
             FROM POSTULACION P
             LEFT JOIN TIPO_INICIATIVA T ON P.ID_tipo_iniciativa = T.ID_tipo
             LEFT JOIN SEDE S ON P.ID_sede = S.ID_sede
@@ -118,7 +125,7 @@ try {
 
     // Filtros avanzados - Ajustados según tu descripción
     if ($f_reg_origen !== '') {
-        $condiciones[] = "R_O.Nombre_region = :reg_o";
+        $condiciones[] = "R_O.ID_region = :reg_o";
         $params[':reg_o'] = $f_reg_origen;
     }
     if ($f_reg_impacto !== '') {
@@ -229,20 +236,24 @@ try {
                                 <!-- Región Origen -->
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Región Ejecución</label>
-                                    <select name="reg_origen" class="form-select">
+                                    <select name="id_reg_origen" class="form-select">
                                         <option value="">Todas</option>
                                         <?php foreach($regiones as $r): ?>
-                                            <option value="<?php echo $r; ?>" <?php echo ($f_reg_origen == $r) ? 'selected' : ''; ?>><?php echo $r; ?></option>
+                                            <option value="<?php echo $r['ID_region']; ?>" <?php echo ($f_reg_origen == $r['ID_region']) ? 'selected' : ''; ?>>
+                                                <?php echo $r['Nombre_region']; ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <!-- Región Impacto -->
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Región Impacto</label>
-                                    <select name="reg_impacto" class="form-select">
+                                    <select name="id_reg_impacto" class="form-select">
                                         <option value="">Todas</option>
                                         <?php foreach($regiones as $r): ?>
-                                            <option value="<?php echo $r; ?>" <?php echo ($f_reg_impacto == $r) ? 'selected' : ''; ?>><?php echo $r; ?></option>
+                                            <option value="<?php echo $r['ID_region']; ?>" <?php echo ($f_reg_impacto == $r['ID_region']) ? 'selected' : ''; ?>>
+                                                <?php echo $r['Nombre_region']; ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>

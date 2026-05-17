@@ -235,16 +235,6 @@ CREATE TABLE PERSONA_POSTULACION (
     FOREIGN KEY (ID_postulacion) REFERENCES POSTULACION(ID_postulacion) 
 ) ENGINE=InnoDB;
 
-
-
-
-
-
-
-
-
-
-
 DELIMITER //
 
 CREATE TRIGGER trg_eliminar_cascada_postulacion
@@ -267,3 +257,18 @@ SELECT
 FROM POSTULACION P
 JOIN ESTADO_POSTULACION E ON P.ID_estado = E.ID_estado
 JOIN PERSONA_POSTULACION PP ON P.ID_Postulacion = PP.ID_postulacion;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_actualizar_coordinador_postulacion(
+    IN p_id_coordinador INT,
+    IN p_numero_postulacion INT
+)
+BEGIN
+    UPDATE POSTULACION 
+    SET ID_coordinador = p_id_coordinador 
+    WHERE Numero_postulacion = p_numero_postulacion;
+END //
+
+DELIMITER ;
+

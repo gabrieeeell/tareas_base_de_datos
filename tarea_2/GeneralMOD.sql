@@ -847,3 +847,18 @@ GROUP BY
     P.Numero_postulacion, 
     P.ID_postulacion
 HAVING SUM(C.Plazos_Semanas) > 36;
+
+
+DELIMITER //
+
+CREATE PROCEDURE sp_actualizar_coordinador_postulacion(
+    IN p_id_coordinador INT,
+    IN p_numero_postulacion INT
+)
+BEGIN
+    UPDATE POSTULACION 
+    SET ID_coordinador = p_id_coordinador 
+    WHERE Numero_postulacion = p_numero_postulacion;
+END //
+
+DELIMITER ;
