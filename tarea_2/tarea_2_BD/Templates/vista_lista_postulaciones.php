@@ -45,6 +45,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_eliminar_coordinad
     }
 }
 
+// Procesar la actualización si se envió el formulario
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_guardar_cambios'])) {
+    $estado_seleccionado = $_POST['estado_seleccionado'];
+    $nuevo_comentario = $_POST['nuevo_comentario'];
+    $id_postulacion = $_POST['numero_postulacion'];
+
+    try {
+        // Query de actualización corregida para MySQL/PDO
+        $sql_update = "UPDATE POSTULACION 
+                       SET Comentario_coordinador = :com, 
+                           ID_estado = :est 
+                       WHERE Numero_postulacion = :id";
+        
+        $stmt_update = $conexion->prepare($sql_update);
+        $stmt_update->execute([
+            ':com' => $nuevo_comentario,
+            ':est' => $estado_seleccionado,
+            ':id'  => $id_postulacion
+        ]);
+        
+        // Opcional: Redirigir para refrescar los datos
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    } catch (PDOException $e) {
+        echo "<div class='alert alert-danger'>Error al actualizar: " . $e->getMessage() . "</div>";
+    }
+}
+
+
 // Procesar AGREGAR Coordinador
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_agregar_coordinador'])) {
     $nom = $_POST['nuevo_nombre_coordinador'];
@@ -100,7 +129,8 @@ try {
                 J.Nombre_jefe,
                 C.Nombre_coordinador,
                 P.ID_region_impacto,
-                P.ID_region_origen
+                P.ID_region_origen,
+                P.ID_estado
             FROM POSTULACION P
             LEFT JOIN TIPO_INICIATIVA T ON P.ID_tipo_iniciativa = T.ID_tipo
             LEFT JOIN SEDE S ON P.ID_sede = S.ID_sede
@@ -339,7 +369,9 @@ try {
                 <div class="modal fade" id="modalEditar<?php echo $fila['Numero_postulacion']; ?>" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content rounded-4 border-0 shadow-lg">
-                            
+                            <form action="" method="POST">                           
+                                <!-- input invisible necesario para que funcione el post -->
+                                <input type="hidden" name="numero_postulacion" value="<?php echo $fila['Numero_postulacion']; ?>">
                             <!-- Encabezado -->
                             <div class="modal-header bg-light border-0 py-3 px-4">
                                 <h5 class="modal-title fw-bold text-primary">
@@ -360,10 +392,25 @@ try {
                                         <span class="text-dark"><?php echo htmlspecialchars($fila['Fecha_postulacion'] ?? 'No registrada'); ?></span>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="small text-muted fw-bold d-block">Estado</label>
-                                        <span class="badge bg-info text-dark rounded-pill">
-                                            <?php echo htmlspecialchars($fila['Nombre_estado']); ?>
-                                        </span>
+                                    <label class="small text-muted fw-bold d-block mb-1">Estado de Postulación</label>
+                                    <select name="estado_seleccionado" class="form-select form-select-sm rounded-3">
+                                        <?php 
+                                        $opciones_estado = [
+                                            1 => 'En Revisión', 
+                                            2 => 'Aprobada', 
+                                            3 => 'Rechazada', 
+                                            4 => 'Cerrada', 
+                                            5 => 'Borrador'
+                                        ];
+                                        foreach ($opciones_estado as $val => $nombre): 
+                                            // Comparamos con el estado actual de la base de datos
+                                            $selected = ($fila['ID_estado'] == $val) ? 'selected' : '';
+                                        ?>
+                                            <option value="<?php echo $val; ?>" <?php echo $selected; ?>>
+                                                <?php echo $nombre; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
                                     </div>
                                 </div>
 
@@ -387,6 +434,12 @@ try {
                                         <label class="small text-muted fw-bold d-block">Resultados Esperados</label>
                                         <p class="mb-0 text-dark small italic">"<?php echo htmlspecialchars($fila['Resultados_esperados'] ?? 'No especificados'); ?>"</p>
                                     </div>
+                                    <div class="mt-4 pt-3 border-top">
+                                        <label class="form-label small fw-bold text-primary">
+                                            <i class="bi bi-chat-left-dots me-1"></i> Comentario Coordinador
+                                        </label>
+                                        <textarea name="nuevo_comentario" class="form-control rounded-3 bg-light shadow-sm" rows="3" placeholder="Escriba aquí sus observaciones..."><?php echo htmlspecialchars($fila['Comentario_coordinador'] ?? ''); ?></textarea>
+                                    </div>
                                 </div>
 
                                 <!-- Detalles Técnicos (Grilla) -->
@@ -409,8 +462,11 @@ try {
 
                             <div class="modal-footer border-0 bg-light py-3">
                                 <button type="button" class="btn btn-secondary rounded-3 px-4" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="button" class="btn btn-primary rounded-3 px-4 fw-bold">Guardar Cambios</button>
+                                <button type="submit" name="btn_guardar_cambios" class="btn btn-primary rounded-3 px-4 fw-bold">
+                                    Guardar Cambios
+                                </button>
                             </div>
+                        </form>
                         </div>
                     </div>
                 </div>
