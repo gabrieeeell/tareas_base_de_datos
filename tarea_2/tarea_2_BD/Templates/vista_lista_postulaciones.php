@@ -206,6 +206,7 @@ try {
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Evaluador</title>
@@ -217,7 +218,11 @@ try {
     
     <!-- Título y Barra Principal -->
     <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+        <a href="../back/cerrar_sesion.php" class="btn btn-primary btn-sm shadow-sm fw-bold">
+            Cerrar Sesión
+        </a>
         <h2 class="text-dark fw-bold mb-3 text-center">Postulaciones</h2>
+        
         
         <form action="" method="POST">
             <div class="input-group mb-2">
