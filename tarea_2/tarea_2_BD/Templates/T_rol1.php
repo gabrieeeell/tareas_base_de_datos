@@ -14,21 +14,24 @@ $nombre_usuario = "Postulante";
 // ponemos signo de "?" ya que de esta forma se espera un dato, que luego se rellena con execute(dato) y asi se envian por separado, lo que evita que se pueda hacer una
 // inyección SQL del tipo "rut_persona= 1" OR "1" = "1" " lo que haría que se mostraran todos los datos de todos los usuarios
 try {
-    $stmt_user = $conexion->prepare("SELECT Nombre FROM PERSONA WHERE RUT_Persona = ?");
-    $stmt_user->execute([$Rut_resp]);
-    if ($row = $stmt_user->fetch(PDO::FETCH_ASSOC)) {
+    $Datos_usuario = $conexion->prepare("SELECT Nombre FROM PERSONA WHERE RUT_Persona = ?");
+    $Datos_usuario->execute([$Rut_resp]);
+    if ($row = $Datos_usuario->fetch(PDO::FETCH_ASSOC)) {
         $nombre_usuario = $row['Nombre'];
     }
 } catch(PDOException $e) {}
 
+
+
+// View
 try {
     $sql = "SELECT ID_Postulacion, Nombre_iniciativa, Estado 
             FROM vista_postulaciones_responsables 
             WHERE RUT_Persona = ? AND Rol = 'Responsable'";
             
-    $stmt_postulaciones = $conexion->prepare($sql);
-    $stmt_postulaciones->execute([$Rut_resp]);
-    $lista_postulaciones = $stmt_postulaciones->fetchAll(PDO::FETCH_ASSOC);
+    $st_postulaciones = $conexion->prepare($sql);
+    $st_postulaciones->execute([$Rut_resp]);
+    $lista_postulaciones = $st_postulaciones->fetchAll(PDO::FETCH_ASSOC);
 
 } catch(PDOException $e) {
     die("Error al cargar las postulaciones: " . $e->getMessage());
