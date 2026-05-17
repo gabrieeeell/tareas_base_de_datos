@@ -1,9 +1,6 @@
 <?php
-//para poder acceder al rol del usuario
 session_start();
-// Iniciamos sesión para no perder el rol del usuario
 require_once("../BDT1.php");
-// Capturamos el término de búsqueda (soporta POST para el buscador y GET para limpiar)
 $busqueda = $_POST['buscar'] ?? ($_GET['buscar'] ?? '');
 $f_reg_origen = $_POST['id_reg_origen'] ?? '';
 $f_reg_impacto = $_POST['id_reg_impacto'] ?? '';
@@ -13,26 +10,17 @@ $f_tamano = $_POST['tamano_empresa'] ?? '';
 $f_convenio = $_POST['convenio_usm'] ?? '';
 $f_estado = $_POST['estado_postulacion'] ?? '';
 $f_id_coordinador = $_POST['id_coordinador'] ?? '';
-
-// Obtener la lista de coordinadores para el select
 $stmt_c = $conexion->query("SELECT Nombre_coordinador, ID_coordinador FROM COORDINADOR");
 $coordinadores_lista = $stmt_c->fetchAll(PDO::FETCH_ASSOC);
-
 $stmt_regiones = $conexion->prepare("SELECT ID_region, Nombre_region FROM REGION");
 $stmt_regiones->execute();
-
 $regiones = $stmt_regiones->fetchAll(PDO::FETCH_ASSOC);
-
-// Procesar ELIMINAR Coordinador
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_eliminar_coordinador'])) {
     $id_borrar = $_POST['id_coordinador_eliminar'];
     try {
         $conexion->beginTransaction();
-        // 1. Setear a 0 en postulaciones (para no perder la integridad si no hay ON DELETE SET NULL)
         $stmt1 = $conexion->prepare("UPDATE POSTULACION SET ID_coordinador = 0 WHERE ID_coordinador = :id");
         $stmt1->execute([':id' => $id_borrar]);
-        
-        // 2. Eliminar de la tabla coordinador
         $stmt2 = $conexion->prepare("DELETE FROM COORDINADOR WHERE ID_coordinador = :id");
         $stmt2->execute([':id' => $id_borrar]);
         
@@ -45,14 +33,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_eliminar_coordinad
     }
 }
 
-// Procesar la actualización si se envió el formulario
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_guardar_cambios'])) {
     $estado_seleccionado = $_POST['estado_seleccionado'];
     $nuevo_comentario = $_POST['nuevo_comentario'];
     $id_postulacion = $_POST['numero_postulacion'];
 
     try {
-        // Query de actualización corregida para MySQL/PDO
         $sql_update = "UPDATE POSTULACION 
                        SET Comentario_coordinador = :com, 
                            ID_estado = :est 
@@ -65,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_guardar_cambios'])
             ':id'  => $id_postulacion
         ]);
         
-        // Opcional: Redirigir para refrescar los datos
+
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     } catch (PDOException $e) {
@@ -74,7 +61,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_guardar_cambios'])
 }
 
 
-// Procesar AGREGAR Coordinador
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_agregar_coordinador'])) {
     $nom = $_POST['nuevo_nombre_coordinador'];
     $rut = $_POST['nuevo_rut_coordinador'];
@@ -88,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_agregar_coordinado
     }
 }
 
-// Procesar actualización de Coordinador
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_actualizar_coordinador'])) {
     $id_postulacion = $_POST['post_id_nuevo_coordinador'];
     $id_coord_nuevo = $_POST['nuevo_coordinador_id'];
@@ -100,7 +86,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['btn_actualizar_coordin
             ':id'    => $id_postulacion
         ]);
         
-        // Refrescar para ver cambios
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     } catch (PDOException $e) {
@@ -144,7 +129,7 @@ try {
 
     $condiciones = [];
     $params = [];
-    // Búsqueda general (corregido con marcadores únicos)
+
     if ($busqueda !== '') {
         $condiciones[] = "(P.Nombre_iniciativa LIKE :b1 OR E.Nombre_empresa LIKE :b2 OR P.Numero_postulacion LIKE :b3)";
         $term = "%$busqueda%";
@@ -153,7 +138,7 @@ try {
         $params[':b3'] = $term;
     }
 
-    // Filtros avanzados - Ajustados según tu descripción
+    // FILTRO AVANZADO
     if ($f_reg_origen !== '') {
         $condiciones[] = "R_O.ID_region = :reg_o";
         $params[':reg_o'] = $f_reg_origen;
@@ -163,11 +148,11 @@ try {
         $params[':reg_i'] = $f_reg_impacto;
     }
     if ($f_sede !== '') {
-        $condiciones[] = "S.Nombre_sede = :sede"; // Antes tenías S.Nombre_Sede
+        $condiciones[] = "S.Nombre_sede = :sede"; 
         $params[':sede'] = $f_sede;
     }
     if ($f_tipo !== '') {
-        $condiciones[] = "T.Tipo_iniciativa = :tipo"; // Corregido de Nombre_tipo a Tipo_iniciativa
+        $condiciones[] = "T.Tipo_iniciativa = :tipo";
         $params[':tipo'] = $f_tipo;
     }
     if ($f_tamano !== '') {
@@ -198,7 +183,6 @@ try {
     $postulaciones = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
-    // Si hay un error de SQL, lo veremos aquí
     die("Error en la consulta: " . $e->getMessage());
 }
 ?>
@@ -216,7 +200,6 @@ try {
 
 <div class="container" style="max-width: 800px;">
     
-    <!-- Título y Barra Principal -->
     <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
         <a href="../back/cerrar_sesion.php" class="btn btn-primary btn-sm shadow-sm fw-bold">
             Cerrar Sesión
@@ -230,7 +213,7 @@ try {
                 <button class="btn btn-primary px-4 fw-bold" type="submit">Buscar</button>
             </div>
             
-            <!-- Botón que abre el Modal -->
+
             <div class="d-flex justify-content-between align-items-center">
                 <button type="button" class="btn btn-link text-decoration-none p-0" data-bs-toggle="modal" data-bs-target="#modalBusqueda">
                     <i class="bi bi-sliders"></i> Búsqueda Avanzada
@@ -239,14 +222,9 @@ try {
                     <a href="?" class="small text-muted">Limpiar filtros</a>
                 <?php endif; ?>
             </div>
-            <!-- Boton para crear postulacion y "Mis postulaciones si corresponde"-->
+
                 <div class="w-100 d-flex flex-row" style="height: 5rem;"> 
-                    <!-- Asumimos que el evaluador no podia crear postulaciones -->
-                    <!--
-                    <a href="T_rol1_formulario_crear.php" class="mx-2 my-3 btn btn-success px-4 py-2 rounded-4 fw-bold shadow-sm d-flex align-items-center">
-                        <i class="bi bi-plus-lg me-2"></i> Crear 
-                    </a>
-                    -->
+          
                     <?php if ($_SESSION['rol_usuario'] == '3'): ?>
                     <button type="button" class="mx-2 my-3 btn btn-info px-4 py-2 rounded-4 fw-bold shadow-sm d-flex align-items-center text-white" data-bs-toggle="modal" data-bs-target="#modalGestionCoordinadores">
                         <i class="bi bi-people-fill me-2"></i> Coordinadores
@@ -258,7 +236,7 @@ try {
                     </a>
                     <?php endif; ?>
                 </div>
-            <!-- MODAL DE BÚSQUEDA AVANZADA -->
+
             <div class="modal fade" id="modalBusqueda" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content rounded-4 border-0 shadow">
@@ -268,7 +246,6 @@ try {
                         </div>
                         <div class="modal-body p-4">
                             <div class="row g-3">
-                                <!-- Región Origen -->
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Región Ejecución</label>
                                     <select name="id_reg_origen" class="form-select">
@@ -280,7 +257,6 @@ try {
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                <!-- Región Impacto -->
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Región Impacto</label>
                                     <select name="id_reg_impacto" class="form-select">
@@ -292,7 +268,6 @@ try {
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                <!-- Sede -->
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Sede / Campus</label>
                                     <select name="sede" class="form-select">
@@ -304,7 +279,8 @@ try {
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                <!-- Tipo -->
+                             
+
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Tipo de Iniciativa</label>
                                     <select name="tipo_iniciativa" class="form-select">
@@ -313,7 +289,8 @@ try {
                                         <option value="Existente" <?php echo ($f_tipo == 'Existente') ? 'selected' : ''; ?>>Existente</option>
                                     </select>
                                 </div>
-                                <!-- Tamaño Empresa -->
+                            
+
                                 <div class="col-md-4">
                                     <label class="form-label small fw-bold">Tamaño Empresa</label>
                                     <select name="tamano_empresa" class="form-select">
@@ -323,7 +300,8 @@ try {
                                         <option value="Grande" <?php echo ($f_tamano == 'Grande') ? 'selected' : ''; ?>>Grande</option>
                                     </select>
                                 </div>
-                                <!-- Convenio -->
+                              
+
                                 <div class="col-md-4">
                                     <label class="form-label small fw-bold">Convenio Marco</label>
                                     <select name="convenio_usm" class="form-select">
@@ -332,7 +310,8 @@ try {
                                         <option value="No" <?php echo ($f_convenio == 'No') ? 'selected' : ''; ?>>No</option>
                                     </select>
                                 </div>
-                                <!-- Estado -->
+                                
+
                                 <div class="col-md-4">
                                     <label class="form-label small fw-bold">Estado Postulación</label>
                                     <select name="estado_postulacion" class="form-select">
@@ -364,7 +343,8 @@ try {
                 </div>
             </div>
         </form>
-    <!-- Listado de Resultados -->
+   
+
         <?php if (count($postulaciones) > 0): ?>
             <?php foreach ($postulaciones as $fila): ?>
                 <?php if ($fila["rut_coordinador"] === $_SESSION["rut_usuario"] && $_SESSION["rol_usuario"] === "2" || $_SESSION["rol_usuario"] !== "2"): ?> 
@@ -375,9 +355,10 @@ try {
                     <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content rounded-4 border-0 shadow-lg">
                             <form action="" method="POST">                           
-                                <!-- input invisible necesario para que funcione el post -->
+             
                                 <input type="hidden" name="numero_postulacion" value="<?php echo $fila['Numero_postulacion']; ?>">
-                            <!-- Encabezado -->
+                     
+
                             <div class="modal-header bg-light border-0 py-3 px-4">
                                 <h5 class="modal-title fw-bold text-primary">
                                     <i class="bi bi-file-earmark-text me-2"></i> Detalle de Postulación
@@ -386,7 +367,8 @@ try {
                             </div>
 
                             <div class="modal-body p-4">
-                                <!-- Información General (Fila 1) -->
+                               
+
                                 <div class="row g-3 mb-4">
                                     <div class="col-md-4">
                                         <label class="small text-muted fw-bold d-block">Número Postulación</label>
@@ -408,7 +390,8 @@ try {
                                             5 => 'Borrador'
                                         ];
                                         foreach ($opciones_estado as $val => $nombre): 
-                                            // Comparamos con el estado actual de la base de datos
+                                           
+
                                             $selected = ($fila['ID_estado'] == $val) ? 'selected' : '';
                                         ?>
                                             <option value="<?php echo $val; ?>" <?php echo $selected; ?>>
@@ -419,13 +402,15 @@ try {
                                     </div>
                                 </div>
 
-                                <!-- Título e Iniciativa -->
+                               
+
                                 <div class="mb-4">
                                     <label class="small text-muted fw-bold d-block">Nombre de la Iniciativa</label>
                                     <h4 class="text-primary fw-semibold"><?php echo htmlspecialchars($fila['Nombre_iniciativa']); ?></h4>
                                 </div>
 
-                                <!-- Textos Largos (Estilo Tarjeta Interna) -->
+                                
+
                                 <div class="bg-light rounded-3 p-3 mb-4">
                                     <div class="mb-3">
                                         <label class="small text-muted fw-bold d-block">Objetivo de la Iniciativa</label>
@@ -447,7 +432,8 @@ try {
                                     </div>
                                 </div>
 
-                                <!-- Detalles Técnicos (Grilla) -->
+                             
+
                                 <div class="row g-3">
                                     <div class="col-md-6 border-end">
                                         <p class="mb-1 small"><span class="fw-bold text-muted">Rut Empresa:</span> <?php echo htmlspecialchars($fila['Rut_Empresa']); ?></p>
@@ -476,7 +462,8 @@ try {
                     </div>
                 </div>
                 <?php endif; ?>
-                    <!-- tengo que incluir el boton de editar si es que es rol 2 --> 
+                    
+
                     <div class="card shadow-sm border-0 rounded-4 mb-3">
                         <div class="card-body p-4">
                             <div class="w-100 d-flex flex-row" style="height: 4rem;">
@@ -619,10 +606,6 @@ try {
             </div>
         </div>
     </div>
-    <!-- 1. En el <head>, junto al otro CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <!-- 2. Al final del <body>, justo antes de cerrar </body> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Resultados (Mantener tu estructura de cards foreach) -->
-    <!-- ... -->
+

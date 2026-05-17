@@ -9,7 +9,6 @@ if (!isset($_SESSION['rut_usuario']) || $_SESSION['rol_usuario'] != '1') {
 require_once("../BDT1.php");
 $Rut_resp = $_SESSION['rut_usuario'];
 
-// Esto es para el "bienvenido, nombre" pero 
 $nombre_usuario = "Postulante";
 //Buscamos si existe una persona con ese rut en la BD para el autocompletado de los datos, guardamos una consutla SQL para encontrar los datos de ese rut, pero 
 // ponemos signo de "?" ya que de esta forma se espera un dato, que luego se rellena con execute(dato) y asi se envian por separado, lo que evita que se pueda hacer una
@@ -44,35 +43,35 @@ try {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body { background-color: #f4f6f9; }
-        .navbar-custom { background-color: #003366; }
-    </style>
-</head>
-<body>
+                .navbar-custom { background-color: #003366; }
+            </style>
+        </head>
+        <body>
 
-    <nav class="navbar navbar-dark navbar-custom mb-4">
-        <div class="container">
-            <div class="d-flex align-items-center">
-                <span class="text-white me-3">RUT: <?php echo htmlspecialchars($Rut_resp); ?></span>
+            <nav class="navbar navbar-dark navbar-custom mb-4">
+                <div class="container">
+                    <div class="d-flex align-items-center">
+                        <span class="text-white me-3">RUT: <?php echo htmlspecialchars($Rut_resp); ?></span>
                 <a href="../back/cerrar_sesion.php" class="btn btn-outline-light btn-sm">
-                    Cerrar Sesión
-                </a>
-            </div>
-        </div>
-    </nav>
+                            Cerrar Sesión
+                        </a>
+                    </div>
+                </div>
+            </nav>
 
-    <div class="container">
-        
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Bienvenido</h2>
-                    <a href="T_rol1_formulario_crear.php" class="btn btn-success btn-lg shadow-sm">
-                        + Crear Nueva Postulación
-                    </a>
-        </div>
-
-        <div class="card shadow-sm border-0">
-            <div class="card-body">
-                <h5 class="card-title text-secondary mb-3">Mis Iniciativas</h5>
+            <div class="container">
                 
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Bienvenido</h2>
+                            <a href="T_rol1_formulario_crear.php" class="btn btn-success btn-lg shadow-sm">
+                                + Crear Nueva Postulación
+                            </a>
+                </div>
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-secondary mb-3">Mis Iniciativas</h5>
+                        
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead class="table-light">
@@ -81,12 +80,12 @@ try {
                                 <th>Nombre de la Iniciativa</th>
                                 <th>Estado</th>
                                 <th class="text-center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (count($lista_postulaciones) > 0): ?>
-                                <?php foreach ($lista_postulaciones as $post): ?>
-                                    <tr>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (count($lista_postulaciones) > 0): ?>
+                                        <?php foreach ($lista_postulaciones as $post): ?>
+                                            <tr>
                                         <td class="fw-bold"><?php echo htmlspecialchars($post['ID_Postulacion']); ?></td>
                                         <td><?php echo htmlspecialchars($post['Nombre_iniciativa']); ?></td>
                                         <td>
@@ -119,15 +118,15 @@ try {
                                         No eres responsable de ninguna postulación
                                     </td>
                                 </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
+
             </div>
-        </div>
 
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        </body>
+        </html>

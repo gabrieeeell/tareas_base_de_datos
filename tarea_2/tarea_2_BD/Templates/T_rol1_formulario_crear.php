@@ -13,9 +13,6 @@ require_once("../BDT1.php");
 
 
 
-// --- PRE-CARGA DE CATÁLOGOS (VERSIÓN PDO) ---
-
-// Modificamos agregando "WHERE ID > 0" a todas las consultas de catálogos
 $query_sedes = $conexion->query("SELECT ID_sede, Nombre_Sede FROM SEDE WHERE ID_sede > 0");
 $sedes = $query_sedes->fetchAll(PDO::FETCH_ASSOC);
 
@@ -41,28 +38,19 @@ $departamentos = $query_deptos->fetchAll(PDO::FETCH_ASSOC);
 
 $Rut_resp = $_SESSION['rut_usuario'];
 
-//Buscamos si existe una persona con ese rut en la BD para el autocompletado de los datos, guardamos una consutla SQL para encontrar los datos de ese rut, pero 
-// ponemos signo de "?" ya que de esta forma se espera un dato, que luego se rellena con execute(dato) y asi se envian por separado, lo que evita que se pueda hacer una
-// inyección SQL del tipo "rut_persona= 1" OR "1" = "1" " lo que haría que se mostraran todos los datos de todos los usuarios
 try {
     $sql = "SELECT Nombre FROM PERSONA WHERE Rut_persona = ?";
     // 
     $BD_conexion = $conexion->prepare($sql);
     $BD_conexion->execute([$Rut_resp]);
-    // Esto es para guardar los datos de la persona en un arreglo (fetch extrae la primera fila)
     $Datos_persona = $BD_conexion->fetch(PDO::FETCH_ASSOC);
-    
-    // Ahora si hay datos, entonces se guardan, pero sin o hay, se guardan datos vacios
     if ($Datos_persona) {
         $Nombre_resp = $Datos_persona['Nombre'];
     } 
-    // Si no existe
     else {
         $Nombre_resp = '';
     }
-
 } catch(PDOException $e) {
-    //Por si hay errores, hay q borrarlo para la entrega
     die("Error: " . $e->getMessage());
 }
 ?>
@@ -87,7 +75,6 @@ try {
 
 
     <div class="container mt-5">
-        
     <a href="T_rol1.php" class="btn btn-outline-secondary mb-4 shadow-sm">
         &larr; Volver
     </a>
@@ -136,13 +123,13 @@ try {
                             <div class="mb-3">
                                 <label for="ID_sede" class="form-label fw-bold">ID_sede (31)*</label>
                                 <select class="form-select" id="ID_sede" name="ID_sede" required>
-    <option value="" selected disabled>Seleccione una sede</option>
-    <?php foreach ($sedes as $sede) { ?>
-        <option value="<?php echo $sede['ID_sede']; ?>">
-            <?php echo htmlspecialchars($sede['Nombre_Sede']); ?>
-        </option>
-    <?php } ?>
-</select>
+                        <option value="" selected disabled>Seleccione una sede</option>
+                        <?php foreach ($sedes as $sede) { ?>
+                            <option value="<?php echo $sede['ID_sede']; ?>">
+                                <?php echo htmlspecialchars($sede['Nombre_Sede']); ?>
+                            </option>
+                        <?php } ?>
+                    </select>
                             </div>
 
                             <div class="mb-3">
@@ -160,49 +147,49 @@ try {
                             <div class="mb-3">
                                 <label for="ID_region_origen" class="form-label fw-bold">ID_region_origen (36)*</label>
                                <select class="form-select" id="ID_region_origen" name="ID_region_origen" required>
-    <option value="" selected disabled>Seleccione una región de origen</option>
-    <?php foreach ($regiones as $region) { ?>
-        <option value="<?php echo $region['ID_region']; ?>">
-            <?php echo htmlspecialchars($region['Nombre_region']); ?>
-        </option>
-    <?php } ?>
-</select>
+                            <option value="" selected disabled>Seleccione una región de origen</option>
+                            <?php foreach ($regiones as $region) { ?>
+                                <option value="<?php echo $region['ID_region']; ?>">
+                                    <?php echo htmlspecialchars($region['Nombre_region']); ?>
+                                </option>
+                            <?php } ?>
+                        </select>
                             </div>
 
                             <div class="mb-3">
                                 <label for="ID_region_Impacto" class="form-label fw-bold">ID_region_Impacto (36)*</label>
-<select class="form-select" id="ID_region_impacto" name="ID_region_impacto" required>
-    <option value="" selected disabled>Seleccione una región de impacto</option>
-    <?php foreach ($regiones as $region) { ?>
-        <option value="<?php echo $region['ID_region']; ?>">
-            <?php echo htmlspecialchars($region['Nombre_region']); ?>
-        </option>
-    <?php } ?>
-</select>
-                            </div>
+                            <select class="form-select" id="ID_region_impacto" name="ID_region_impacto" required>
+                                <option value="" selected disabled>Seleccione una región de impacto</option>
+                                <?php foreach ($regiones as $region) { ?>
+                                    <option value="<?php echo $region['ID_region']; ?>">
+                                        <?php echo htmlspecialchars($region['Nombre_region']); ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                                </div>
 
                             <div class="mb-3">
                                 <label for="ID_Jefe" class="form-label fw-bold">ID_Jefe (50)*</label>
                                 <select class="form-select" id="ID_Jefe" name="ID_Jefe" required>
-    <option value="" selected disabled>Seleccione un jefe de carrera</option>
-    <?php foreach ($jefes as $jefe) { ?>
-        <option value="<?php echo $jefe['ID_Jefe']; ?>">
-            <?php echo htmlspecialchars($jefe['Nombre_jefe']); ?>
-        </option>
-    <?php } ?>
-</select>
+                            <option value="" selected disabled>Seleccione un jefe de carrera</option>
+                            <?php foreach ($jefes as $jefe) { ?>
+                                <option value="<?php echo $jefe['ID_Jefe']; ?>">
+                                    <?php echo htmlspecialchars($jefe['Nombre_jefe']); ?>
+                                </option>
+                            <?php } ?>
+                        </select>
                             </div>
 
                             <div class="mb-3">
                                 <label for="ID_coordinador" class="form-label fw-bold">ID_coordinador (50)*</label>
                                <select class="form-select" id="ID_coordinador" name="ID_coordinador" required>
-    <option value="" selected disabled>Seleccione un coordinador</option>
-    <?php foreach ($coordinadores as $coord) { ?>
-        <option value="<?php echo $coord['ID_coordinador']; ?>">
-            <?php echo htmlspecialchars($coord['Nombre_coordinador'] . ' - ' . $coord['rut_coordinador']); ?>
-        </option>
-    <?php } ?>
-</select>
+                            <option value="" selected disabled>Seleccione un coordinador</option>
+                            <?php foreach ($coordinadores as $coord) { ?>
+                                <option value="<?php echo $coord['ID_coordinador']; ?>">
+                                    <?php echo htmlspecialchars($coord['Nombre_coordinador'] . ' - ' . $coord['rut_coordinador']); ?>
+                                </option>
+                            <?php } ?>
+                        </select>
                             </div>
 
 
@@ -224,19 +211,19 @@ try {
             <input type="text" class="form-control" id="Rut_empresa" name="Rut_empresa" required maxlength="12" >
         </div>
 
-       <div class="mb-3">
-    <label for="ID_tamano" class="form-label fw-bold">ID_tamano (15)*</label>
-    <select class="form-select" id="ID_tamano" name="ID_tamano" required>
-        <option value="" selected disabled>Seleccione un tamaño</option>
-        
-        <?php foreach ($tamanos as $tamano) { ?>
-            <option value="<?php echo $tamano['ID_tamano']; ?>">
-                <?php echo htmlspecialchars($tamano['Nombre_tamano']); ?>
-            </option>
-        <?php } ?>
-        
-    </select>
-</div>
+                <div class="mb-3">
+                <label for="ID_tamano" class="form-label fw-bold">ID_tamano (15)*</label>
+                <select class="form-select" id="ID_tamano" name="ID_tamano" required>
+                    <option value="" selected disabled>Seleccione un tamaño</option>
+                    
+                    <?php foreach ($tamanos as $tamano) { ?>
+                        <option value="<?php echo $tamano['ID_tamano']; ?>">
+                            <?php echo htmlspecialchars($tamano['Nombre_tamano']); ?>
+                        </option>
+                    <?php } ?>
+                    
+                </select>
+            </div>
 
         <div class="mb-3">
             <label for="Convenio_USM" class="form-label fw-bold">Convenio-USM (Booleano)*</label>
@@ -250,32 +237,32 @@ try {
         <hr class="my-4">
         <h6 class="fw-bold mb-3">Datos del Representante</h6>
 
-        <div class="mb-3">
-            <label for="Nombre_representante" class="form-label fw-bold">Nombre (Representante) (100)*</label>
-            <input type="text" class="form-control" id="Nombre_representante" name="Nombre_representante" required maxlength="100" >
-        </div>
+                <div class="mb-3">
+                    <label for="Nombre_representante" class="form-label fw-bold">Nombre (Representante) (100)*</label>
+                    <input type="text" class="form-control" id="Nombre_representante" name="Nombre_representante" required maxlength="100" >
+                </div>
 
         <div class="mb-3">
             <label for="Mail_representante" class="form-label fw-bold">Mail_representante (255)*</label>
             <input type="email" class="form-control" id="Mail_representante" name="Mail_representante" required maxlength="255" >
         </div>
 
-        <div class="mb-3">
-            <label for="Telefono_representante" class="form-label fw-bold">Telefono_representante (12)*</label>
-            <input type="text" class="form-control" id="Telefono_representante" name="Telefono_representante" required maxlength="12" >
-        </div>
+                        <div class="mb-3">
+                            <label for="Telefono_representante" class="form-label fw-bold">Telefono_representante (12)*</label>
+                            <input type="text" class="form-control" id="Telefono_representante" name="Telefono_representante" required maxlength="12" >
+                        </div>
 
-    </div>
-    <div class="card shadow-sm border-0 mb-5">
-    <div class="card-body p-4">
-        <h5 class="text-primary border-bottom pb-2 mb-4">Equipo de Trabajo</h5>
+            </div>
+            <div class="card shadow-sm border-0 mb-5">
+            <div class="card-body p-4">
+                <h5 class="text-primary border-bottom pb-2 mb-4">Equipo de Trabajo</h5>
 
-        <div id="contenedor_integrantes">
+                <div id="contenedor_integrantes">
             
 
 
-           <div class="integrante-item border border-primary rounded p-3 mb-4 bg-light">
-    <h6 class="fw-bold text-primary mb-3">Integrante (Responsable)</h6>
+                <div class="integrante-item border border-primary rounded p-3 mb-4 bg-light">
+            <h6 class="fw-bold text-primary mb-3">Integrante (Responsable)</h6>
     
     <div class="mb-3">
         <label class="form-label fw-bold">Rut_Persona (12)*</label>
@@ -287,54 +274,54 @@ try {
         <input type="text" class="form-control" name="Nombre_persona[]" required maxlength="100">
     </div>
 
-    <div class="mb-3">
-        <label class="form-label fw-bold">ID_departamento*</label>
-        <select class="form-select" name="ID_departamento[]" required>
-    <option value="" selected disabled>Seleccione un departamento</option>
-    <?php foreach ($departamentos as $depto) { ?>
-        <option value="<?php echo $depto['ID_departamento']; ?>">
-            <?php echo htmlspecialchars($depto['Nombre_departamento']); ?>
-        </option>
-    <?php } ?>
-</select>
-    </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">ID_departamento*</label>
+                <select class="form-select" name="ID_departamento[]" required>
+            <option value="" selected disabled>Seleccione un departamento</option>
+            <?php foreach ($departamentos as $depto) { ?>
+                <option value="<?php echo $depto['ID_departamento']; ?>">
+                    <?php echo htmlspecialchars($depto['Nombre_departamento']); ?>
+                </option>
+            <?php } ?>
+        </select>
+            </div>
 
-    <div class="mb-3">
-        <label class="form-label fw-bold">ID_Sede*</label>
-        <select class="form-select" name="ID_sede_persona[]" required>
-    <option value="" selected disabled>Seleccione una sede</option>
-    <?php foreach ($sedes as $sede) { ?>
-        <option value="<?php echo $sede['ID_sede']; ?>">
-            <?php echo htmlspecialchars($sede['Nombre_Sede']); ?>
-        </option>
-    <?php } ?>
-</select>
-    </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">ID_Sede*</label>
+                <select class="form-select" name="ID_sede_persona[]" required>
+            <option value="" selected disabled>Seleccione una sede</option>
+            <?php foreach ($sedes as $sede) { ?>
+                <option value="<?php echo $sede['ID_sede']; ?>">
+                    <?php echo htmlspecialchars($sede['Nombre_Sede']); ?>
+                </option>
+            <?php } ?>
+        </select>
+            </div>
 
-    <div class="mb-3">
-        <label class="form-label fw-bold">eMail (255)*</label>
-        <input type="email" class="form-control" name="eMail[]" required maxlength="255" >
-    </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">eMail (255)*</label>
+                <input type="email" class="form-control" name="eMail[]" required maxlength="255" >
+            </div>
 
-    <div class="mb-3">
-        <label class="form-label fw-bold">Telefono (12)</label>
-        <input type="text" class="form-control" name="Telefono[]" maxlength="12">
-    </div>
+            <div class="mb-3">
+                <label class="form-label fw-bold">Telefono (12)</label>
+                <input type="text" class="form-control" name="Telefono[]" maxlength="12">
+            </div>
 
-    <div class="mb-3">
-    <label class="form-label fw-bold">Cargo*</label>
-    <select class="form-select" name="ID_cargo[]" required>
-        <option value="" selected disabled>Seleccione un cargo</option>
-        <option value="1">Estudiante</option>
-        <option value="2">Profesor</option>
-    </select>
-</div>
+            <div class="mb-3">
+            <label class="form-label fw-bold">Cargo*</label>
+            <select class="form-select" name="ID_cargo[]" required>
+                <option value="" selected disabled>Seleccione un cargo</option>
+                <option value="1">Estudiante</option>
+                <option value="2">Profesor</option>
+            </select>
+        </div>
 
-    <div class="mb-3">
-        <label class="form-label fw-bold">Rol en el proyecto (60)*</label>
-        <input type="text" class="form-control bg-white" name="Rol[]" value="Responsable" readonly required>
+        <div class="mb-3">
+            <label class="form-label fw-bold">Rol en el proyecto (60)*</label>
+            <input type="text" class="form-control bg-white" name="Rol[]" value="Responsable" readonly required>
+        </div>
     </div>
-</div>
 
 
 
@@ -471,23 +458,23 @@ try {
     </div>
     </div>
     <div class="card shadow-sm border-0 mb-5 bg-transparent">
-            <div class="card-body p-0 d-flex justify-content-end gap-3">
-                
-                <button type="submit" name="accion" value="borrador" class="btn btn-secondary px-4 py-2 fw-bold shadow-sm" formnovalidate>
-                    Guardar como Borrador
-                </button>
-                
-                <button type="submit" name="accion" value="enviar" class="btn btn-primary px-4 py-2 fw-bold shadow-sm">
-                    Enviar Postulación Definitiva
-                </button>
-                
+                <div class="card-body p-0 d-flex justify-content-end gap-3">
+                    
+                    <button type="submit" name="accion" value="borrador" class="btn btn-secondary px-4 py-2 fw-bold shadow-sm" formnovalidate>
+                        Guardar como Borrador
+                    </button>
+                    
+                    <button type="submit" name="accion" value="enviar" class="btn btn-primary px-4 py-2 fw-bold shadow-sm">
+                        Enviar Postulación Definitiva
+                    </button>
+                    
+                </div>
             </div>
+        </form>
         </div>
-    </form>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="formulario_PC.js"></script>
-</body>
-</html>
+        <script src="formulario_PC.js"></script>
+        </body>
+        </html>
