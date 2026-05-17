@@ -54,8 +54,8 @@ try {
             <div class="d-flex align-items-center">
                 <span class="text-white me-3">RUT: <?php echo htmlspecialchars($Rut_resp); ?></span>
                 <a href="../back/cerrar_sesion.php" class="btn btn-outline-light btn-sm">
-    Cerrar Sesión
-</a>
+                    Cerrar Sesión
+                </a>
             </div>
         </div>
     </nav>

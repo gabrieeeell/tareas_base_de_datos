@@ -7,9 +7,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['rut_ingreso']) && isse
     exit();
 }
 
-// Si ya existe una sesion abierta en el navegador entonces se redirecciona automaticamente (Se puede eliminar, de momento si se ingresa rol 2 o 3 se queda atrapado en
-// un 404), para salir hay que meterse a /cerrar_sesion.php y ahi se destruye la sesion, supongo que cuando ya se tengan todos los casos cubiertos de datos que se puedan ingresar
-// va a funcionar bien
 if (isset($_SESSION['rol_usuario']) && isset($_SESSION['rut_usuario'])) {
     $rol = $_SESSION['rol_usuario'];
     if ($rol == '1') {
